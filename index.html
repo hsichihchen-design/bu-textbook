@@ -321,6 +321,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
 .fns li{display:flex;gap:6px;margin:0 0 2px;scroll-margin-top:calc(var(--top) + 60px);overflow-wrap:anywhere}
 .fns li.flash{background:var(--quote-bg);color:var(--fg)}
 .fns .fn-n{flex:none;min-width:1.6em}
+.fns .fn-raw{font-size:11px;margin-left:4px}
 .fns .fn-back{font:inherit;font-size:11px;border:0;background:none;color:var(--faint);cursor:pointer;padding:0 2px;text-decoration:underline}
 .ct-body .fns{margin-top:14px}
 /* 節尾 */
@@ -983,7 +984,8 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     if (s && s.speaker) parts.push(esc(s.speaker));
     if (o.ver === true) parts.push('逐字核對'); else if (o.ver === false) parts.push('未核對');
     var n = ctx.fn.length + 1;
-    ctx.fn.push({ n: n, html: (o.pre ? esc(o.pre) + ' ' : '') + parts.join(' · ') });
+    var rawA = (clipId && s && s.video_id) ? ' <a class="fn-raw" href="raw.html' + linkTo({ v: s.video_id, c: clipId }) + '">看原文</a>' : '';
+    ctx.fn.push({ n: n, html: (o.pre ? esc(o.pre) + ' ' : '') + parts.join(' · ') + rawA });
     ctx.fnMap[key] = n;
     return n;
   }
@@ -3169,6 +3171,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
           return '<li><a href="' + linkTo({ s: s.id }) + '"' + (s.id === curId ? ' class="on" aria-current="page"' : '') + '><span class="sn">' + esc(it.num) + '</span><span>' + esc(s.title) + '</span>' + dot + '</a></li>';
         }).join('') + '</ol></div>';
     });
+    html += '<a class="side-home" href="raw.html' + linkTo({}) + '" style="margin-top:10px">原始內容(逐字稿全文)</a>';
     side.innerHTML = html;
     var on = $('.side-secs a.on', side);
     if (on && !document.body.classList.contains('drawer-open')) {

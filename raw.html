@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>布大交易教材・原始內容</title>
+<style>
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --surface2:#faf8f4; --fg:#1d2127; --muted:#5d646d; --faint:#8b9199;
+  --line:#e5e1d8; --line2:#d6d1c5; --accent:#1e5f8f; --accent-bg:#e8f1f8; --accent-ink:#ffffff;
+  --quote-bg:#fbf4e6; --quote-bar:#c58a2a; --warn:#9a5b00; --warn-bg:#fdf0d9; --mark:#ffe58a;
+  --shadow:0 1px 2px rgba(20,25,35,.05),0 4px 14px rgba(20,25,35,.05);
+  --font:"PingFang TC","Noto Sans TC","Microsoft JhengHei","Heiti TC",system-ui,-apple-system,"Segoe UI",sans-serif; --top:56px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14161a; --surface:#1c1f24; --surface2:#191c20; --fg:#e7e5e0; --muted:#a3a8af; --faint:#7b8189;
+    --line:#2b3037; --line2:#373d45; --accent:#7db4e0; --accent-bg:#1d2a36; --accent-ink:#0e1a24;
+    --quote-bg:#2a2419; --quote-bar:#d7a347; --warn:#e8b25a; --warn-bg:#2c2416; --mark:#6b5a12;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14161a; --surface:#1c1f24; --surface2:#191c20; --fg:#e7e5e0; --muted:#a3a8af; --faint:#7b8189;
+  --line:#2b3037; --line2:#373d45; --accent:#7db4e0; --accent-bg:#1d2a36; --accent-ink:#0e1a24;
+  --quote-bg:#2a2419; --quote-bar:#d7a347; --warn:#e8b25a; --warn-bg:#2c2416; --mark:#6b5a12;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--top) + 12px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:17px;line-height:1.8;overflow-x:hidden}
+a{color:var(--accent)} button{font:inherit;color:inherit} h1,h2,h3{line-height:1.4;margin:0} p{margin:0 0 .8em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 1px}
+.top{position:sticky;top:0;z-index:20;height:var(--top);display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{font-weight:700;font-size:18px;text-decoration:none;color:var(--fg);white-space:nowrap}
+.brand small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
+.sp{flex:1}
+.tb{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 12px;border:1px solid var(--line2);border-radius:10px;background:var(--surface);cursor:pointer;text-decoration:none;color:var(--fg);font-size:15px;white-space:nowrap}
+.wrap{max-width:1040px;margin:0 auto;padding:18px 16px 70px}
+.hero{margin:6px 0 16px}
+.hero h1{font-size:26px}
+.hero p{color:var(--muted);font-size:15.5px;margin:8px 0 0}
+.sbox{display:flex;gap:8px;margin:14px 0 10px}
+.sbox input{flex:1;min-width:0;font:inherit;font-size:17px;padding:11px 14px;border:1px solid var(--line2);border-radius:12px;background:var(--surface);color:var(--fg)}
+.btn{font:inherit;font-size:16px;padding:10px 18px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);cursor:pointer;white-space:nowrap}
+.btn.ghost{background:var(--surface);color:var(--fg);border:1px solid var(--line2)}
+.btn.sm{font-size:14.5px;padding:6px 12px;border-radius:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{font-size:14.5px;padding:5px 12px;border-radius:999px;border:1px solid var(--line2);background:var(--surface);cursor:pointer;color:var(--fg)}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.lab{font-size:13.5px;color:var(--muted);margin:10px 0 2px}
+.count{color:var(--muted);font-size:14.5px;margin:12px 0 8px}
+.vlist{list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:minmax(0,1fr)}
+.vlist li{min-width:0}
+.vi a{display:block;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.vi a:hover{border-color:var(--accent)}
+.vt{font-weight:600;font-size:17px;line-height:1.5}
+.vm{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:3px;font-size:13.5px;color:var(--muted)}
+.bd{display:inline-block;font-size:12.5px;line-height:1.5;padding:0 8px;border-radius:999px;border:1px solid var(--line2);color:var(--muted);background:var(--surface2);white-space:nowrap}
+.bd.self{color:var(--accent);border-color:var(--accent);background:var(--accent-bg)}
+.bd.other{color:var(--warn);border-color:var(--warn);background:var(--warn-bg)}
+.crumb{font-size:14.5px;color:var(--muted);margin:2px 0 10px}
+.vhead{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);margin-bottom:14px}
+.vhead h1{font-size:23px}
+.vhead .vm{font-size:14.5px;margin-top:8px}
+.note{margin-top:10px;padding:8px 12px;border-radius:10px;background:var(--warn-bg);color:var(--warn);font-size:14.5px;line-height:1.7}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px;align-items:start}
+.toc{position:sticky;top:calc(var(--top) + 12px);max-height:calc(100vh - var(--top) - 28px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 6px}
+.toc h2{font-size:14px;color:var(--muted);padding:2px 10px 6px;font-weight:600}
+.toc a{display:block;padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--fg);font-size:14.5px;line-height:1.5}
+.toc a:hover,.toc a.on{background:var(--accent-bg)}
+.toc a span{display:block;color:var(--faint);font-size:12.5px}
+.tocm{display:none}
+.clip{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.clip.hl{outline:2px solid var(--accent)}
+.ch{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13.5px;color:var(--muted)}
+.tcp{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:600}
+.clip h2{font-size:18.5px;margin:6px 0 4px}
+.sum{color:var(--muted);font-size:15px;margin:0 0 10px;line-height:1.7}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.acts a,.acts button{font-size:14px;padding:4px 11px;border-radius:999px;border:1px solid var(--line2);background:var(--surface2);text-decoration:none;color:var(--accent);cursor:pointer;line-height:1.7}
+.vid{margin:8px 0 12px}
+.vid video{width:100%;max-height:70vh;border-radius:10px;background:#000}
+.tx{border-left:3px solid var(--quote-bar);background:var(--quote-bg);border-radius:0 10px 10px 0;padding:10px 14px}
+.tx p{margin:0 0 .75em;display:grid;grid-template-columns:54px minmax(0,1fr);gap:8px;font-size:16.5px;line-height:1.85}
+.tx p:last-child{margin-bottom:0}
+.tx time{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--faint);padding-top:4px;user-select:none}
+.tx span{overflow-wrap:anywhere}
+.pn{display:flex;gap:10px;justify-content:space-between;margin-top:18px;flex-wrap:wrap}
+.pn a{flex:1 1 220px;padding:10px 14px;border:1px solid var(--line2);border-radius:12px;background:var(--surface);text-decoration:none;color:var(--fg);font-size:15px}
+.pn a small{display:block;color:var(--muted);font-size:12.5px}
+.hit{display:block;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.hit:hover{border-color:var(--accent)}
+.hit .sn{font-size:15.5px;color:var(--fg);margin-top:4px;line-height:1.75;overflow-wrap:anywhere}
+.hits{display:grid;gap:8px;list-style:none;margin:0;padding:0;grid-template-columns:minmax(0,1fr)}
+.hits li{min-width:0}
+.hit .vt{overflow-wrap:anywhere}
+.hit .vt .bd{white-space:normal;display:inline;font-weight:400;overflow-wrap:anywhere}
+.more{margin:14px 0;text-align:center}
+.foot{margin-top:28px;font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;line-height:1.7}
+.empty{padding:30px 10px;text-align:center;color:var(--muted)}
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .toc{display:none}
+  .tocm{display:block;margin-bottom:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px 8px}
+  .tocm summary{cursor:pointer;padding:8px 6px;font-size:15px;font-weight:600}
+  .tocm a{display:block;padding:7px 6px;text-decoration:none;color:var(--fg);font-size:14.5px;border-top:1px solid var(--line)}
+  .tocm a span{color:var(--faint);font-size:12.5px;margin-right:6px}
+  .wrap{padding:14px 12px 60px}
+  .tx p{grid-template-columns:44px minmax(0,1fr);font-size:16px}
+  .hero h1{font-size:23px}
+  .vhead h1{font-size:20px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" id="brand" href="#">布大交易教材<small>原始內容</small></a>
+  <span class="sp"></span>
+  <a class="tb" id="toB" href="index.html">回教材</a>
+  <button class="tb" id="theme" type="button" aria-label="切換深色或淺色">◐</button>
+</header>
+<main class="wrap" id="main" aria-live="polite"></main>
+<script>(function () {
+  'use strict';
+  var enc = new TextEncoder();
+  function b64uDec(s) {
+    s = String(s).replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '=';
+    var bin = atob(s), u = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u;
+  }
+  function hex(buf) { var u = new Uint8Array(buf), o = ''; for (var i = 0; i < u.length; i++) o += (u[i] < 16 ? '0' : '') + u[i].toString(16); return o; }
+  function getHashKey() {
+    var h = location.hash.replace(/^#\/?/, ''), parts = h ? h.split('&') : [];
+    for (var i = 0; i < parts.length; i++) { if (parts[i].slice(0, 2) === 'k=') { try { return decodeURIComponent(parts[i].slice(2)); } catch (e) { return parts[i].slice(2); } } }
+    return '';
+  }
+  /* ---- 鎖定頁(蓋在整個畫面上;不含任何教材內容) ---- */
+  var ov = null;
+  function lockUI(msg, busy) {
+    if (!ov) {
+      ov = document.createElement('div');
+      ov.id = 'lockov';
+      ov.setAttribute('style', 'position:fixed;inset:0;z-index:2147483000;background:var(--bg,#f6f4ef);color:var(--fg,#1d2127);display:flex;align-items:center;justify-content:center;padding:24px;font-family:var(--font,system-ui,sans-serif)');
+      ov.innerHTML = '<div style="max-width:420px;width:100%;text-align:center">' +
+        '<h1 style="font-size:26px;margin:0 0 10px;line-height:1.4">布大交易教材</h1>' +
+        '<p id="lockmsg" style="margin:0 0 18px;color:var(--muted,#5d646d);font-size:16px;line-height:1.7"></p>' +
+        '<form id="lockform" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">' +
+        '<input id="lockkey" type="password" autocomplete="off" spellcheck="false" placeholder="貼上金鑰或完整網址" aria-label="金鑰" style="flex:1 1 220px;min-width:0;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line2,#d6d1c5);border-radius:8px;background:var(--surface,#fff);color:inherit">' +
+        '<button type="submit" style="font:inherit;font-size:16px;padding:10px 18px;border:0;border-radius:8px;background:var(--accent,#1e5f8f);color:var(--accent-ink,#fff);cursor:pointer">解鎖</button></form></div>';
+      document.body.appendChild(ov);
+      ov.querySelector('#lockform').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var v = ov.querySelector('#lockkey').value.trim(), m = v.match(/[#&]k=([A-Za-z0-9_\-]+)/);
+        if (m) v = m[1];
+        if (!/^[A-Za-z0-9_\-]{20,}$/.test(v)) { lockUI('金鑰格式不正確。'); return; }
+        location.hash = '#k=' + v; location.reload();
+      });
+    }
+    ov.querySelector('#lockmsg').textContent = msg || '';
+    ov.querySelector('#lockform').style.display = busy ? 'none' : 'flex';
+    ov.hidden = false; ov.style.display = 'flex';
+  }
+  function unlockUI() { if (ov) { ov.remove(); ov = null; } }
+
+  var KEYTXT = getHashKey(), KEYS = null, cache = {};
+  var MEDIA_BASE = 'https://bu-textbook-media.pages.dev'.replace(/\/+$/, '');
+  /* 影片位置:解鎖後才以金鑰在瀏覽器算出(檔名 = HMAC(mk,"media:"+clip_id) 前 24 hex);頁面內沒有 clip_id → 檔名的對照表 */
+  window.__B_MEDIA__ = { online: true, cases: true, clips: {} };
+  function addMedia(obj, k) {
+    var ids = [], seen = {};
+    function add(x) { if (x && typeof x === 'string' && !seen[x]) { seen[x] = 1; ids.push(x); } }
+    if (obj && obj.section && Array.isArray(obj.section.clips)) obj.section.clips.forEach(function (c) { add(c && c.clip_id); });
+    else if (obj && typeof obj.clip_id === 'string') add(obj.clip_id);
+    return Promise.all(ids.map(function (id) {
+      if (window.__B_MEDIA__.clips[id]) return null;
+      return crypto.subtle.sign('HMAC', k.hk, enc.encode('media:' + id)).then(function (ab) {
+        window.__B_MEDIA__.clips[id] = { src: MEDIA_BASE + '/' + hex(ab).slice(0, 24) + '.mp4', preload: 'metadata' };
+      });
+    })).then(function () { return obj; });
+  }
+  function initKeys() {
+    if (KEYS) return KEYS;
+    KEYS = Promise.resolve().then(function () {
+      var raw = b64uDec(KEYTXT);
+      if (raw.length !== 32) throw new Error('BADKEY');
+      return crypto.subtle.importKey('raw', raw, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']).then(function (hk) {
+        return crypto.subtle.sign('HMAC', hk, enc.encode('aes-gcm-v1')).then(function (ab) {
+          return crypto.subtle.importKey('raw', ab, 'AES-GCM', false, ['decrypt']);
+        }).then(function (ak) { return { hk: hk, ak: ak }; });
+      });
+    });
+    return KEYS;
+  }
+  function gunzip(u8) {
+    if (typeof DecompressionStream !== 'function') throw new Error('NOGZIP');
+    return new Response(new Blob([u8]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+  }
+  /* 回傳解密後的物件;找不到檔案回 null(throw 的是金鑰/網路/解密錯誤) */
+  function shard(id) {
+    if (cache[id]) return cache[id];
+    var p = initKeys().then(function (k) {
+      return crypto.subtle.sign('HMAC', k.hk, enc.encode('shard:' + id)).then(function (ab) {
+        var name = hex(ab).slice(0, 24) + '.bin';
+        return fetch('d/' + name, { cache: 'default' }).then(function (r) {
+          if (r.status === 404) return null;
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.arrayBuffer();
+        });
+      }).then(function (buf) {
+        if (!buf) return null;
+        var u = new Uint8Array(buf);
+        if (u.length < 30) throw new Error('BADDATA');
+        var flag = u[0], iv = u.subarray(1, 13), ct = u.subarray(13);
+        var idb = enc.encode(id), aad = new Uint8Array(idb.length + 1); aad.set(idb); aad[idb.length] = flag;
+        return crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv, additionalData: aad }, k.ak, ct).then(function (pt) {
+          return flag === 1 ? gunzip(new Uint8Array(pt)) : pt;
+        }, function () { throw new Error('BADKEY'); });
+      }).then(function (pt) { return pt ? JSON.parse(new TextDecoder().decode(pt)) : null; })
+        .then(function (obj) { return (obj && (id.slice(0, 2) === 's:' || id.slice(0, 2) === 'c:')) ? addMedia(obj, k) : obj; });
+    });
+    cache[id] = p;
+    p.catch(function () { delete cache[id]; });
+    return p;
+  }
+  function explain(e) {
+    var m = e && e.message || '';
+    if (m === 'BADKEY') return '金鑰不正確,請確認網址完整(含 # 後面的部分),或在下方重新貼上金鑰。';
+    if (m === 'NOGZIP') return '這個瀏覽器版本太舊,無法解壓縮資料,請更新瀏覽器。';
+    if (m === 'NOTFOUND') return '找不到資料。金鑰可能不正確,或網址不完整。';
+    if (/HTTP|Failed to fetch|NetworkError|Load failed/i.test(m)) return '網路連線失敗,請稍後重新整理。(' + m + ')';
+    return '資料解密失敗。(' + m + ')';
+  }
+  function loadIndex() {
+    if (!KEYTXT) { lockUI('這份教材需要金鑰。請使用完整網址(含 #k=…)開啟,或在下方貼上金鑰。'); return new Promise(function () {}); }
+    lockUI('解鎖中…', true);
+    return shard('rindex').then(function (idx) {
+      if (!idx) throw new Error('NOTFOUND');
+      unlockUI(); return idx;
+    }).catch(function (e) { lockUI(explain(e)); throw e; });
+  }
+  window.__R_LOADER__ = {
+    loadIndex: loadIndex,
+    loadVideo: function (id) { return shard('rv:' + id); },
+    loadSearch: function () { return shard('rsearch').then(function (r) { if (!r) throw new Error('NOTFOUND'); return r; }); },
+    media: function (cid) {
+      return initKeys().then(function (k) {
+        return crypto.subtle.sign('HMAC', k.hk, enc.encode('media:' + cid)).then(function (ab) { return MEDIA_BASE + '/' + hex(ab).slice(0, 24) + '.mp4'; });
+      });
+    }
+  };
+  /* 先蓋住畫面,避免在載入前閃出空的外框 */
+  if (document.body) lockUI(KEYTXT ? '解鎖中…' : '這份教材需要金鑰。請使用完整網址(含 #k=…)開啟,或在下方貼上金鑰。', !!KEYTXT);
+})();</script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var main = $('#main');
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function reEsc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function fmt(t) { t = Math.floor(t); var h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), s = t % 60; return (h ? h + ':' + (m < 10 ? '0' : '') : '') + m + ':' + (s < 10 ? '0' : '') + s; }
+  function durText(t) { var m = Math.round(t / 60); return m >= 60 ? Math.floor(m / 60) + ' 小時 ' + (m % 60 ? m % 60 + ' 分' : '') : m + ' 分'; }
+  var SPK = { '本人': 'self', '非本人': 'other', '混合': 'other', '不明': '' };
+
+  /* ---------- 資料入口:線上(__R_LOADER__,解密分片)或離線(__R_DATA__ 內嵌) ---------- */
+  var L = window.__R_LOADER__, D = window.__R_DATA__, VCACHE = {};
+  var API = {
+    index: function () {
+      if (L) return L.loadIndex();
+      return Promise.resolve({ generated: D.generated, series: D.series, videos: D.videos, totals: D.totals });
+    },
+    video: function (id) {
+      if (VCACHE[id]) return VCACHE[id];
+      var p = L ? L.loadVideo(id) : Promise.resolve(D.clips[id] ? { id: id, clips: D.clips[id] } : null);
+      VCACHE[id] = p; p.catch(function () { delete VCACHE[id]; });
+      return p;
+    },
+    search: function () {
+      if (API._s) return API._s;
+      var p = L ? L.loadSearch() : Promise.resolve(D.search && D.search.length ? D.search : buildSearch());
+      API._s = p; return p;
+    },
+    media: function (cid) {
+      if (L && L.media) return L.media(cid);
+      var m = window.__R_MEDIA__; return Promise.resolve(m && m[cid] ? m[cid] : null);
+    },
+    hasMedia: function (c) { return L ? !!c.media : !!(window.__R_MEDIA__ && window.__R_MEDIA__[c.id]); }
+  };
+  function buildSearch() {
+    var out = [];
+    Object.keys(D.clips).forEach(function (vid) {
+      D.clips[vid].forEach(function (c) { out.push([vid, c.id, c.title, c.text.replace(/\[\d+:\d{2}(?::\d{2})?\]/g, '').replace(/\s+/g, '')]); });
+    });
+    return out;
+  }
+
+  /* ---------- 路由 ---------- */
+  function parseHash() {
+    var o = {}, h = location.hash.replace(/^#\/?/, '');
+    if (!h) return o;
+    h.split('&').forEach(function (p) {
+      if (!p) return; var i = p.indexOf('='), k = i < 0 ? p : p.slice(0, i), v = i < 0 ? '' : p.slice(i + 1);
+      try { o[decodeURIComponent(k)] = decodeURIComponent(v); } catch (e) { o[k] = v; }
+    });
+    return o;
+  }
+  function link(p) {
+    var cur = parseHash(), parts = [];
+    if (cur.k) parts.push('k=' + encodeURIComponent(cur.k));
+    Object.keys(p || {}).forEach(function (k) { if (p[k] != null && p[k] !== '') parts.push(encodeURIComponent(k) + '=' + encodeURIComponent(p[k])); });
+    return '#' + parts.join('&');
+  }
+  function bLink(sec) {
+    var cur = parseHash(), base = window.__R_B_HREF__ || 'index.html';
+    return base + '#' + (cur.k ? 'k=' + encodeURIComponent(cur.k) + '&' : '') + (sec.indexOf('c_') === 0 ? 'cs=' : 's=') + encodeURIComponent(sec);
+  }
+
+  var IDX = null, VBYID = {}, ORDER = [];
+  function badge(sp) { return '<span class="bd ' + (SPK[sp] || '') + '">' + esc(sp === '混合' ? '含非本人' : sp) + '</span>'; }
+  function vmeta(v) {
+    return '<span>' + esc(v.id) + '</span>' + (v.date ? '<span>' + esc(v.date) + '</span>' : '<span>日期不明</span>') + badge(v.speaker) +
+      '<span>' + v.n + ' 個片段</span><span>' + durText(v.dur) + '</span>' + (v.used ? '<span>教材引用 ' + v.used + '</span>' : '');
+  }
+
+  /* ---------- 首頁:篩選 + 影片清單 ---------- */
+  var HOME = { sr: '', sp: '', o: 'new' };
+  function home(h) {
+    HOME.sr = h.sr || ''; HOME.sp = h.sp || ''; HOME.o = h.o || 'new';
+    var T = IDX.totals;
+    var h1 = '<section class="hero"><h1>原始內容</h1><p>收錄 ' + T.videos + ' 支影片、' + T.clips.toLocaleString() + ' 個片段(約 ' + Math.round(T.chars / 10000).toLocaleString() + ' 萬字),只含與交易有關的部分,依影片整理。逐字稿是語音辨識的原樣,錯字不改;日期、標題、摘要是整理者加的。</p></section>' +
+      '<form class="sbox" id="sform" role="search"><input id="q" type="search" placeholder="搜尋逐字稿:例如 均線、停損、擼貓" autocomplete="off" aria-label="搜尋逐字稿"><button class="btn" type="submit">搜尋</button></form>';
+    var chips = function (label, key, opts, cur) {
+      return '<div class="lab">' + label + '</div><div class="chips">' + opts.map(function (o) {
+        var p = { sr: HOME.sr, sp: HOME.sp, o: HOME.o }; p[key] = o[0];
+        return '<a class="chip" href="' + link(p) + '" aria-pressed="' + (String(cur) === String(o[0])) + '" style="text-decoration:none">' + esc(o[1]) + '</a>';
+      }).join('') + '</div>';
+    };
+    var sOpts = [['', '全部']].concat(IDX.series.map(function (s) { return [s.id, s.label]; }));
+    var list = IDX.videos.filter(function (v) {
+      if (HOME.sr && v.series !== HOME.sr) return false;
+      if (HOME.sp === '本人' && v.speaker !== '本人') return false;
+      if (HOME.sp === '非本人' && v.speaker === '本人') return false;
+      return true;
+    });
+    list = list.slice().sort(function (a, b) {
+      var da = a.date || '', db = b.date || '';
+      if (da === db) return a.id < b.id ? -1 : 1;
+      if (!da) return 1; if (!db) return -1;
+      return HOME.o === 'old' ? (da < db ? -1 : 1) : (da < db ? 1 : -1);
+    });
+    var html = h1 + chips('系列', 'sr', sOpts, HOME.sr) + chips('講者', 'sp', [['', '全部'], ['本人', '布大本人'], ['非本人', '含非本人']], HOME.sp) + chips('排序', 'o', [['new', '新到舊'], ['old', '舊到新']], HOME.o) +
+      '<div class="count">共 ' + list.length + ' 支影片</div><ul class="vlist">' +
+      list.map(function (v) { return '<li class="vi"><a href="' + link({ v: v.id }) + '"><div class="vt">' + esc(v.title) + '</div><div class="vm">' + vmeta(v) + '</div></a></li>'; }).join('') + '</ul>' +
+      '<div class="foot">講者標示:「本人」是布大自己講的;「非本人」是群友、來賓或讀書會等,只保留原文,教材不引用。逐字稿來自語音辨識,專有名詞與數字可能有誤,請以影片為準。</div>';
+    main.innerHTML = html;
+    bindSearch('');
+    document.title = '布大交易教材・原始內容';
+  }
+  function bindSearch(q) {
+    var f = $('#sform'), i = $('#q'); if (!f) return;
+    i.value = q || '';
+    f.addEventListener('submit', function (e) { e.preventDefault(); var v = i.value.trim(); location.hash = link(v ? { q: v } : {}); });
+  }
+
+  /* ---------- 影片頁 ---------- */
+  function paras(text, terms) {
+    var lines = String(text || '').split('\n'), out = [], cur = null;
+    function flush() { if (cur) { out.push(cur); cur = null; } }
+    lines.forEach(function (ln) {
+      var m = ln.match(/^\[(\d+):(\d{2})(?::(\d{2}))?\]\s*(.*)$/), t = null, body = ln;
+      if (m) { t = m[3] != null ? (+m[1] * 3600 + +m[2] * 60 + +m[3]) : (+m[1] * 60 + +m[2]); body = m[4]; }
+      if (!body.trim()) return;
+      if (!cur) cur = { t: t, s: body.trim() };
+      else cur.s += body.trim();
+      if (cur.s.length >= 90) flush();
+    });
+    flush();
+    var re = terms && terms.length ? new RegExp('(' + terms.map(function (x) { return reEsc(esc(x)); }).join('|') + ')', 'gi') : null;
+    return out.map(function (p) {
+      var s = esc(p.s); if (re) s = s.replace(re, '<mark>$1</mark>');
+      return '<p><time>' + (p.t == null ? '' : fmt(p.t)) + '</time><span>' + s + '</span></p>';
+    }).join('');
+  }
+  function usedLinks(c) {
+    var a = [];
+    (c.used || []).forEach(function (u) { a.push('<a href="' + esc(bLink(u[0])) + '">教材:' + esc(u[1]) + '</a>'); });
+    if (c.case) a.push('<a href="' + esc(bLink(c.case)) + '">走勢案例</a>');
+    return a;
+  }
+  function clipHTML(c, terms) {
+    var acts = usedLinks(c);
+    if (API.hasMedia(c)) acts.unshift('<button type="button" data-play="' + esc(c.id) + '">▶ 播放這一段影片</button>');
+    return '<article class="clip" id="c_' + esc(c.id) + '" data-id="' + esc(c.id) + '"><div class="ch"><span class="tcp">' + fmt(c.t0) + '–' + fmt(c.t1) + '</span>' + badge(c.speaker) + '<span class="bd">' + esc(c.kind) + '</span>' +
+      (c.date ? '<span>' + esc(c.date) + '</span>' : '') + (c.symbols && c.symbols.length ? '<span>' + esc(c.symbols.join('、')) + '</span>' : '') + '</div>' +
+      '<h2>' + esc(c.title) + '</h2>' + (c.summary ? '<p class="sum">' + esc(c.summary) + '</p>' : '') +
+      (acts.length ? '<div class="acts">' + acts.join('') + '</div>' : '') + '<div class="vid" hidden></div>' +
+      '<div class="tx" tabindex="0" aria-label="逐字稿">' + paras(c.text, terms) + '</div></article>';
+  }
+  function video(h) {
+    var v = VBYID[h.v];
+    if (!v) { main.innerHTML = '<div class="empty">找不到這支影片。<a href="' + link({}) + '">回清單</a></div>'; return; }
+    var terms = h.hq ? h.hq.split(/\s+/).filter(Boolean) : [];
+    main.innerHTML = '<div class="empty">載入中…</div>';
+    API.video(v.id).then(function (d) {
+      if (!d) { main.innerHTML = '<div class="empty">找不到資料。</div>'; return; }
+      var clips = d.clips, i = ORDER.indexOf(v.id), pv = ORDER[i - 1] && VBYID[ORDER[i - 1]], nx = ORDER[i + 1] && VBYID[ORDER[i + 1]];
+      var toc = clips.map(function (c) { return '<a href="' + link({ v: v.id, c: c.id, hq: h.hq }) + '" data-c="' + esc(c.id) + '"><span>' + fmt(c.t0) + '</span>' + esc(c.title) + '</a>'; }).join('');
+      var note = v.speaker === 'other' || v.speaker === '非本人' || v.speaker === '混合' ? '<div class="note">這支影片的講者不是(或不全是)布大本人,內容只保留原文,教材沒有引用。每個片段上有各自的講者標示。</div>' : '';
+      main.innerHTML = '<div class="crumb"><a href="' + link({}) + '">原始內容</a> › ' + esc(v.title) + '</div>' +
+        '<section class="vhead"><h1>' + esc(v.title) + '</h1><div class="vm">' + vmeta(v) + '</div>' + (v.name && v.name !== v.title ? '<div class="vm"><span>檔名:' + esc(v.name) + '</span></div>' : '') + note + '</section>' +
+        '<details class="tocm" open><summary>本支影片的片段(' + clips.length + ')</summary>' + toc + '</details>' +
+        '<div class="layout"><nav class="toc" aria-label="片段目錄"><h2>片段目錄</h2>' + toc + '</nav><div>' + clips.map(function (c) { return clipHTML(c, terms); }).join('') + '</div></div>' +
+        '<div class="pn">' + (pv ? '<a href="' + link({ v: pv.id }) + '"><small>上一支</small>' + esc(pv.title) + '</a>' : '<span></span>') + (nx ? '<a href="' + link({ v: nx.id }) + '" style="text-align:right"><small>下一支</small>' + esc(nx.title) + '</a>' : '') + '</div>' +
+        '<div class="foot">逐字稿是語音辨識的原樣(只把簡體字轉成繁體字形),錯字、斷句都沒改;請以影片為準。</div>';
+      document.title = v.title + '・原始內容';
+      bindClips(clips);
+      if (h.c) {
+        var el = document.getElementById('c_' + h.c);
+        if (el) { el.classList.add('hl'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+      } else window.scrollTo(0, 0);
+    }).catch(fail);
+  }
+  function bindClips(clips) {
+    var byId = {}; clips.forEach(function (c) { byId[c.id] = c; });
+    main.addEventListener('click', onClick);
+    function onClick(e) {
+      var b = e.target.closest('button[data-play]'); if (!b) return;
+      var cid = b.getAttribute('data-play'), art = b.closest('.clip'), box = $('.vid', art);
+      if (!box.hidden) { var vv = $('video', box); if (vv) vv.pause(); box.hidden = true; b.textContent = '▶ 播放這一段影片'; return; }
+      b.textContent = '載入影片…';
+      API.media(cid).then(function (src) {
+        if (!src) { b.textContent = '(這一段沒有影片)'; return; }
+        box.innerHTML = '<video controls preload="metadata" playsinline src="' + esc(src) + '"></video>'; box.hidden = false; b.textContent = '▲ 收起影片';
+        var v = $('video', box); v.play().catch(function () { });
+      });
+    }
+    main._off = function () { main.removeEventListener('click', onClick); };
+  }
+
+  /* ---------- 搜尋 ---------- */
+  var HIT_PAGE = 60;
+  function search(h) {
+    var q = h.q, terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+    main.innerHTML = '<div class="crumb"><a href="' + link({}) + '">原始內容</a> › 搜尋</div><form class="sbox" id="sform"><input id="q" type="search" autocomplete="off" aria-label="搜尋逐字稿"><button class="btn" type="submit">搜尋</button></form><div class="empty" id="res">搜尋中…</div>';
+    bindSearch(q);
+    API.search().then(function (S) {
+      var res = [];
+      for (var i = 0; i < S.length; i++) {
+        var e = S[i], t = e[3].toLowerCase(), ti = e[2].toLowerCase(), sc = 0, ok = true, first = -1;
+        for (var k = 0; k < terms.length; k++) {
+          var x = terms[k], p = t.indexOf(x), n = 0;
+          if (p < 0 && ti.indexOf(x) < 0) { ok = false; break; }
+          if (p >= 0) { if (first < 0 || p < first) first = p; var from = 0, pp; while ((pp = t.indexOf(x, from)) >= 0 && n < 50) { n++; from = pp + x.length; } }
+          sc += n + (ti.indexOf(x) >= 0 ? 5 : 0);
+        }
+        if (ok) res.push({ e: e, sc: sc, first: first });
+      }
+      res.sort(function (a, b) { return b.sc - a.sc; });
+      var box = $('#res'), shown = 0;
+      if (!res.length) { box.className = 'empty'; box.innerHTML = '沒有找到「' + esc(q) + '」。試試更短的詞,或換個說法。'; return; }
+      var vids = {}; res.forEach(function (r) { vids[r.e[0]] = 1; });
+      box.className = ''; box.innerHTML = '<div class="count">找到 ' + res.length + ' 個片段(' + Object.keys(vids).length + ' 支影片)</div><ul class="hits" id="hits"></ul><div class="more" id="more"></div>';
+      var re = new RegExp('(' + terms.map(function (x) { return reEsc(esc(x)); }).join('|') + ')', 'gi'), hq = terms.join(' ');
+      function more() {
+        var ul = $('#hits'), html = '';
+        res.slice(shown, shown + HIT_PAGE).forEach(function (r) {
+          var e = r.e, v = VBYID[e[0]], text = e[3], st = Math.max(0, (r.first < 0 ? 0 : r.first) - 30), sn = esc(text.slice(st, st + 120));
+          sn = sn.replace(re, '<mark>$1</mark>');
+          html += '<li><a class="hit" href="' + link({ v: e[0], c: e[1], hq: hq }) + '"><div class="vt">' + esc(v ? v.title : e[0]) + ' <span class="bd">' + esc(e[2]) + '</span></div><div class="vm">' + (v ? '<span>' + esc(v.id) + '</span>' + (v.date ? '<span>' + esc(v.date) + '</span>' : '') + badge(v.speaker) : '') + '</div><div class="sn">' + (st > 0 ? '…' : '') + sn + '…</div></a></li>';
+        });
+        ul.insertAdjacentHTML('beforeend', html); shown += HIT_PAGE;
+        $('#more').innerHTML = shown < res.length ? '<button class="btn ghost" type="button" id="moreb">再看更多(還有 ' + (res.length - shown) + ')</button>' : '';
+        var mb = $('#moreb'); if (mb) mb.addEventListener('click', more);
+      }
+      more();
+    }).catch(fail);
+    document.title = '搜尋 ' + q + '・原始內容';
+  }
+  function fail(e) { main.innerHTML = '<div class="empty">載入失敗:' + esc(e && e.message || e) + '</div>'; }
+
+  /* ---------- 主流程 ---------- */
+  function render() {
+    if (main._off) { main._off(); main._off = null; }
+    if (!IDX) return;
+    var h = parseHash();
+    if (h.v) video(h); else if (h.q) search(h); else home(h);
+    var b = $('#toB'); if (b) { var kk = parseHash().k; b.href = (window.__R_B_HREF__ || 'index.html') + (kk ? '#k=' + encodeURIComponent(kk) : ''); }
+    $('#brand').href = link({});
+  }
+  window.addEventListener('hashchange', render);
+  $('#theme').addEventListener('click', function () {
+    var cur = document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var nx = cur === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', nx);
+    try { localStorage.setItem('b_theme', nx); } catch (e) { }
+  });
+  try { var t = localStorage.getItem('b_theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) { }
+  API.index().then(function (idx) {
+    IDX = idx; ORDER = idx.videos.map(function (v) { return v.id; }); idx.videos.forEach(function (v) { VBYID[v.id] = v; });
+    render();
+  }).catch(function (e) { if (!document.getElementById('lockov')) fail(e); });
+  window.RAW = { api: API, render: render };
+})();
+</script>
+</body>
+</html>
