@@ -1,0 +1,2735 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>布大交易教材</title>
+<style>
+/* ========== 1. 色彩與字體 token ========== */
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --surface2:#faf8f4; --fg:#1d2127; --muted:#5d646d; --faint:#8b9199;
+  --line:#e5e1d8; --line2:#d6d1c5;
+  --accent:#1e5f8f; --accent-bg:#e8f1f8; --accent-ink:#ffffff;
+  --quote-bg:#fbf4e6; --quote-bar:#c58a2a; --quote-ink:#3a2e18;
+  --up:#d23a3f; --down:#139463; --up-soft:rgba(210,58,63,.35); --down-soft:rgba(19,148,99,.35);
+  --grid:#eeebe4; --chart-bg:#ffffff;
+  --ok:#1e5f8f; --wip:#9a5b00; --wip-bg:#fdf0d9;
+  --gA:#1e5f8f; --gB:#9a5b00; --gC:#6b7280;
+  --fc:#6a46b8; --fc-bg:#efeafb;
+  /* 圖上標註(紅綠只留給 K 棒,標註不用紅綠) */
+  --an-zone:#b07413; --an-arrow:#0b7885; --an-point:#6a46b8; --an-vline:#6a46b8; --an-line:#a8661a;
+  /* 逐步講解的四個角色色(紅綠只留給 K 棒):當時情境 / 他的判斷 / 後來 / 次要細節 */
+  --r-ctx:#94600a; --r-judge:#1e5f8f; --r-out:#7044b5; --r-det:#7b828b;
+  --shadow:0 1px 2px rgba(20,25,35,.05),0 4px 14px rgba(20,25,35,.05);
+  --font:"PingFang TC","Noto Sans TC","Microsoft JhengHei","Heiti TC",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --top:56px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14161a; --surface:#1c1f24; --surface2:#191c20; --fg:#e7e5e0; --muted:#a3a8af; --faint:#7b8189;
+    --line:#2b3037; --line2:#373d45;
+    --accent:#7db4e0; --accent-bg:#1d2a36; --accent-ink:#0e1a24;
+    --quote-bg:#2a2419; --quote-bar:#d7a347; --quote-ink:#efe3c9;
+    --up:#f0565c; --down:#2fbf80; --up-soft:rgba(240,86,92,.38); --down-soft:rgba(47,191,128,.38);
+    --grid:#262a30; --chart-bg:#1c1f24;
+    --ok:#7db4e0; --wip:#e8b25a; --wip-bg:#2c2416;
+    --gA:#7db4e0; --gB:#e8b25a; --gC:#9aa0a8;
+    --fc:#b9a3f2; --fc-bg:#2a2340;
+    --an-zone:#e3b54f; --an-arrow:#4cc7d4; --an-point:#b9a3f2; --an-vline:#b9a3f2; --an-line:#e0a95a;
+    --r-ctx:#e3b54f; --r-judge:#7db4e0; --r-out:#b9a3f2; --r-det:#8f959d;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14161a; --surface:#1c1f24; --surface2:#191c20; --fg:#e7e5e0; --muted:#a3a8af; --faint:#7b8189;
+  --line:#2b3037; --line2:#373d45;
+  --accent:#7db4e0; --accent-bg:#1d2a36; --accent-ink:#0e1a24;
+  --quote-bg:#2a2419; --quote-bar:#d7a347; --quote-ink:#efe3c9;
+  --up:#f0565c; --down:#2fbf80; --up-soft:rgba(240,86,92,.38); --down-soft:rgba(47,191,128,.38);
+  --grid:#262a30; --chart-bg:#1c1f24;
+  --ok:#7db4e0; --wip:#e8b25a; --wip-bg:#2c2416;
+  --gA:#7db4e0; --gB:#e8b25a; --gC:#9aa0a8;
+  --fc:#b9a3f2; --fc-bg:#2a2340;
+  --an-zone:#e3b54f; --an-arrow:#4cc7d4; --an-point:#b9a3f2; --an-vline:#b9a3f2; --an-line:#e0a95a;
+  --r-ctx:#e3b54f; --r-judge:#7db4e0; --r-out:#b9a3f2; --r-det:#8f959d;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+}
+
+/* ========== 2. 基本 ========== */
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--top) + 12px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:18px;line-height:1.85;letter-spacing:.01em;overflow-x:hidden}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+p{margin:0 0 .9em}
+p:last-child{margin-bottom:0}
+h1,h2,h3{line-height:1.4;margin:0}
+.skip{position:absolute;left:-999px;top:8px;background:var(--surface);padding:6px 10px;z-index:99}
+.skip:focus{left:8px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.muted{color:var(--muted)}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ========== 3. 頂部列 ========== */
+.top{position:sticky;top:0;z-index:30;height:var(--top);display:flex;align-items:center;gap:10px;padding:0 16px;
+  background:var(--bg);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
+.brand{font-weight:700;font-size:17px;text-decoration:none;color:var(--fg);white-space:nowrap;margin-right:auto}
+.brand small{font-weight:400;color:var(--muted);margin-left:6px;font-size:13px}
+.icon-btn{width:40px;height:40px;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:10px;background:var(--surface);cursor:pointer;flex:none}
+.icon-btn svg{width:20px;height:20px}
+.menu-btn{display:none}
+.search{position:relative;width:min(340px,40vw)}
+.search input{width:100%;height:40px;border:1px solid var(--line2);border-radius:10px;padding:0 12px 0 36px;background:var(--surface);color:var(--fg);font-size:15px}
+.search .s-ico{position:absolute;left:11px;top:11px;width:18px;height:18px;color:var(--faint);pointer-events:none}
+.search-btn{display:none}
+.results{position:absolute;right:0;top:46px;width:min(460px,92vw);max-height:70vh;overflow:auto;background:var(--surface);border:1px solid var(--line2);border-radius:12px;box-shadow:var(--shadow);padding:6px;font-size:15px;line-height:1.6}
+.r-h{font-size:12px;color:var(--faint);padding:8px 10px 4px;letter-spacing:.08em}
+.r{display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--fg)}
+.r:hover,.r:focus{background:var(--accent-bg)}
+.r b{display:block;font-weight:600}
+.r span{display:block;color:var(--muted);font-size:14px}
+.r mark{background:var(--quote-bg);color:inherit;border-bottom:2px solid var(--quote-bar);padding:0}
+.r-empty{padding:14px 10px;color:var(--muted)}
+
+/* ========== 4. 版面 ========== */
+.layout{display:grid;grid-template-columns:292px minmax(0,1fr);min-height:calc(100vh - var(--top))}
+.side{position:sticky;top:var(--top);height:calc(100vh - var(--top));overflow:auto;border-right:1px solid var(--line);padding:14px 10px 40px;font-size:15px;line-height:1.5;background:var(--bg)}
+.side-home{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;text-decoration:none;color:var(--fg);font-weight:600;margin-bottom:6px}
+.side-home:hover,.side-home.on{background:var(--accent-bg)}
+.side-ch{margin:2px 0}
+.side-ch-btn{display:flex;width:100%;align-items:center;gap:8px;text-align:left;padding:8px 10px;border:0;border-radius:10px;background:none;cursor:pointer;font-weight:600;text-decoration:none;color:var(--fg)}
+.side-ch-btn:hover{background:var(--surface2)}
+.side-ch.on>.side-ch-btn{color:var(--accent)}
+.chn{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:12px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.side-ch.on .chn{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.side-ch.lib .chn{border-color:var(--quote-bar);color:var(--quote-bar)}
+.side-ch.lib.on .chn{background:var(--quote-bar);color:#fff}
+.side-ch-t{flex:1;min-width:0}
+.side-prog{font-size:12px;color:var(--faint);font-weight:400}
+.side-secs{list-style:none;margin:2px 0 8px;padding:0 0 0 22px;display:none}
+.side-ch.open .side-secs{display:block}
+.side-secs a{display:flex;gap:8px;padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--muted);border-left:2px solid transparent}
+.side-secs a:hover{background:var(--surface2);color:var(--fg)}
+.side-secs a.on{background:var(--accent-bg);color:var(--fg);border-left-color:var(--accent);font-weight:600}
+.side-secs .sn{flex:none;font-size:12px;color:var(--faint);min-width:28px;padding-top:2px}
+.side-secs .dot{margin-left:auto;flex:none;font-size:12px}
+.side-secs .dot.read{color:var(--ok)}
+.side-secs .dot.wip{color:var(--wip)}
+.scrim{display:none}
+main{padding:28px 28px 120px;min-width:0}
+main:focus{outline:none}
+.col{max-width:680px;margin:0 auto}
+.col.wide{max-width:760px}
+main.loading .col{opacity:.5;transition:opacity .2s}
+
+/* ========== 5. 共用小元件 ========== */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;line-height:1;padding:5px 8px;border-radius:999px;border:1px solid var(--line2);background:var(--surface);color:var(--muted);cursor:pointer;white-space:nowrap;vertical-align:middle;font-weight:600}
+.badge:hover{border-color:var(--accent)}
+.badge.g-A{color:var(--gA);border-color:color-mix(in srgb,var(--gA) 45%,transparent)}
+.badge.g-B{color:var(--gB);border-color:color-mix(in srgb,var(--gB) 45%,transparent)}
+.badge.g-C{color:var(--gC)}
+.badge.self{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent)}
+.badge.other{color:var(--fg);border-style:dashed}
+.badge.ver::before{content:"✓";font-weight:700}
+.badge.wipb{color:var(--wip);background:var(--wip-bg);border-color:transparent}
+.kd{display:inline-block;flex:none;font-size:12px;font-weight:700;padding:1px 8px;border-radius:6px;line-height:1.7;border:0;cursor:pointer;white-space:nowrap}
+span.kd{cursor:inherit}
+.kd.review{background:var(--accent-bg);color:var(--accent)}
+.kd.forecast{background:var(--fc-bg);color:var(--fc)}
+.sb{display:inline-block;font-size:10.5px;font-weight:700;line-height:15px;min-width:16px;text-align:center;border-radius:4px;background:var(--surface2);border:1px solid var(--line2);color:var(--muted);margin-right:4px;vertical-align:1px;padding:0 1px}
+.term{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;border-bottom:1.5px dotted var(--accent);line-height:inherit}
+.term:hover{color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--line2);background:var(--surface);cursor:pointer;font-size:16px;font-weight:600;text-decoration:none;color:var(--fg)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.big{min-height:54px;font-size:18px;padding:0 26px;border-radius:14px}
+.btn.sm{min-height:36px;font-size:14.5px;padding:0 12px;border-radius:10px}
+.btn.ghost{background:none;border-color:transparent;color:var(--muted);font-weight:500;padding:0 8px}
+.cap{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* ========== 6. 首頁 ========== */
+.hero{padding:22px 0 8px}
+.hero h1{font-size:34px;letter-spacing:.02em}
+.hero .lede{font-size:19px;color:var(--muted);margin:10px 0 22px;max-width:30em}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.howto{margin:26px 0 8px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.howto div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:15.5px;line-height:1.65}
+.howto b{display:block;font-size:16px;margin-bottom:2px}
+.stages{list-style:none;padding:0;margin:30px 0 6px;display:flex;flex-wrap:wrap;gap:6px 4px;font-size:14.5px;color:var(--muted);align-items:center}
+.stages li{display:flex;align-items:center;gap:4px}
+.stages li+li::before{content:"→";color:var(--faint);margin-right:4px}
+.stages b{color:var(--fg);font-weight:600}
+.stage-h{margin:28px 0 10px;font-size:15px;color:var(--muted);font-weight:600;letter-spacing:.06em;display:flex;align-items:center;gap:10px}
+.stage-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.ch-card{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow);min-width:0}
+.ch-card:hover{border-color:var(--accent)}
+.ch-card .cn{font-size:13px;color:var(--faint);font-weight:600}
+.ch-card h3{font-size:19px}
+.ch-card p{font-size:15px;line-height:1.65;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0}
+.ch-card .meta{margin-top:auto;padding-top:8px;font-size:13px;color:var(--faint);display:flex;justify-content:space-between;gap:8px}
+.bar{height:4px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.ch-card.core{border-color:var(--quote-bar);background:linear-gradient(var(--quote-bg),var(--surface) 70%)}
+.ch-card.core .cn::after{content:" · 本教材核心";color:var(--quote-bar)}
+.legend{margin:34px 0 0;padding:16px 18px;border-radius:14px;background:var(--surface2);border:1px dashed var(--line2);font-size:15px;line-height:1.7}
+.legend .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+
+/* ========== 7. 章頁 ========== */
+.crumb{font-size:14px;color:var(--muted);margin-bottom:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.crumb a{color:var(--muted);text-decoration:none}
+.crumb a:hover{color:var(--accent)}
+.page-h1{font-size:30px;margin-bottom:10px}
+.intro{font-size:18px;color:var(--muted);margin-bottom:22px}
+.sec-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.sec-item{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--fg)}
+.sec-item:hover{border-color:var(--accent)}
+.sec-item .num{flex:none;font-weight:700;color:var(--accent);min-width:34px;font-size:16px;padding-top:2px}
+.sec-item b{display:block;font-size:17.5px;line-height:1.5}
+.sec-item span{display:block;font-size:15px;color:var(--muted);line-height:1.6;margin-top:2px}
+.sec-item .st{flex:none;margin-left:auto;font-size:13px;color:var(--faint);white-space:nowrap;padding-top:3px}
+.sec-item .st.read{color:var(--ok)}
+
+/* ========== 8. 小節頁 ========== */
+.sec-h1{font-size:28px;margin:2px 0 14px}
+.conclusion{background:var(--accent-bg);border-radius:16px;padding:16px 20px;margin:0 0 22px}
+.conclusion .lab{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.08em;display:block;margin-bottom:2px}
+.conclusion p{font-size:19.5px;font-weight:600;line-height:1.7}
+.conclusion .meta{margin-top:10px;font-size:13.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px 22px 22px;margin:0 0 16px;box-shadow:var(--shadow)}
+.card-h{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.card-n{flex:none;width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;font-size:13px;font-weight:700;background:var(--surface2);border:1px solid var(--line2);color:var(--muted);transform:translateY(-2px)}
+.card-h h2{font-size:20px}
+.card-h .hint{font-size:14px;color:var(--faint)}
+.card.is-empty{padding:12px 22px;box-shadow:none;background:transparent;border-style:dashed}
+.card.is-empty .card-h{margin:0}
+.card.is-empty .card-h h2{font-size:16px;color:var(--muted)}
+.card.is-empty .empty{font-size:14.5px;color:var(--faint);margin-left:auto}
+.def-lead{font-size:19px;font-weight:600;margin-bottom:12px}
+dl.terms{margin:0;display:grid;gap:10px}
+dl.terms div{padding:10px 14px;background:var(--surface2);border-radius:10px}
+dl.terms dt{font-weight:700}
+dl.terms dd{margin:0;color:var(--fg)}
+/* 引言卡:他的原話 */
+.quote{position:relative;margin:0 0 14px;background:var(--quote-bg);border-left:4px solid var(--quote-bar);border-radius:4px 14px 14px 4px;padding:14px 18px 12px;color:var(--quote-ink)}
+.quote:last-child{margin-bottom:0}
+.q-gist{font-size:13.5px;color:var(--quote-bar);font-weight:700;margin-bottom:4px}
+.q-gist::before{content:"這句在說:";font-weight:400;opacity:.85}
+.quote blockquote{margin:0;font-size:19px;line-height:1.8;font-weight:500}
+.quote blockquote::before{content:"「";margin-left:-.5em}
+.quote blockquote::after{content:"」"}
+.quote.sm{padding:10px 14px 9px;margin:12px 0 0}
+.quote.sm blockquote{font-size:17px}
+.q-lab{display:block;font-size:12.5px;font-weight:700;color:var(--quote-bar);letter-spacing:.06em}
+.q-top{float:right;margin:0 0 4px 10px;display:inline-flex;align-items:center;gap:4px;line-height:1}
+.q-top .badge{font-size:11px;padding:3px 6px}
+.fnref{font:inherit;font-size:11px;line-height:1;color:var(--faint);background:none;border:0;padding:2px 1px;cursor:pointer;vertical-align:super;position:relative;top:-.15em}
+.fnref:hover{color:var(--accent)}
+.q-top .fnref{vertical-align:baseline;top:0;font-size:12px}
+.quote::after{content:"";display:block;clear:both}
+.other-fold{margin:0 0 14px;border:1px dashed var(--line2);border-radius:12px;padding:8px 14px}
+.other-fold summary{cursor:pointer;font-size:15px;color:var(--muted)}
+.sub-h{font-size:16px;font-weight:700;margin:20px 0 8px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.sub-h .cap{font-weight:400}
+table.tt{width:100%;border-collapse:collapse;font-size:16px;line-height:1.65}
+table.tt th{text-align:left;font-size:13px;color:var(--faint);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--line2)}
+table.tt td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.tt td.p{white-space:nowrap;font-weight:700;color:var(--accent);width:6.5em}
+
+/* ========== 9. 圖上標註的走勢圖 ========== */
+.afig{margin:0 0 22px}
+.afig:last-child{margin-bottom:0}
+.afig+.afig{padding-top:20px;border-top:1px dashed var(--line2)}
+.atop{display:flex;gap:8px;align-items:baseline;margin:0 0 4px}
+.ahl{font-size:18.5px;font-weight:700;line-height:1.5;min-width:0;overflow-wrap:anywhere}
+.ameta{font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;margin:0 0 8px}
+.ameta b{color:var(--fg)}
+.abox{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--chart-bg);overflow:hidden}
+.achart{width:100%}
+.acv{display:block;width:100%}
+.alegend{list-style:none;margin:8px 0 0;padding:8px 12px;border-radius:10px;background:var(--surface2);font-size:14.5px;line-height:1.65}
+.alegend li{display:flex;gap:6px;align-items:baseline}
+.alegend .ln{flex:none;font-weight:700;color:var(--muted);min-width:1.4em}
+.asrc{font-size:12.5px;color:var(--faint);margin:6px 0 0;line-height:1.6}
+.atake{margin:12px 0 0;border-left:4px solid var(--accent);padding:2px 0 2px 12px;font-weight:600;font-size:17px;line-height:1.7}
+.atake .lab{display:block;font-size:12.5px;color:var(--accent);font-weight:700;letter-spacing:.06em}
+table.acmp{width:100%;border-collapse:collapse;margin:12px 0 0;font-size:14.5px;line-height:1.6}
+table.acmp caption{text-align:left;font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:.05em;padding-bottom:4px}
+table.acmp th{text-align:left;font-size:12.5px;color:var(--faint);font-weight:600;padding:4px 6px;border-bottom:1px solid var(--line2)}
+table.acmp td{padding:6px;border-bottom:1px solid var(--line);vertical-align:top}
+table.acmp td:first-child{font-weight:600;white-space:nowrap}
+.practice{margin-top:14px;padding:14px 16px;border-radius:14px;border:1px solid var(--line2);background:var(--surface2)}
+.p-tag{display:inline-block;font-size:12.5px;font-weight:700;color:var(--accent);background:var(--accent-bg);border-radius:6px;padding:2px 8px;margin-right:6px;vertical-align:2px}
+.p-prompt{font-weight:600;margin-bottom:10px}
+.p-opts{display:grid;gap:8px}
+.opt{text-align:left;padding:11px 14px;border-radius:12px;border:1.5px solid var(--line2);background:var(--surface);font-size:16.5px;line-height:1.55;display:flex;gap:10px;align-items:baseline}
+.opt .k{flex:none;font-weight:700;color:var(--muted)}
+.opt.is-his{border-color:var(--accent);background:var(--accent-bg)}
+.opt.is-his .k{color:var(--accent)}
+.opt .his-tag{flex:none;margin-left:auto;font-size:12px;font-weight:700;color:var(--accent-ink);background:var(--accent);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.p-fb{margin-top:12px;font-size:16px}
+/* 片段 */
+.clip{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;margin:0 0 16px;align-items:start}
+.clip:last-child{margin-bottom:0}
+.clip-media{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--surface2);border:1px solid var(--line)}
+.clip-media video{width:100%;height:100%;display:block;background:#000}
+.clip.ph{display:block}
+.clip-line{display:flex;align-items:center;gap:8px;padding:6px 12px;border:1px dashed var(--line2);border-radius:10px;background:var(--surface2);color:var(--muted);font-size:13.5px;line-height:1.5;min-width:0}
+.clip-line svg{flex:none;width:14px;height:14px;opacity:.55}
+.clip-line span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.clip.ph .clip-info{margin-top:6px}
+.clip-info{font-size:15.5px;line-height:1.7}
+.clip-info .why{font-weight:600;margin-bottom:6px}
+.clip-info .why::before{content:"為什麼看這段:";display:block;font-size:12.5px;color:var(--faint);font-weight:600;letter-spacing:.05em}
+/* 誤解 */
+.myth{margin:0 0 14px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.myth:last-child{margin-bottom:0}
+.myth-row{display:grid;grid-template-columns:1fr 1fr}
+.myth-row>div{padding:12px 14px}
+.myth-w{background:var(--surface2)}
+.myth-r{background:var(--accent-bg)}
+.mk{display:block;font-size:12.5px;font-weight:700;letter-spacing:.05em}
+.myth-w .mk{color:var(--muted)}
+.myth-r .mk{color:var(--accent)}
+.myth-q{padding:10px 14px 12px;font-size:15.5px;line-height:1.7;color:var(--quote-ink);background:var(--quote-bg);border-top:1px solid var(--line)}
+.myth-q q{quotes:"「" "」"}
+/* 自我檢查 */
+.checks{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.checks li{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.checks .q{padding:11px 14px;font-weight:600;line-height:1.6;background:var(--surface2)}
+.checks .qn{color:var(--accent);margin-right:8px}
+.checks .a{padding:10px 14px 12px 38px;background:var(--accent-bg);line-height:1.75;position:relative}
+.checks .a::before{content:"答";position:absolute;left:14px;top:11px;font-size:12px;font-weight:700;color:var(--accent);line-height:1.9}
+.checks .a p{margin:0}
+.rel{margin:22px 0 0}
+.rel h2{font-size:15px;color:var(--muted);margin-bottom:6px}
+.rel a{display:block;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);text-decoration:none;color:var(--fg);font-size:15.5px;line-height:1.55;margin-bottom:6px}
+.rel a:hover{border-color:var(--accent)}
+/* 出處註腳 */
+.fns{margin:26px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:11.5px;line-height:1.6;color:var(--faint)}
+.fns h2{font-size:11.5px;font-weight:600;margin:0 0 4px;letter-spacing:.06em;color:var(--faint)}
+.fns ol{list-style:none;margin:0;padding:0}
+.fns li{display:flex;gap:6px;margin:0 0 2px;scroll-margin-top:calc(var(--top) + 60px);overflow-wrap:anywhere}
+.fns li.flash{background:var(--quote-bg);color:var(--fg)}
+.fns .fn-n{flex:none;min-width:1.6em}
+.fns .fn-back{font:inherit;font-size:11px;border:0;background:none;color:var(--faint);cursor:pointer;padding:0 2px;text-decoration:underline}
+.ct-body .fns{margin-top:14px}
+/* 節尾 */
+.notes{margin:22px 0 0;font-size:14.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+.notes summary{cursor:pointer}
+.notes p{margin-top:8px;line-height:1.7}
+.wip-box{background:var(--wip-bg);color:var(--wip);border-radius:14px;padding:14px 18px;margin:0 0 18px;font-weight:600}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+.pg{display:block;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:12px 16px;text-decoration:none;color:var(--muted);font-size:14px;line-height:1.5;min-width:0}
+.pg:hover{border-color:var(--accent)}
+.pg b{display:block;color:var(--fg);font-size:16px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg.next{text-align:right}
+.pg.none{visibility:hidden}
+.sec-end{height:1px}
+
+/* ========== 10. 走勢案例庫 ========== */
+.lib-sum{font-size:14.5px;color:var(--muted);margin:-10px 0 14px}
+.lib-bar{position:sticky;top:var(--top);z-index:20;background:var(--bg);padding:10px 0 8px;margin:0 0 6px;border-bottom:1px solid var(--line)}
+.lib-r1{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lib-q{position:relative;flex:1 1 220px;min-width:0}
+.lib-q input{width:100%;height:42px;border:1px solid var(--line2);border-radius:10px;padding:0 12px 0 36px;background:var(--surface);color:var(--fg);font-size:15.5px}
+.lib-q svg{position:absolute;left:11px;top:12px;width:18px;height:18px;color:var(--faint);pointer-events:none}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:var(--surface);flex:none}
+.seg button{border:0;background:none;height:40px;padding:0 13px;font-size:15px;cursor:pointer;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--line2)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.lib-r2{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.lib-r2 select{height:40px;border:1px solid var(--line2);border-radius:10px;background:var(--surface);color:var(--fg);font-size:15px;padding:0 8px;max-width:100%;flex:1 1 140px;min-width:0}
+.lib-r2 select.on{border-color:var(--accent);color:var(--accent);font-weight:600}
+.lib-tog{display:none}
+.lib-status{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;font-size:14px;color:var(--muted);margin:8px 0 10px}
+.lib-status b{color:var(--fg)}
+.lib-status .btn{min-height:32px}
+.lib-yr{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--muted);margin:16px 0 8px;letter-spacing:.04em}
+.lib-yr::after{content:"";flex:1;height:1px;background:var(--line)}
+.lib-yr span{font-weight:400;color:var(--faint)}
+.lib-wait{padding:18px 0;color:var(--muted);font-size:15px;visibility:hidden}
+.lib-wait.show{visibility:visible}
+.lib-next{display:flex;justify-content:center;margin:14px 0 0}
+.lib-empty{padding:22px 16px;border:1px dashed var(--line2);border-radius:14px;color:var(--muted);text-align:center}
+.ct{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;box-shadow:var(--shadow);content-visibility:auto;contain-intrinsic-size:auto 122px;scroll-margin-top:calc(var(--top) + 120px)}
+.ct.open{content-visibility:visible;border-color:var(--line2)}
+.ct-head{display:flex;gap:14px;width:100%;text-align:left;border:0;background:none;padding:12px;cursor:pointer;align-items:center;border-radius:14px;color:var(--fg)}
+.ct-head:hover .ct-hl{color:var(--accent)}
+.ct-thumb{flex:none;width:168px;height:96px;border-radius:8px;background:var(--chart-bg);border:1px solid var(--line);display:block}
+.ct-txt{min-width:0;flex:1;display:flex;flex-direction:column;gap:3px}
+.ct-meta{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 8px;align-items:center;line-height:1.5}
+.ct-hl{font-size:17px;font-weight:700;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ct-tags{font-size:12.5px;color:var(--faint);line-height:1.4;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ct-chev{flex:none;width:20px;height:20px;color:var(--faint);transition:transform .15s}
+.ct.open .ct-chev{transform:rotate(180deg)}
+.ct-body{padding:4px 18px 16px;border-top:1px solid var(--line)}
+.ct-body .afig{margin-top:12px}
+.ct-wait{height:300px;border-radius:12px;background:var(--surface2);display:grid;place-items:center;color:var(--faint);font-size:14px;margin-top:12px}
+.ct-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+.tagchip{display:inline-block;font-size:13.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--line2);text-decoration:none;color:var(--muted);background:var(--surface)}
+.tagchip:hover{border-color:var(--accent);color:var(--accent)}
+.ct-foot .grow{flex:1}
+
+/* ========== 11. 浮出說明 ========== */
+.pop{position:fixed;z-index:60;max-width:340px;background:var(--surface);color:var(--fg);border:1px solid var(--line2);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:14px 40px 14px 16px;font-size:15.5px;line-height:1.7}
+.pop-t{font-weight:700;font-size:16.5px;margin-bottom:2px}
+.pop a{font-size:14px}
+.pop-x{position:absolute;right:6px;top:6px;width:32px;height:32px;border:0;background:none;cursor:pointer;font-size:20px;color:var(--muted);border-radius:8px}
+.pop.sheet{left:0!important;right:0;bottom:0;top:auto!important;max-width:none;border-radius:18px 18px 0 0;padding:18px 48px calc(18px + env(safe-area-inset-bottom)) 20px}
+
+/* ========== 12. 手機 ========== */
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .menu-btn{display:inline-grid}
+  .side{position:fixed;left:0;top:var(--top);bottom:0;height:auto;width:min(86vw,340px);z-index:40;transform:translateX(-102%);transition:transform .22s ease;background:var(--surface);box-shadow:var(--shadow)}
+  body.drawer-open .side{transform:none}
+  body.drawer-open .scrim{display:block;position:fixed;inset:var(--top) 0 0 0;background:rgba(0,0,0,.35);z-index:35}
+  main{padding:20px 16px 100px}
+}
+@media (max-width:640px){
+  body{font-size:17px}
+  .brand small{display:none}
+  .search{display:none;position:absolute;left:8px;right:8px;width:auto;top:8px}
+  .top.searching .search{display:block}
+  .top.searching .brand,.top.searching .menu-btn,.top.searching #themeBtn{visibility:hidden}
+  .search-btn{display:inline-grid}
+  .results{left:0;right:0;width:auto}
+  .hero h1{font-size:28px}
+  .hero .lede{font-size:17.5px}
+  .howto{grid-template-columns:1fr}
+  .sec-h1{font-size:24px}
+  .page-h1{font-size:25px}
+  .conclusion{padding:14px 16px}
+  .conclusion p{font-size:18px}
+  .card{padding:16px 16px 18px;border-radius:16px}
+  .card.is-empty{padding:10px 16px}
+  .card.is-empty .card-h{flex-wrap:wrap}
+  .card.is-empty .empty{margin-left:0;width:100%}
+  .card-h .hint{display:none}
+  .quote{padding:12px 14px}
+  .quote blockquote{font-size:17.5px}
+  .clip{grid-template-columns:1fr}
+  .myth-row{grid-template-columns:1fr}
+  table.tt,table.tt tbody,table.tt tr,table.tt td{display:block;width:auto!important}
+  table.tt thead{display:none}
+  table.tt tr{padding:10px 0;border-bottom:1px solid var(--line)}
+  table.tt td{border:0;padding:0}
+  table.acmp,table.acmp tbody,table.acmp tr,table.acmp td{display:block;width:auto}
+  table.acmp thead{display:none}
+  table.acmp tr{padding:6px 0;border-bottom:1px solid var(--line)}
+  table.acmp td{border:0;padding:0}
+  table.acmp td:nth-child(2)::before{content:"他說:";color:var(--faint)}
+  table.acmp td:nth-child(3)::before{content:"K 線值:";color:var(--faint)}
+  .pager{grid-template-columns:1fr}
+  .pg.next{text-align:left}
+  .pg.none{display:none}
+  /* 圖貼齊卡片左右邊,手機多出 32px 給標註 */
+  .card .abox,.ct-body .abox{margin:0 -16px;border-radius:0;border-left:0;border-right:0}
+  .ahl{font-size:17px}
+  .lib-bar{padding:8px 0 6px}
+  .lib-r1 .seg button{padding:0 10px;font-size:14.5px}
+  .lib-tog{display:inline-flex}
+  .lib-r2{display:none}
+  .lib-bar.open .lib-r2{display:flex}
+  .lib-r2 select{flex:1 1 calc(50% - 4px)}
+  .lib-sort-wide{display:none}
+  .ct-head{gap:10px;padding:10px}
+  .ct-thumb{width:112px;height:72px}
+  .ct-hl{font-size:16px}
+  .ct-body{padding:2px 16px 14px}
+}
+/* ========== 13. 寬螢幕(≥901 / ≥1280 / ≥1440 / ≥1700),見 DESIGN_NOTES_v3_wide.md ========== */
+.sec-guide{display:none}
+@media (min-width:901px) and (max-width:1699px){
+  .layout{grid-template-columns:256px minmax(0,1fr)}
+}
+@media (min-width:1280px){
+  main{padding:28px 24px 120px}
+  .col.sec{max-width:720px}
+  .col.home,.col.chap,.col.lib,.col.case{max-width:1300px}
+  /* 首頁:開場文字左、三則「怎麼讀」右 */
+  .home-top{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:36px;align-items:center}
+  .home-top .hero{padding-bottom:22px}
+  .home-top .howto{margin:0;grid-template-columns:1fr;gap:8px}
+  .home-top .howto div{padding:12px 16px}
+  .ch-grid{grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+  /* 章頁:小節兩欄 */
+  .col.chap .intro{max-width:42em}
+  .col.chap .sec-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  /* 案例庫:卡片網格(2~3 欄);年份列、空狀態、展開內容(放在該列之後)佔整列 */
+  #libList{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+  #libList>.lib-yr,#libList>.lib-empty,#libList>.ct-body{grid-column:1/-1}
+  #libList>.lib-yr{margin:12px 0 0}
+  #libList>.ct{margin:0;contain-intrinsic-size:auto 280px}
+  #libList>.ct .ct-head{flex-direction:column;align-items:stretch;gap:10px;padding:10px 10px 14px}
+  #libList>.ct .ct-thumb{width:100%;height:160px}
+  #libList>.ct .ct-txt{padding:0 4px}
+  #libList>.ct .ct-chev{display:none}
+  #libList>.ct.open{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--shadow)}
+  #libList>.ct-body{background:var(--surface);border:1px solid var(--accent);border-radius:14px;box-shadow:var(--shadow);padding:6px 22px 18px;scroll-margin-top:calc(var(--top) + 120px)}
+  /* 案例:左圖右說明 */
+  .afig.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,360px);column-gap:28px;align-items:start}
+  .afig.split>.atop{grid-column:1/-1}
+  .afig.split>.af-r{padding-top:40px}
+  .afig.split>.af-r>:first-child{margin-top:0}
+  .afig.split .alegend{margin-top:10px}
+  .ct-body{padding:4px 20px 18px}
+  /* 首頁:階段區塊兩兩並排 */
+  .stage-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));column-gap:32px}
+  .stage-wrap .ch-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+}
+@media (min-width:1440px){
+  /* 小節:左閱讀欄(≤680)+ 右證據欄(走勢圖卡或本節重點卡,黏住) */
+  .col.sec{max-width:1300px}
+  .col.sec>article{display:grid;grid-template-columns:minmax(0,680px) minmax(540px,1fr);column-gap:28px;align-items:start}
+  .col.sec>article>*{grid-column:1;min-width:0}
+  .col.sec>article>.figcard,.col.sec>article>.sec-guide{grid-column:2;grid-row:1 / span 60;position:sticky;top:calc(var(--top) + 16px);max-height:calc(100vh - var(--top) - 32px);overflow-y:auto;scrollbar-width:thin;margin:0}
+  .col.sec>.pager{max-width:680px}
+  .figcard{padding:16px 16px 18px}
+  .figcard .abox{margin:0 -16px;border-radius:0;border-left:0;border-right:0}
+  .figcard .card-h{margin-bottom:8px}
+  .sec-guide{display:block;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px 16px;box-shadow:var(--shadow);font-size:15.5px;line-height:1.65}
+  .g-lab{display:block;font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.08em}
+  .g-conc{font-size:17px;font-weight:600;line-height:1.7;margin:4px 0 0}
+  .g-h{font-size:12.5px;font-weight:700;color:var(--faint);letter-spacing:.06em;margin:14px 0 6px;padding-top:12px;border-top:1px solid var(--line)}
+  .g-q{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+  .g-q a{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;padding:7px 12px;border-left:3px solid var(--quote-bar);border-radius:3px 10px 10px 3px;background:var(--quote-bg);color:var(--quote-ink);text-decoration:none;font-size:15px;line-height:1.6}
+  .g-q a::before{content:"「"}
+  .g-q a:hover{filter:brightness(.97)}
+  .g-toc{list-style:none;margin:0;padding:0}
+  .g-toc a{display:flex;gap:10px;align-items:baseline;padding:5px 8px;border-radius:8px;color:var(--fg);text-decoration:none}
+  .g-toc a:hover{background:var(--surface2);color:var(--accent)}
+  .g-toc span{flex:none;width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;font-size:12px;font-weight:700;background:var(--surface2);border:1px solid var(--line2);color:var(--muted);transform:translateY(-1px)}
+}
+@media (min-width:1700px){
+  .layout{grid-template-columns:296px minmax(0,1fr)}
+  main{padding:32px 32px 120px}
+  .col.sec>article{column-gap:48px}
+}
+/* ========== 14. 走勢圖逐步講解 + 重點 + 標註清單,見 DESIGN_NOTES_v3_tiered.md ========== */
+.r-ctx{--rc:var(--r-ctx)} .r-judge{--rc:var(--r-judge)} .r-out{--rc:var(--r-out)} .r-all,.r-det{--rc:var(--r-det)}
+.stp{margin:0 0 10px;border:1px solid var(--line);border-radius:14px;background:var(--surface2)}
+.stp-top{display:flex;align-items:center;gap:6px 8px;padding:8px 10px 0;flex-wrap:wrap}
+.stp-dots{display:flex;gap:4px;flex-wrap:wrap;flex:1 1 auto;min-width:0}
+.sd{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:3px 11px 3px 4px;border:1px solid var(--line2);border-radius:999px;background:var(--surface);color:var(--muted);font-size:14px;line-height:1.3;cursor:pointer;white-space:nowrap}
+.sd b{flex:none;width:24px;height:24px;border-radius:50%;display:inline-grid;place-items:center;font-size:12.5px;border:1.5px solid var(--rc);color:var(--rc);background:var(--surface)}
+.sd:hover{border-color:var(--rc)}
+.sd[aria-current="step"]{color:var(--fg);font-weight:700;border-color:var(--rc);box-shadow:inset 0 0 0 1px var(--rc)}
+.sd[aria-current="step"] b,.sd.seen b{background:var(--rc);color:var(--surface)}
+.stp-allbtn{flex:none;border:0;background:none;color:var(--accent);font-size:14px;font-weight:600;cursor:pointer;padding:6px 4px;min-height:34px;text-decoration:underline;text-underline-offset:3px}
+.stp-card{display:flex;gap:12px;align-items:center;padding:8px 10px 10px 12px}
+.stp-txt{flex:1;min-width:0;border-left:4px solid var(--rc);padding:1px 0 1px 11px}
+.stp-t{display:block;font-size:12.5px;font-weight:700;color:var(--rc);letter-spacing:.05em}
+.stp-t span{font-weight:400;color:var(--muted);margin-left:6px;letter-spacing:0}
+.stp-txt p{margin:0;font-size:17px;line-height:1.6;font-weight:600}
+.stp-txt p+p{margin-top:4px}
+.stp-pre{color:var(--rc);margin-right:6px}
+.stp-note{font-size:15px!important;font-weight:400!important;color:var(--muted)}
+.stp-q{font-size:15.5px!important;font-weight:500!important;color:var(--quote-ink);background:var(--quote-bg);border-radius:6px;padding:3px 8px;display:inline-block}
+.stp-q i{font-style:normal;font-size:12px;font-weight:700;color:var(--quote-bar);margin-right:6px}
+.chip{display:inline-block;font-size:13px;font-weight:600;line-height:1.5;padding:1px 10px;border-radius:999px;border:1px solid var(--line2);background:var(--surface);color:var(--fg);vertical-align:1px;white-space:nowrap}
+.stp-nav{flex:none;display:flex;gap:6px}
+.stp-nav .btn{min-height:40px;padding:0 14px;font-size:15px}
+.stp-nav .btn[disabled]{opacity:.4;cursor:default}
+.abox:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* 圖下:重點(結論先行)與標註清單 */
+.afig .atake{margin:12px 0 0;border-left:0;padding:12px 16px;border-radius:12px;background:var(--accent-bg);font-size:18.5px;line-height:1.65}
+.afig .atake .lab{font-size:12.5px}
+.aout{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.adet-h{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;font-size:12.5px;font-weight:700;color:var(--faint);letter-spacing:.06em;margin:14px 0 4px}
+.adet-h span{font-weight:400;letter-spacing:0}
+.adet{list-style:none;margin:0;padding:0;font-size:15px;line-height:1.55;border-top:1px solid var(--line)}
+.adet li{display:flex;gap:8px;align-items:baseline;padding:6px 8px;border-bottom:1px solid var(--line);transition:opacity .15s}
+.adet li[data-k]{cursor:pointer}
+.adet li.hl{background:var(--accent-bg)}
+.adet li.later{opacity:.5}
+.adet .dn{flex:none;min-width:1.6em;font-weight:700;color:var(--rc)}
+.adet .dtx{flex:1;min-width:0;overflow-wrap:anywhere}
+.adet .dtx b{color:var(--rc);margin-right:4px}
+.adet .dpx{flex:none;font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.adet .sb{flex:none;margin:0}
+.adet-src{font-size:12.5px;color:var(--faint);margin:6px 0 0;line-height:1.6}
+@media (max-width:640px){
+  .stp{margin:0 -16px 8px;border-radius:0;border-left:0;border-right:0}
+  .stp-top{padding:8px 12px 0}
+  .sd{padding:0;min-width:40px;min-height:40px;justify-content:center}
+  .sd b{width:30px;height:30px;font-size:13.5px}
+  .sd span{display:none}
+  .stp-card{flex-direction:column;align-items:stretch;gap:8px;padding:8px 12px 10px}
+  .stp-txt p{font-size:16px}
+  .stp-nav .btn{flex:1;min-height:46px;font-size:16px}
+  .afig .atake{font-size:17.5px;padding:10px 14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.top,.side,.pager,.lib-bar{display:none}.layout{display:block}.card{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到內容</a>
+<header class="top" id="top">
+  <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="開啟目錄" aria-expanded="false" aria-controls="side">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <a class="brand" id="brand" href="#">布大交易教材<small>看懂他的盤勢思維</small></a>
+  <div class="search" id="search" role="search">
+    <svg class="s-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <label class="vh" for="q">搜尋教材</label>
+    <input id="q" type="search" placeholder="搜尋:節標題、概念、他的原話、案例" autocomplete="off" enterkeyhint="search">
+    <div class="results" id="results" hidden></div>
+  </div>
+  <button class="icon-btn search-btn" id="searchBtn" type="button" aria-label="搜尋">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+  </button>
+  <button class="icon-btn" id="themeBtn" type="button" aria-label="切換深色/淺色">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/></svg>
+  </button>
+</header>
+<div class="layout">
+  <nav class="side" id="side" aria-label="章節目錄"></nav>
+  <div class="scrim" id="scrim"></div>
+  <main id="main" tabindex="-1"><div class="col"><p class="muted">載入中…</p></div></main>
+</div>
+<div class="pop" id="pop" role="dialog" aria-modal="false" hidden></div>
+
+<script>
+/* ============================================================
+   布大交易教材 — 模板 v3(不含資料)
+   資料入口:loadIndex() / loadSection(id) / loadCaseIndex() / loadCase(id)
+   預覽:讀 window.__B_DATA__;正式版:在本 script 之前定義
+         window.__B_LOADER__ = { loadIndex, loadSection, loadCaseIndex, loadCase }
+   見 DESIGN_NOTES_v3.md §5
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ---------- 設定 ---------- */
+  var CFG = {
+    practiceChapters: [5, 6],   /* 情境題只在這些章(章 id,不是顯示編號) */
+    charsPerMin: 300,
+    storeKey: 'bteach.v1',      /* 沿用 v1/v2 的已讀紀錄 */
+    batch: 12,                  /* 案例庫一次渲染幾張 */
+    caseCache: 40,              /* 單案資料最多留幾筆在記憶體 */
+    maxCharts: 2, maxClips: 2, maxQuotes: 3
+  };
+  var DEFAULT_ORDER = [0, 1, 9, 8, 2, 3, 4, 5, 6, 7, 10];
+  var DEFAULT_STAGES = [
+    { name: '打底觀念', ch: [0, 1] },
+    { name: '心態與市場觀', ch: [9, 8] },
+    { name: '看懂 K 棒與趨勢', ch: [2, 3] },
+    { name: '選標的與進場', ch: [4, 5] },
+    { name: '出場與倉位', ch: [6, 7] },
+    { name: '看他實戰', ch: [10] }
+  ];
+  var TF_LABEL = { '1m': '1 分鐘 K', '5m': '5 分鐘 K', '15m': '15 分鐘 K', '30m': '30 分鐘 K', '1h': '1 小時 K', '2h': '2 小時 K', '4h': '4 小時 K', '8h': '8 小時 K', '12h': '12 小時 K', '1d': '日 K', '1w': '週 K' };
+  var TF_ORDER = ['1m', '5m', '15m', '30m', '1h', '2h', '4h', '8h', '12h', '1d', '1w'];
+  var KIND = { review: '覆盤', forecast: '預測' };
+  var SRC = { '口述': ['述', '他口述'], '畫面': ['畫', '他畫面上的標記'], '資料': ['資', '由 K 線資料對出'] };
+  var HELP = {
+    A: ['A 級:口述價位對得上', '他親口說出的時間、價位和真實 K 線對得上。圖上的數字可以直接參考。'],
+    B: ['B 級:畫面估算', '位置是從他影片畫面讀出來的估計值,可能有些誤差。'],
+    C: ['C 級:示意', '價位沒有對上,只用來看形狀與先後順序,圖上不印價格。'],
+    self: ['本人', '這句話是他本人在影片裡說的。'],
+    other: ['非本人', '不是他本人說的(例如學員或 AI 摘要)。教材不把它當成他的說法,所以預設收起來。'],
+    utc: ['時間都是 UTC', 'K 線時間用 UTC(台灣時間要再加 8 小時)。他口述的日期多半是台灣時間,前後可能差半天。'],
+    annot: ['圖怎麼看', '按「下一步」一步一步看:先看他當時看到的(決策線左邊)→ 他的判斷 → 後來實際怎麼走 → 最後一步畫出全部標註;也可以按「一次顯示全部」。顏色:琥珀色 = 他當時看到的區域與 K 棒;藍色 = 他的判斷與價位(藍色虛線是他做決定的位置);紫色 = 後來;灰色編號 = 次要細節。完整文字在圖下的「標註清單」,滑過或點一下,圖和清單會互相標出。清單裡的小方塊是來源:述 = 他口述、畫 = 他畫面上的標記、資 = 由 K 線資料對出。'],
+    review: ['覆盤', '事後回頭講解一段已經走完的走勢。'],
+    forecast: ['預測', '他在當下(還沒走完時)講的看法;藍色虛線右邊是後來實際的走勢。'],
+    nodate: ['時期不明', '這段影片沒有可靠的錄製日期。'],
+    wip: ['撰寫中', '這一節還在整理,目前只放標題與要講的概念,內容之後補上。']
+  };
+
+  /* ---------- 小工具 ---------- */
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function isArr(x) { return Array.isArray(x); }
+  function arr(x) { return isArr(x) ? x : []; }
+  function num(x) { return typeof x === 'number' && isFinite(x); }
+  var UID = 0;
+  function uid() { UID += 1; return 'u' + UID; }
+  function norm(s) { return String(s || '').toLowerCase().replace(/\s+/g, ''); }
+  var idle = window.requestIdleCallback ? function (f) { window.requestIdleCallback(f, { timeout: 1500 }); } : function (f) { setTimeout(f, 300); };
+
+  /* ---------- 儲存 ---------- */
+  var Store = (function () {
+    var mem = {};
+    try {
+      var raw = window.localStorage.getItem(CFG.storeKey);
+      if (raw) { var o = JSON.parse(raw); if (o && typeof o === 'object') mem = o; }
+    } catch (e) { mem = {}; }
+    function save() { try { window.localStorage.setItem(CFG.storeKey, JSON.stringify(mem)); } catch (e) { /* 私密模式:只存記憶體 */ } }
+    return {
+      get: function (k, d) { return mem[k] === undefined ? d : mem[k]; },
+      set: function (k, v) { mem[k] = v; save(); },
+      bucket: function (k) { if (!mem[k] || typeof mem[k] !== 'object') mem[k] = {}; return mem[k]; },
+      save: save
+    };
+  })();
+
+  /* ============================================================
+     資料入口(唯一會碰資料來源的地方)
+     ============================================================ */
+  var PreviewLoader = {
+    data: function () {
+      var d = window.__B_DATA__;
+      if (!d || typeof d !== 'object') throw new Error('NO_DATA');
+      return d;
+    },
+    loadIndex: function () {
+      var self = this;
+      return Promise.resolve().then(function () {
+        var d = self.data();
+        return { generated: d.generated, glossary: arr(d.glossary), chapters: arr(d.chapters), order: d.order, stages: d.stages, search: buildSearchDocs(d) };
+      });
+    },
+    loadSection: function (id) {
+      var self = this;
+      return Promise.resolve().then(function () {
+        var d = self.data(), s = (d.sections || {})[id];
+        if (!s) return null;
+        var kl = {}, src = {};
+        collectRefs(s, d.klines || {}, d.sources || {}, kl, src);
+        chartKeys(s).forEach(function (k) {
+          var it = (d.klines || {})[k];
+          if (it) { kl[k] = it; var c = it.clip_id || it.recon_clip; if (c && d.sources && d.sources[c]) src[c] = d.sources[c]; }
+        });
+        return { section: s, klines: kl, sources: src };
+      });
+    },
+    loadCaseIndex: function () {
+      var self = this;
+      return Promise.resolve().then(function () {
+        var d = self.data();
+        if (d.case_index && isArr(d.case_index.cases)) return d.case_index;
+        var cs = d.cases || {};
+        return { cases: Object.keys(cs).map(function (id) { var c = cs[id]; return { id: c.id || id, symbol: c.symbol, timeframe: c.timeframe, date: c.date, kind: c.kind, headline: c.headline, tags: c.tags, grade: c.grade }; }) };
+      });
+    },
+    loadCase: function (id) {
+      var self = this;
+      return Promise.resolve().then(function () { return (self.data().cases || {})[id] || null; });
+    }
+  };
+  function chartKeys(s) {
+    if (s && isArr(s.chart_keys)) return s.chart_keys;
+    return s && s.kline_key ? [s.kline_key] : [];
+  }
+  function collectRefs(o, K, S, kl, src) {
+    if (isArr(o)) { for (var i = 0; i < o.length; i++) collectRefs(o[i], K, S, kl, src); return; }
+    if (!o || typeof o !== 'object') return;
+    for (var k in o) {
+      if (!Object.prototype.hasOwnProperty.call(o, k)) continue;
+      var v = o[k];
+      if (typeof v === 'string') {
+        if (k === 'kline_key' && K[v]) kl[v] = K[v];
+        if ((k === 'src' || k === 'clip_id' || k === 'case_clip') && S[v]) src[v] = S[v];
+      } else collectRefs(v, K, S, kl, src);
+    }
+  }
+  function buildSearchDocs(d) {
+    var docs = [], secs = d.sections || {};
+    arr(d.chapters).forEach(function (c) {
+      arr(c.sections).forEach(function (s) {
+        var full = secs[s.id];
+        docs.push({ type: 'sec', id: s.id, title: s.title, text: [s.concept, full && full.definition].filter(Boolean).join(' ') });
+      });
+    });
+    Object.keys(secs).forEach(function (id) {
+      arr(secs[id].his_words).forEach(function (h, i) { docs.push({ type: 'quote', id: id, title: secs[id].title, text: h.quote || '', anchor: 'q' + i }); });
+    });
+    arr(d.glossary).forEach(function (g) { docs.push({ type: 'term', id: 'ch00_s5', title: g.term, text: g.meaning || '' }); });
+    return docs;
+  }
+  function getAPI() {
+    var L = window.__B_LOADER__;
+    return (L && typeof L.loadIndex === 'function' && typeof L.loadSection === 'function') ? L : PreviewLoader;
+  }
+  function caseAPI() {
+    var L = getAPI();
+    return (typeof L.loadCaseIndex === 'function' && typeof L.loadCase === 'function') ? L : null;
+  }
+  /** @returns {Promise<{generated, glossary, chapters, order?, stages?, search?}>} */
+  function loadIndex() { return Promise.resolve(getAPI().loadIndex()); }
+  /** @returns {Promise<{section, klines, sources} | null>} */
+  function loadSection(id) { return Promise.resolve(getAPI().loadSection(id)); }
+  /** @returns {Promise<{cases:[CaseIndexRow]}>} */
+  function loadCaseIndex() { var A = caseAPI(); return A ? Promise.resolve(A.loadCaseIndex()) : Promise.reject(new Error('NO_CASES')); }
+  /** @returns {Promise<Case | null>} */
+  function loadCase(id) { var A = caseAPI(); return A ? Promise.resolve(A.loadCase(id)) : Promise.reject(new Error('NO_CASES')); }
+
+  /* ============================================================
+     路由:# 後面 key=value&…;保留 k(正式版金鑰)
+     s=小節 c=章 a=錨點 cs=單一案例;案例庫篩選:q kd y sym tf tag o x
+     ============================================================ */
+  function parseHash() {
+    var out = {}, h = location.hash.replace(/^#\/?/, '');
+    if (!h) return out;
+    h.split('&').forEach(function (part) {
+      if (!part) return;
+      var i = part.indexOf('=');
+      var k = i < 0 ? part : part.slice(0, i), v = i < 0 ? '' : part.slice(i + 1);
+      try { out[decodeURIComponent(k)] = decodeURIComponent(v); } catch (e) { out[k] = v; }
+    });
+    return out;
+  }
+  function linkTo(p) {
+    var cur = parseHash(), parts = [];
+    if (cur.k) parts.push('k=' + encodeURIComponent(cur.k));
+    Object.keys(p || {}).forEach(function (k) {
+      if (p[k] != null && p[k] !== '') parts.push(encodeURIComponent(k) + '=' + encodeURIComponent(p[k]));
+    });
+    return '#' + parts.join('&');
+  }
+  /* 改網址但不重繪(篩選、展開案例用) */
+  function setHashQuiet(p) {
+    try { history.replaceState(history.state, '', linkTo(p)); } catch (e) { /* file:// 某些瀏覽器不允許:只是網址不更新 */ }
+  }
+
+  /* ============================================================
+     狀態
+     ============================================================ */
+  var IDX = null, CHS = [], CHN = {}, FLAT = [], POS = {}, TERMS = [], SEARCH = [], STAGES = DEFAULT_STAGES;
+  var CUR = { sources: {}, mounts: [] };
+  var renderToken = 0, endObserver = null;
+  var main, side, pop;
+
+  function prep() {
+    var byN = {};
+    IDX.chapters.forEach(function (c) { byN[c.n] = c; });
+    var order = isArr(IDX.order) && IDX.order.length ? IDX.order : (IDX.chapters.length === 11 ? DEFAULT_ORDER : IDX.chapters.map(function (c) { return c.n; }));
+    CHS = []; CHN = {};
+    order.forEach(function (n) { if (byN[n] && !CHN[n]) { CHS.push(byN[n]); CHN[n] = byN[n]; } });
+    IDX.chapters.forEach(function (c) { if (!CHN[c.n]) { CHS.push(c); CHN[c.n] = c; } });
+    CHS.forEach(function (c, i) { c._dn = num(c.display_no) ? c.display_no : i; c._lib = c.kind === 'cases'; });
+    FLAT = []; POS = {};
+    CHS.forEach(function (c) {
+      if (c._lib) { FLAT.push({ id: '@lib' + c.n, lib: true, ch: c.n, num: String(c._dn), outline: { title: c.title }, chapter: c }); return; }
+      arr(c.sections).forEach(function (s, i) {
+        var item = { id: s.id, ch: c.n, idx: i, num: c._dn + '-' + (i + 1), outline: s, chapter: c };
+        POS[s.id] = item; FLAT.push(item);
+      });
+    });
+    FLAT.forEach(function (it, i) { it.flat = i; });
+    STAGES = isArr(IDX.stages) && IDX.stages.length ? IDX.stages : DEFAULT_STAGES;
+    TERMS = buildTerms(IDX.glossary);
+    SEARCH = arr(IDX.search);
+  }
+  function libChapter() { for (var i = 0; i < CHS.length; i++) if (CHS[i]._lib) return CHS[i]; return null; }
+  function itemHref(it) { return it.lib ? linkTo({ c: it.ch }) : linkTo({ s: it.id }); }
+
+  /* ---------- 詞彙:每節第一次出現可點 ---------- */
+  function buildTerms(gl) {
+    var out = [];
+    gl.forEach(function (g, gi) {
+      String(g.term || '').split(/[\/／、]/).forEach(function (a) {
+        a = a.replace(/[((][^))]*[))]/g, '').trim();
+        if (a.length >= 2) out.push({ a: a, gi: gi });
+      });
+    });
+    out.sort(function (x, y) { return y.a.length - x.a.length; });
+    return out;
+  }
+  function lt(text, ctx) {
+    text = String(text == null ? '' : text);
+    if (!ctx || !TERMS.length) return esc(text);
+    var out = '', buf = '', i = 0;
+    while (i < text.length) {
+      var hit = null;
+      for (var t = 0; t < TERMS.length; t++) {
+        var al = TERMS[t];
+        if (!ctx.used[al.gi] && text.charCodeAt(i) === al.a.charCodeAt(0) && text.substr(i, al.a.length) === al.a) { hit = al; break; }
+      }
+      if (hit) {
+        out += esc(buf); buf = '';
+        out += '<button type="button" class="term" data-g="' + hit.gi + '">' + esc(hit.a) + '</button>';
+        ctx.used[hit.gi] = true; i += hit.a.length;
+      } else { buf += text.charAt(i); i += 1; }
+    }
+    return out + esc(buf);
+  }
+  function paras(text, ctx) {
+    return String(text || '').split(/\n\s*\n/).map(function (b) { return b.trim(); }).filter(Boolean).map(function (b) {
+      return '<p>' + b.split('\n').map(function (line) { return lt(line, ctx); }).join('<br>') + '</p>';
+    }).join('');
+  }
+  function explainHTML(text, ctx) {
+    var lines = String(text || '').split(/\n+/).map(function (l) { return l.trim(); }).filter(Boolean);
+    var re = /^([^:：。,，]{1,16})[:：](.+)$/;
+    var hits = lines.filter(function (l) { return re.test(l); });
+    if (hits.length >= 4 && hits.length >= lines.length * 0.7) {
+      return '<dl class="terms">' + lines.map(function (l) {
+        var m = l.match(re);
+        return m ? '<div><dt>' + lt(m[1], ctx) + '</dt><dd>' + lt(m[2], ctx) + '</dd></div>' : '<div><dd>' + lt(l, ctx) + '</dd></div>';
+      }).join('') + '</dl>';
+    }
+    return paras(text, ctx);
+  }
+  function newCtx(pfx, sources) { return { used: {}, fn: [], fnMap: {}, pfx: pfx || '', sources: sources || null }; }
+
+  /* ---------- 來源、標記 ---------- */
+  function srcOf(id, ctx) { return (ctx && ctx.sources && ctx.sources[id]) || CUR.sources[id] || null; }
+  function vidParts(s) {
+    var name = String(s && s.video_name || ''), vid = s && s.video_id ? String(s.video_id) : '';
+    var m = name.match(/^((?:TG|V)?\d{2,3})[_\-](?:(?:\d{4}[_\-]?\d{2}[_\-]?\d{2}|\d{4})[_\-])?(.*)$/);
+    if (m) { if (!vid) vid = m[1]; name = m[2]; }
+    return { id: vid, name: name.replace(/_/g, ' ').trim() };
+  }
+  function vidLabel(s) {
+    if (!s) return '出處待補';
+    var v = vidParts(s);
+    return '影片 ' + esc(v.id) + (v.name ? '《' + esc(v.name) + '》' : '');
+  }
+  function speakerBadge(s) {
+    var sp = s && s.speaker;
+    if (sp === '本人') return '<button type="button" class="badge self" data-help="self">本人</button>';
+    if (sp === '非本人') return '<button type="button" class="badge other" data-help="other">非本人</button>';
+    return '<button type="button" class="badge" data-help="other">說話者不明</button>';
+  }
+  function gradeBadge(g) {
+    var lab = { A: 'A 口述', B: 'B 畫面估', C: 'C 示意' }[g] || 'C 示意';
+    var k = HELP[g] ? g : 'C';
+    return '<button type="button" class="badge g-' + k + '" data-help="' + k + '">' + lab + '</button>';
+  }
+  function kindTag(kind, asButton) {
+    if (!KIND[kind]) return '';
+    return asButton ? '<button type="button" class="kd ' + kind + '" data-help="' + kind + '">' + KIND[kind] + '</button>' : '<span class="kd ' + kind + '">' + KIND[kind] + '</span>';
+  }
+  function isOther(s) { return !!(s && s.speaker && s.speaker !== '本人'); }
+
+  /* ---------- 出處註腳(每節或每案最下方小字) ---------- */
+  function circ(n) {
+    if (n >= 1 && n <= 20) return String.fromCharCode(0x2460 + n - 1);
+    if (n >= 21 && n <= 35) return String.fromCharCode(0x3251 + n - 21);
+    if (n >= 36 && n <= 50) return String.fromCharCode(0x32B1 + n - 36);
+    return '[' + n + ']';
+  }
+  function fnAdd(ctx, clipId, o) {
+    o = o || {};
+    var s = srcOf(clipId, ctx), key = [clipId, o.tc || '', o.ver, o.pre || ''].join('|');
+    if (ctx.fnMap[key]) return ctx.fnMap[key];
+    var parts = [s ? vidLabel(s) : '出處待補', s && s.date ? esc(s.date) : '時期不明'];
+    var tc = o.tc || (s && s.tc) || '';
+    if (tc) parts.push(esc(tc));
+    if (clipId) parts.push(esc(clipId));
+    if (s && s.speaker) parts.push(esc(s.speaker));
+    if (o.ver === true) parts.push('逐字核對'); else if (o.ver === false) parts.push('未核對');
+    var n = ctx.fn.length + 1;
+    ctx.fn.push({ n: n, html: (o.pre ? esc(o.pre) + ' ' : '') + parts.join(' · ') });
+    ctx.fnMap[key] = n;
+    return n;
+  }
+  function fnRef(n, ctx) { var f = (ctx && ctx.pfx || '') + n; return '<button type="button" class="fnref" data-fn="' + f + '" aria-label="出處註腳 ' + n + '">' + circ(n) + '</button>'; }
+  function footnotesHTML(ctx) {
+    if (!ctx.fn.length) return '';
+    return '<aside class="fns" aria-label="出處註腳"><h2>出處</h2><ol>' + ctx.fn.map(function (f) {
+      var id = ctx.pfx + f.n;
+      return '<li id="fn' + id + '"><span class="fn-n">' + circ(f.n) + '</span><span>' + f.html +
+        ' <button type="button" class="fn-back" data-fnback="' + id + '">回到內文</button></span></li>';
+    }).join('') + '</ol></aside>';
+  }
+
+  /* ---------- 引言卡:他的原話(出處只用上標編號,全文在註腳) ---------- */
+  function quoteHTML(h, anchorId, ctx, opt) {
+    opt = opt || {};
+    if (typeof h === 'string') h = { quote: h };
+    if (!h || !h.quote) return '';
+    var cid = h.src || h.clip_id || opt.clip || '';
+    var s = srcOf(cid, ctx);
+    var n = cid ? fnAdd(ctx, cid, { tc: h.tc, ver: h.quote_verified === true ? true : (h.quote_verified === false ? false : undefined) }) : 0;
+    var body =
+      '<figure class="quote' + (opt.small ? ' sm' : '') + '"' + (anchorId ? ' id="' + anchorId + '"' : '') + '>' +
+        '<div class="q-top">' + (s ? speakerBadge(s) : '') + (n ? fnRef(n, ctx) : '') + '</div>' +
+        (opt.small ? '<span class="q-lab">他的話</span>' : (h.note ? '<div class="q-gist">' + esc(h.note) + '</div>' : '')) +
+        '<blockquote>' + esc(h.quote) + '</blockquote>' +
+      '</figure>';
+    if (isOther(s)) return '<details class="other-fold"><summary>非本人的說法(不是他的話,點開看)</summary>' + body + '</details>';
+    return body;
+  }
+  function timeTableHTML(rows, ctx) {
+    rows = arr(rows);
+    if (!rows.length) return '';
+    return '<div class="sub-h">他的說法隨時期改變<span class="cap">只列時期與說法,不做推論</span></div>' +
+      '<table class="tt"><thead><tr><th>時期</th><th>他當時的說法</th></tr></thead><tbody>' +
+      rows.map(function (r) {
+        var n = r.clip_id ? fnAdd(ctx, r.clip_id, {}) : 0;
+        return '<tr><td class="p">' + esc(r.period || r.date || '時期不明') + '</td><td>' + esc(r.claim) + (n ? ' ' + fnRef(n, ctx) : '') + '</td></tr>';
+      }).join('') + '</tbody></table>';
+  }
+
+  /* ---------- 片段 ---------- */
+  function clipMedia(clipId) {
+    var M = window.__B_MEDIA__, m = M && M.clips && M.clips[clipId];
+    if (!m) return null;
+    if (typeof m === 'string') return { src: m };
+    return m && m.src ? m : null;
+  }
+  var PLAY_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  var CLIPS = {};
+  function clipPH(c, ck) {
+    var s = srcOf(c.clip_id);
+    return '<div class="clip ph" data-ck="' + ck + '"><div class="clip-line">' + PLAY_SVG +
+      '<span>▶ 片段 ' + (s ? '影片 ' + esc(vidParts(s).id || c.clip_id) : esc(c.clip_id || '')) + (s && s.tc ? ' ' + esc(s.tc) : '') + '(正式版播放)</span></div>' +
+      (c.why ? '<div class="clip-info"><div class="why">' + esc(c.why) + '</div></div>' : '') + '</div>';
+  }
+  function clipHTML(c) {
+    var s = srcOf(c.clip_id), m = clipMedia(c.clip_id), ck = uid();
+    CLIPS[ck] = c;
+    if (!m) return clipPH(c, ck);
+    var frag = (m.t0 != null) ? '#t=' + Number(m.t0) + (m.t1 != null ? ',' + Number(m.t1) : '') : '';
+    return '<div class="clip" data-ck="' + ck + '"><div class="clip-media"><video controls playsinline preload="none" src="' + esc(m.src + frag) + '"' +
+      (m.poster ? ' poster="' + esc(m.poster) + '"' : '') + ' data-clip-fallback="1"></video></div>' +
+      '<div class="clip-info">' + (c.why ? '<div class="why">' + esc(c.why) + '</div>' : '') +
+      '<div class="cap">' + vidLabel(s) + (s && s.tc ? ' · 片段 ' + esc(s.tc) : '') + ' ' + speakerBadge(s) + '</div></div></div>';
+  }
+  function bindClipFallback(root) {
+    $$('video[data-clip-fallback]', root).forEach(function (v) {
+      v.addEventListener('error', function () {
+        var r = v.closest('.clip'), c = r && CLIPS[r.getAttribute('data-ck')];
+        if (r && c) r.outerHTML = clipPH(c, r.getAttribute('data-ck'));
+      }, { once: true });
+    });
+  }
+
+  /* ============================================================
+     圖表共用
+     ============================================================ */
+  var CSSV = null;
+  function colors() {
+    if (CSSV) return CSSV;
+    var st = getComputedStyle(document.documentElement);
+    function v(n) { return st.getPropertyValue(n).trim(); }
+    CSSV = { up: v('--up'), down: v('--down'), upS: v('--up-soft'), downS: v('--down-soft'), grid: v('--grid'), muted: v('--muted'), faint: v('--faint'),
+      fg: v('--fg'), accent: v('--accent'), accentInk: v('--accent-ink'), bg: v('--chart-bg'), line2: v('--line2'), surface2: v('--surface2'),
+      zone: v('--an-zone'), arrow: v('--an-arrow'), point: v('--an-point'), vline: v('--an-vline'), hline: v('--an-line'),
+      rctx: v('--r-ctx'), rjudge: v('--r-judge'), rout: v('--r-out'), rdet: v('--r-det'),
+      gA: v('--gA'), gB: v('--gB'), gC: v('--gC'), font: getComputedStyle(document.body).fontFamily };
+    return CSSV;
+  }
+  function niceStep(raw) {
+    if (!(raw > 0)) return 1;
+    var p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
+    return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p;
+  }
+  function groupInt(s) { return s.replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function fmtP(v) {
+    if (!num(v)) return '';
+    var a = Math.abs(v), dp = a >= 10000 ? 0 : a >= 1000 ? 1 : a >= 100 ? 2 : a >= 1 ? 3 : a >= 0.01 ? 5 : 7;
+    var s = v.toFixed(dp);
+    if (dp > 0) s = s.replace(/0+$/, '').replace(/\.$/, '');
+    var parts = s.split('.');
+    return groupInt(parts[0]) + (parts[1] ? '.' + parts[1] : '');
+  }
+  function fmtTick(v, step) {
+    var dp = Math.max(0, -Math.floor(Math.log10(step) + 1e-9));
+    var parts = v.toFixed(dp).split('.');
+    return groupInt(parts[0]) + (parts[1] ? '.' + parts[1] : '');
+  }
+  function fmtT(ms, tf, span) {
+    var iso = new Date(ms).toISOString();
+    if (tf === '1d' || tf === '1w' || span > 60 * 864e5) return iso.slice(0, 10);
+    if (span > 12 * 864e5) return iso.slice(5, 10);
+    return iso.slice(5, 10) + ' ' + iso.slice(11, 16);
+  }
+  function rangeText(B, a, b, tf, short) {
+    var t0 = new Date(B[a][0]).toISOString(), t1 = new Date(B[b - 1][0]).toISOString();
+    var daily = tf === '1d' || tf === '1w' || (B[b - 1][0] - B[a][0]) > 60 * 864e5;
+    if (short) return t0.slice(5, 10) + ' ~ ' + t1.slice(5, 10) + (daily ? '' : ' UTC');
+    var s0 = daily ? t0.slice(0, 10) : t0.slice(0, 10) + ' ' + t0.slice(11, 16);
+    var s1 = daily ? t1.slice(0, 10) : t1.slice(0, 10) + ' ' + t1.slice(11, 16);
+    if (s1.slice(0, 4) === s0.slice(0, 4)) s1 = s1.slice(5);
+    return s0 + ' ~ ' + s1 + (daily ? '' : ' UTC');
+  }
+  function roundRect(g, x, y, w, h, r) {
+    g.beginPath(); g.moveTo(x + r, y); g.lineTo(x + w - r, y); g.quadraticCurveTo(x + w, y, x + w, y + r);
+    g.lineTo(x + w, y + h - r); g.quadraticCurveTo(x + w, y + h, x + w - r, y + h); g.lineTo(x + r, y + h);
+    g.quadraticCurveTo(x, y + h, x, y + h - r); g.lineTo(x, y + r); g.quadraticCurveTo(x, y, x + r, y); g.closePath();
+  }
+  function annList(an) { return arr(an && an.annotations).filter(function (a) { return a && num(a.i0); }); }
+  /* 這張圖能不能放:有 K 棒、有標註、沒被標成不放 */
+  function chartUsable(item) {
+    return !!(item && isArr(item.bars) && item.bars.length > 1 && item.annotation && item.annotation.keep !== false && annList(item.annotation).length > 0);
+  }
+  function srcCh(src) { return SRC[src] ? SRC[src][0] : ''; }
+  /* 換行:數字、英文、價位(如 2850→3500、12~14)不從中間斷開 */
+  function wrapText(g, text, maxW, maxLines) {
+    var lines = [], cur = '', cut = false, i;
+    var toks = String(text).match(/[0-9A-Za-z.,~%+\-→()]+|[\s\S]/g) || [];
+    var parts = [];
+    toks.forEach(function (t) { if (t.length > 1 && g.measureText(t).width > maxW) parts.push.apply(parts, t.split('')); else parts.push(t); });
+    for (i = 0; i < parts.length; i++) {
+      var ch = parts[i];
+      if (cur && g.measureText(cur + ch).width > maxW) {
+        lines.push(cur); cur = ch;
+        if (lines.length === maxLines) { cut = true; break; }
+      } else cur += ch;
+    }
+    if (!cut && cur) lines.push(cur);
+    if (cut) {
+      var last = lines[maxLines - 1];
+      while (last.length > 1 && g.measureText(last + '…').width > maxW) last = last.slice(0, -1);
+      lines[maxLines - 1] = last + '…';
+    }
+    return { lines: lines, cut: cut };
+  }
+
+  /* ============================================================
+     走勢圖模型:每個標註屬於哪一步、哪些是重點(DESIGN_NOTES_v3_tiered.md §2~§3)
+     只讀既有欄位:headline / annotations / decision_i / outcome_text / takeaway
+                  / kind / direction / outcome_kind / price_lines / quote
+     ============================================================ */
+  var TYPE_W = { arrow: 3, zone: 3, point: 2, hline: 1, vline: 1 };
+  var TYPE_NAME = { zone: '色框', point: 'K 棒', arrow: '箭頭', hline: '價位', vline: '時間點' };
+  var GENERIC_DEC = /(位置|當下|此圖|講解|直播)$/;
+  var DIR_TXT = {
+    forecast: { '多': '他預測:偏多', '空': '他預測:偏空', '觀望': '他的看法:觀望' },
+    review: { '多': '他的方向:做多', '空': '他的方向:做空', '觀望': '他的看法:觀望' }
+  };
+  var STEP_NAME = { ctx: ['情境', '他當時看到的'], judge: ['他的判斷', '決策線與他的重點'], lvl: ['關鍵價位', '他標出的價位'], out: ['後來', '實際怎麼走'], all: ['全部', '所有標註一次看'] };
+  function bigramSet(s) {
+    s = String(s || '').replace(/[\s,,。.;;::、()()!!??「」『』·…~~\-→+%\/]/g, '');
+    var o = {}, i, b;
+    for (i = 0; i < s.length - 1; i++) { b = s.substr(i, 2); if (!/^\d+$/.test(b)) o[b] = 1; }
+    return o;
+  }
+  /* 重要度:類型 + 與標題(主旨)重疊 + 他對之後的預測箭頭 */
+  function annScore(x, hl, tk, d, fc) {
+    var w = TYPE_W[x.type] || 1, ns = String(x.text || '').match(/\d{3,}/g) || [], c = 0, b, bg = bigramSet(x.text);
+    if (num(x.p0)) ns.push(String(Math.round(x.p0)));
+    if (ns.some(function (v) { return hl.indexOf(v) >= 0; })) w += 4;
+    else if (ns.some(function (v) { return tk.indexOf(v) >= 0; })) w += 2;
+    for (b in bg) if (hl.indexOf(b) >= 0) c++;
+    w += Math.min(3, c);
+    if (fc && x.type === 'arrow' && x.i0 >= d - 2) w += 3;
+    return w;
+  }
+  /* 標題拆成「情境」與「判斷」:先找 →,再找 ;:,最後找第一個逗號 */
+  function splitHL(h) {
+    h = String(h || '').trim();
+    var p = h.split(/\s*→\s*/), i;
+    if (p.length >= 2 && p[0]) return [p[0], p.slice(1).join(' → ')];
+    i = h.search(/[;;::]/);
+    if (i > 0 && i < h.length - 1) return [h.slice(0, i).trim(), h.slice(i + 1).trim()];
+    i = h.search(/[,,]/);
+    if (i > 0 && i < h.length - 1) return [h.slice(0, i).trim(), h.slice(i + 1).trim()];
+    return [h, ''];
+  }
+  function firstSentence(t) { return String(t || '').split(/[;;。]/)[0].trim(); }
+  function figModel(item, quoteText) {
+    var an = item.annotation || {}, B = item.bars, n = B.length;
+    var d = num(an.decision_i) ? an.decision_i : (num(item.decision_index) ? item.decision_index : Math.round(n * 0.58) - 1);
+    d = clamp(Math.round(d), 0, n - 1);
+    var kind = an.kind || item.kind || '', fc = kind === 'forecast';
+    var showPrice = item.grade === 'A' || item.grade === 'B';
+    var hl = String(an.headline || ''), tk = String(an.takeaway || '');
+    var items = [], dec = null;
+    annList(an).forEach(function (a, idx) {
+      var x = { idx: idx, type: a.type, text: String(a.text || ''), src: a.source || '', p0: a.p0, p1: a.p1 };
+      x.i0 = clamp(Math.round(a.i0), 0, n - 1);
+      x.i1 = num(a.i1) ? clamp(Math.round(a.i1), 0, n - 1) : x.i0;
+      if (x.i1 < x.i0 && x.type === 'zone') { var t = x.i0; x.i0 = x.i1; x.i1 = t; }
+      if (x.type === 'vline' && x.i0 === d) { if (!dec) dec = x; return; }   /* 和決策線重合:併進決策線 */
+      if (!TYPE_W[x.type]) return;
+      items.push(x);
+    });
+    if (showPrice) arr(an.price_lines).forEach(function (pl, j) {
+      if (!pl || !num(pl.p) || !pl.source) return;
+      var dup = items.some(function (x) { return (num(x.p0) && Math.abs(x.p0 - pl.p) <= Math.abs(pl.p) * 0.002) || (pl.text && x.text === pl.text); });
+      if (!dup) items.push({ idx: 100 + j, type: 'hline', text: String(pl.text || ''), src: pl.source, p0: pl.p, i0: d, i1: d, pl: true });
+    });
+    items.forEach(function (x) {
+      x.draw = x.type !== 'hline' || (showPrice && num(x.p0) && !!x.src);
+      if (x.type === 'arrow') x.step = x.i0 < d - 2 ? 1 : (fc ? 2 : 3);
+      else if (x.type === 'hline') x.step = 2;
+      else x.step = x.i0 <= d ? 1 : 3;
+      x.score = annScore(x, hl, tk, d, fc);
+      x.dist = Math.abs((x.i0 + x.i1) / 2 - d);
+    });
+    function rank(p, q) { return q.score - p.score || p.dist - q.dist || p.idx - q.idx; }
+    var lvl = [];
+    [1, 2, 3].forEach(function (s) {
+      var gr = items.filter(function (x) { return x.step === s && x.draw && x.text; }).sort(rank);
+      gr.forEach(function (x, i) { x.lab = i < 2 ? s : 'final'; });
+      if (s === 2 && gr.length > 2) gr.slice(2, 4).forEach(function (x) { x.step = 2.5; x.lab = 2.5; lvl.push(x); });
+    });
+    items.forEach(function (x) { if (x.lab == null) x.lab = x.text ? 'final' : 'none'; });
+    items.sort(function (p, q) { return p.step - q.step || p.i0 - q.i0 || p.idx - q.idx; });
+    var nn = 0;
+    items.forEach(function (x) { x.n = x.text ? ++nn : 0; });
+
+    /* 步驟 */
+    var parts = splitHL(hl), steps = [];
+    var ctxKeys = items.filter(function (x) { return x.lab === 1; }).map(function (x) { return x.text; });
+    steps.push({ id: 'ctx', st: 1, text: parts[0] || (ctxKeys.length ? ctxKeys.join('、') : '決策線左邊,是他做決定時看得到的走勢。') });
+    var pre = (DIR_TXT[fc ? 'forecast' : 'review'] || {})[item.direction] || '';
+    var decTxt = dec && dec.text && !GENERIC_DEC.test(dec.text.replace(/\s/g, '')) && parts[1].indexOf(dec.text) < 0 ? dec.text : '';
+    var jt = parts[1];
+    if (!jt && decTxt) { jt = decTxt; decTxt = ''; }
+    if (!jt) jt = firstSentence(tk);
+    if (!jt) jt = '藍色虛線是他做決定的位置。';
+    steps.push({ id: 'judge', st: 2, pre: pre, text: jt, note: decTxt, quote: quoteText || '' });
+    if (lvl.length) steps.push({ id: 'lvl', st: 2.5, text: lvl.map(function (x) { return x.text; }).join('、') });
+    if (d < n - 1) steps.push({ id: 'out', st: 3, text: String(an.outcome_text || '') || '決策線右邊,是他講完之後實際的走勢。', tag: item.outcome_kind || '' });
+    /* 最後一步 = 全部(一律附上,讓「一次顯示全部」有一致的終點);沒有任何標註時才省略 */
+    var hasDet = items.some(function (x) { return x.lab === 'final' && x.draw; });
+    if (items.length || dec) steps.push({ id: 'all', st: 4, text: hasDet ? '灰色編號是次要細節;每個標註的完整文字在標註清單,滑過或點一下可在圖上找到它。' : '每個標註的完整文字在標註清單,滑過或點一下可在圖上找到它。' });
+    return { d: d, kind: kind, fc: fc, items: items, dec: dec, steps: steps, showPrice: showPrice, outcome: String(an.outcome_text || '') };
+  }
+  function roleOfStep(s) { return s < 2 ? 'ctx' : s < 3 ? 'judge' : 'out'; }
+  function stepRole(st) { return st.id === 'lvl' ? 'judge' : st.id; }
+  function stepCardHTML(M, i) {
+    var s = M.steps[i], nm = STEP_NAME[s.id];
+    return '<span class="stp-t">' + (i + 1) + ' / ' + M.steps.length + ' · ' + nm[0] + '<span>' + nm[1] + '</span></span>' +
+      '<p>' + (s.pre ? '<span class="stp-pre">' + esc(s.pre) + '</span>' : '') + esc(s.text) + (s.tag ? ' <span class="chip">結果:' + esc(s.tag) + '</span>' : '') + '</p>' +
+      (s.note ? '<p class="stp-note">決策線:' + esc(s.note) + '</p>' : '') +
+      (s.quote ? '<p class="stp-q"><i>他的話</i>「' + esc(s.quote) + '」</p>' : '');
+  }
+  function stepperHTML(M, id) {
+    var L = M.steps.length;
+    return '<div class="stp r-' + stepRole(M.steps[0]) + '" id="sp_' + id + '" role="group" aria-label="逐步看這張圖(左右鍵切換)">' +
+      '<div class="stp-top"><div class="stp-dots">' + M.steps.map(function (s, i) {
+        return '<button type="button" class="sd r-' + stepRole(s) + '" data-s="' + i + '" aria-label="第 ' + (i + 1) + ' 步:' + STEP_NAME[s.id][0] + '"' + (i === 0 ? ' aria-current="step"' : '') + '><b>' + (i + 1) + '</b><span>' + STEP_NAME[s.id][0] + '</span></button>';
+      }).join('') + '</div>' +
+      (L > 1 ? '<button type="button" class="stp-allbtn" data-s="' + (L - 1) + '">一次顯示全部</button>' : '') + '</div>' +
+      '<div class="stp-card"><div class="stp-txt" aria-live="polite">' + stepCardHTML(M, 0) + '</div>' +
+      (L > 1 ? '<div class="stp-nav"><button type="button" class="btn sm stp-prev" disabled>‹ 上一步</button><button type="button" class="btn sm primary stp-next">下一步 ›</button></div>' : '') +
+      '</div></div>';
+  }
+  function sbHTML(src) { return SRC[src] ? '<span class="sb" title="' + SRC[src][1] + '">' + SRC[src][0] + '</span>' : ''; }
+  function detailHTML(M) {
+    var rows = '';
+    if (M.dec && M.dec.text && !GENERIC_DEC.test(M.dec.text.replace(/\s/g, ''))) rows += '<li class="r-judge" data-st="2"><span class="dn">┊</span><span class="dtx"><b>決策線</b>' + esc(M.dec.text) + '</span>' + sbHTML(M.dec.src) + '</li>';
+    M.items.forEach(function (x) {
+      if (!x.n) return;
+      var role = x.lab === 'final' ? 'det' : roleOfStep(x.step);
+      var px = (x.type === 'hline' && M.showPrice && num(x.p0)) ? fmtP(x.p0) + (x.src === '畫面' ? ' 估' : '') : '';
+      rows += '<li class="r-' + role + '" data-k="' + x.n + '" data-st="' + x.step + '"' + (x.draw ? ' tabindex="0"' : '') + '><span class="dn">' + circ(x.n) + '</span><span class="dtx">' + esc(x.text) + '</span>' +
+        (px ? '<span class="dpx">' + px + '</span>' : '') + sbHTML(x.src) + '</li>';
+    });
+    if (M.outcome) rows += '<li class="r-out" data-st="3"><span class="dn">後</span><span class="dtx"><b>後來</b>' + esc(M.outcome) + '</span></li>';
+    if (!rows) return '';
+    var srcs = {};
+    M.items.forEach(function (x) { if (SRC[x.src]) srcs[x.src] = 1; });
+    if (M.dec && SRC[M.dec.src]) srcs[M.dec.src] = 1;
+    var key = Object.keys(srcs).map(function (k) { return '<span class="sb">' + SRC[k][0] + '</span>' + SRC[k][1]; }).join(' · ');
+    return '<div class="adet-h">標註清單<span>滑過或點一下,圖上會標出位置</span></div><ol class="adet">' + rows + '</ol>' +
+      (key ? '<p class="adet-src">來源:' + key + '</p>' : '');
+  }
+
+  /* ============================================================
+     AChart:逐步講解的 K 線圖(canvas,紅漲綠跌)
+     版面(座標、價格範圍、所有文字的位置)與「目前第幾步」無關:每一步只決定畫哪些、哪些淡化,
+     所以切換步驟時已出現的東西不會跳動。文字用「候選位置 + 碰撞分數」貪婪擺放,
+     放不下的改成編號圓點(編號 = 圖下標註清單的編號)。
+     ============================================================ */
+  var LIVE = [];
+  function AChart(host, item, opt) {
+    this.host = host; this.item = item; this.opt = opt || {};
+    this.bars = item.bars; this.n = this.bars.length;
+    this.an = item.annotation || {};
+    this.M = this.opt.model || figModel(item);
+    this.d = this.M.d;
+    this.grade = item.grade || 'C';
+    this.showPrice = this.grade === 'A' || this.grade === 'B';
+    this.si = clamp(this.opt.step || 0, 0, this.M.steps.length - 1);
+    this.hover = 0;
+    this.cv = document.createElement('canvas'); this.cv.className = 'acv';
+    this.cv.setAttribute('role', 'img');
+    host.appendChild(this.cv);
+    this.raf = 0; this.lastW = 0;
+    var me = this;
+    this.cv.addEventListener('pointermove', function (e) { if (e.pointerType !== 'touch') me.pick(e, false); });
+    this.cv.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'touch') me.hoverTo(0); });
+    this.cv.addEventListener('click', function (e) { me.pick(e, true); });
+    if (window.ResizeObserver) { this.ro = new ResizeObserver(function () { if (Math.floor(me.host.clientWidth) !== me.lastW) me.schedule(); }); this.ro.observe(host); }
+    LIVE.push(this);
+    this.draw();
+  }
+  AChart.prototype.schedule = function () {
+    var me = this; if (this.raf) return;
+    this.raf = requestAnimationFrame(function () { me.raf = 0; me.draw(); });
+  };
+  AChart.prototype.destroy = function () {
+    if (this.ro) this.ro.disconnect();
+    if (this.raf) cancelAnimationFrame(this.raf);
+    var i = LIVE.indexOf(this); if (i >= 0) LIVE.splice(i, 1);
+  };
+  AChart.prototype.setStep = function (i) { i = clamp(i, 0, this.M.steps.length - 1); if (i !== this.si) { this.si = i; this.draw(); } };
+  AChart.prototype.hoverTo = function (k, quiet) {
+    if (k === this.hover) return;
+    this.hover = k; this.draw();
+    if (!quiet && this.opt.onHover) this.opt.onHover(k);
+  };
+  AChart.prototype.pick = function (e, click) {
+    var r = this.cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, k = 0;
+    (this._hits || []).forEach(function (h) { if (x >= h.x - 4 && x <= h.x + h.w + 4 && y >= h.y - 4 && y <= h.y + h.h + 4) k = h.k; });
+    this.cv.style.cursor = k ? 'pointer' : '';
+    if (click && e.pointerType !== 'mouse' && k === this.hover) k = 0;   /* 觸控:再點一次取消 */
+    this.hoverTo(k);
+  };
+  AChart.prototype.draw = function () {
+    var W = Math.floor(this.host.clientWidth);
+    if (W < 60) return;
+    this.lastW = W;
+    /* 寬螢幕:右側證據欄(≥1440)與案例「左圖右說明」(≥1280)的圖畫高一點;其餘同前 */
+    var narrow = W < 520;
+    var big = !narrow && !!this.host.closest && (this.host.closest('.afig.split') ? window.innerWidth >= 1280 : (!!this.host.closest('.figcard') && window.innerWidth >= 1440));
+    var H = this.opt.height || (narrow ? 300 : big ? (window.innerHeight >= 900 ? 440 : 400) : 360);
+    var dpr = Math.min(2, window.devicePixelRatio || 1), cv = this.cv;
+    if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) {
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.height = H + 'px';
+    }
+    var g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+    var C = colors(), B = this.bars, n = this.n, d = this.d, M = this.M, me = this;
+    var step = M.steps[this.si], S = step.st, FINAL = S >= 4, AFTER = S >= 3, HOV = this.hover;
+    var items = M.items.filter(function (x) { return x.draw; });
+    var fs = narrow ? 11.5 : 12.5, lfs = narrow ? 12.5 : 13.5, FONT = C.font;
+    function font(w, sz) { g.font = (w || 400) + ' ' + (sz || fs) + 'px ' + FONT; }
+    function vis(x) { return x.step <= S || x.n === HOV; }
+    function alp(x) { return (FINAL || x.n === HOV || x.step === S) ? 1 : 0.4; }
+    function col(x) { return (x.lab === 'final' || x.lab === 'none') ? C.rdet : (x.step < 2 ? C.rctx : x.step < 3 ? C.rjudge : C.rout); }
+
+    /* 1. 顯示範圍:手機最多 130 根,但一定要涵蓋所有標註與決策棒 */
+    var a = 0, b = n, maxBars = narrow ? 130 : 260;
+    if (n > maxBars) {
+      var lo0 = d, hi0 = d;
+      items.forEach(function (x) { lo0 = Math.min(lo0, x.i0, x.i1); hi0 = Math.max(hi0, x.i0, x.i1); });
+      if (hi0 - lo0 + 1 <= maxBars - 6) {
+        a = clamp(Math.round((lo0 + hi0) / 2 - maxBars / 2), 0, n - maxBars); b = a + maxBars;
+        if (lo0 < a + 3) { a = Math.max(0, lo0 - 3); b = a + maxBars; }
+        if (hi0 > b - 4) { b = Math.min(n, hi0 + 4); a = b - maxBars; }
+      } else { a = Math.max(0, lo0 - 3); b = Math.min(n, hi0 + 4); }
+    }
+    function IN(i) { return clamp(i, a, b - 1); }
+
+    /* 2. 版面 */
+    var stripH = 22, padR = this.showPrice ? (narrow ? 52 : 62) : 8, x0 = 6, x1 = W - padR, top = stripH + 4, axisH = 18;
+    var volH = Math.round((H - top - axisH) * 0.14), pBot = H - axisH - volH - 8, vTop = pBot + 6, vBot = H - axisH - 2;
+    var slot = (x1 - x0) / (b - a), bw = Math.max(1, Math.min(12, slot * 0.66));
+    function X(i) { return x0 + (i - a + 0.5) * slot; }
+    function XR(i) { return x0 + (i - a + 1) * slot; }
+
+    /* 3. 價格範圍:一律用全部 K 棒(各步驟座標相同,不會跳動) */
+    var lo = Infinity, hi = -Infinity, vmax = 0, i, r;
+    for (i = a; i < b; i++) { r = B[i]; if (r[3] < lo) lo = r[3]; if (r[2] > hi) hi = r[2]; if (r[5] > vmax) vmax = r[5]; }
+    var span0 = hi - lo;
+    function inR(p) { return num(p) && p >= lo - span0 * 0.4 && p <= hi + span0 * 0.4; }
+    items = items.filter(function (x) { return x.type !== 'hline' || inR(x.p0); });
+    items.forEach(function (x) { if (inR(x.p0)) { lo = Math.min(lo, x.p0); hi = Math.max(hi, x.p0); } if (x.type !== 'hline' && inR(x.p1)) { lo = Math.min(lo, x.p1); hi = Math.max(hi, x.p1); } });
+    if (!(hi > lo)) { hi = lo + Math.abs(lo) * 0.002 + 1e-9; lo = lo - Math.abs(lo) * 0.002; }
+    var spanP = hi - lo; lo -= spanP * 0.15; hi += spanP * 0.22;
+    function Y(v) { return top + (hi - v) / (hi - lo) * (pBot - top); }
+    this.lastRange = { a: a, b: b, lo: lo, hi: hi };
+
+    /* 4. 格線 + 價格刻度 */
+    font(400, narrow ? 10.5 : 11.5); g.textBaseline = 'middle'; g.lineWidth = 1;
+    var stp = niceStep((hi - lo) / (narrow ? 3.5 : 4.5)), v;
+    for (v = Math.ceil(lo / stp) * stp; v <= hi; v += stp) {
+      var yy = Math.round(Y(v)) + 0.5;
+      g.strokeStyle = C.grid; g.beginPath(); g.moveTo(x0, yy); g.lineTo(x1, yy); g.stroke();
+      if (this.showPrice) { g.fillStyle = C.faint; g.textAlign = 'left'; g.fillText(fmtTick(v, stp), x1 + 6, yy); }
+    }
+
+    /* 5. 決策線兩側底色:左 = 他當時看到的(琥珀),右 = 後來(紫);還沒到「後來」那一步時右側是空白待續 */
+    var xd = XR(d), showD = d >= a && d < b, xdr = Math.round(xd) + 0.5, lastI = AFTER ? b - 1 : Math.min(d, b - 1);
+    var outIdx = -1; M.steps.forEach(function (s, k) { if (s.id === 'out') outIdx = k; });
+    if (showD) {
+      g.globalAlpha = 0.055; g.fillStyle = C.rctx; g.fillRect(x0, top, xd - x0, vBot - top);
+      g.globalAlpha = AFTER ? 0.055 : 0.03; g.fillStyle = AFTER ? C.rout : C.faint; g.fillRect(xd, top, x1 - xd, vBot - top);
+      g.globalAlpha = 1;
+      if (!AFTER && outIdx >= 0 && x1 - xd > 96) {
+        font(600, narrow ? 11 : 12); g.fillStyle = C.faint; g.textAlign = 'center';
+        g.fillText('後來的走勢:第 ' + (outIdx + 1) + ' 步', (xd + x1) / 2, (vTop + vBot) / 2);
+      }
+    }
+
+    /* 6. 標註幾何(與步驟無關) */
+    var hard = [], soft = [];
+    function ext(i0, i1) {
+      var l = Infinity, h = -Infinity;
+      for (var k = IN(i0); k <= IN(i1); k++) { if (B[k][3] < l) l = B[k][3]; if (B[k][2] > h) h = B[k][2]; }
+      return [l, h];
+    }
+    items.forEach(function (x) {
+      if (x.type === 'zone') {
+        var e = ext(x.i0, x.i1), pT = e[1], pB = e[0];
+        if (num(x.p0) && num(x.p1) && inR(x.p0) && inR(x.p1)) { pT = Math.max(x.p0, x.p1); pB = Math.min(x.p0, x.p1); }
+        var zx0 = XR(IN(x.i0) - 1) + 1, zx1 = XR(IN(x.i1)) - 1, zy0 = Y(pT) - 5, zy1 = Y(pB) + 5;
+        if (zx1 - zx0 < 8) { zx0 -= 4; zx1 += 4; }
+        x._g = { x0: zx0, y0: zy0, x1: zx1, y1: zy1 };
+        x._a = { x: zx0 + 9, y: zy0 + 9 };
+        soft.push({ x: zx0, y: zy0, w: zx1 - zx0, h: zy1 - zy0 });
+      } else if (x.type === 'point') {
+        var k = IN(x.i0), bar = B[k], side;
+        if (num(x.p0) && inR(x.p0)) side = x.p0 <= (bar[2] + bar[3]) / 2 ? 'below' : 'above';
+        else {
+          var mnL = Infinity, mxH = -Infinity;
+          for (var j = Math.max(a, k - 3); j <= Math.min(b - 1, k + 3); j++) { mnL = Math.min(mnL, B[j][3]); mxH = Math.max(mxH, B[j][2]); }
+          side = bar[3] <= mnL ? 'below' : (bar[2] >= mxH ? 'above' : (bar[4] < bar[1] ? 'below' : 'above'));
+        }
+        var px = X(k), py = side === 'below' ? Y(bar[3]) + 4 : Y(bar[2]) - 4;
+        x._g = { x: px, y: py, side: side };
+        x._a = { x: px, y: side === 'below' ? py + 19 : py - 19 };
+        hard.push({ x: px - 8, y: side === 'below' ? py - 2 : py - 12, w: 16, h: 14 });
+      } else if (x.type === 'arrow') {
+        var k0 = IN(x.i0), k1 = IN(x.i1);
+        var p0 = (num(x.p0) && inR(x.p0)) ? x.p0 : B[k0][4], p1 = (num(x.p1) && inR(x.p1)) ? x.p1 : B[k1][4];
+        var sx = X(k0), sy = Y(p0), ex = X(k1), ey = Y(p1), len = Math.hypot(ex - sx, ey - sy);
+        var rising = p1 >= p0, bow = Math.min(40, Math.max(10, len * 0.22));
+        var cx = (sx + ex) / 2, cy = (sy + ey) / 2 + (rising ? -bow : bow);
+        if (len < 18) { cx = sx + 14; cy = Math.min(sy, ey) - 18; }
+        var mx = (sx + 2 * cx + ex) / 4, my = (sy + 2 * cy + ey) / 4;
+        x._g = { sx: sx, sy: sy, cx: cx, cy: cy, ex: ex, ey: ey, mx: mx, my: my };
+        x._a = { x: mx, y: my - 11 };
+      } else if (x.type === 'hline') {
+        x._g = { yl: Math.round(Y(x.p0)) + 0.5 };
+        x._a = { x: x0 + 12, y: x._g.yl };
+      } else if (x.type === 'vline') {
+        x._g = { x: XR(IN(x.i0)) };
+        x._a = { x: x._g.x + 10, y: top + 30 };
+      }
+      if (x._a) { x._a.x = clamp(x._a.x, x0 + 9, x1 - 9); x._a.y = clamp(x._a.y, top + 9, pBot - 9); }
+      if (x.lab === 'final') hard.push({ x: x._a.x - 9, y: x._a.y - 9, w: 18, h: 18 });
+    });
+
+    /* 7. 色框底色(K 棒後面) */
+    items.forEach(function (x) {
+      if (x.type !== 'zone' || !vis(x)) return;
+      var z = x._g; g.globalAlpha = 0.11 * alp(x); g.fillStyle = col(x); g.fillRect(z.x0, z.y0, z.x1 - z.x0, z.y1 - z.y0); g.globalAlpha = 1;
+    });
+
+    /* 8. 成交量 + K 棒(紅漲綠跌);「後來」那一步之前只畫到決策棒 */
+    for (i = a; i <= lastI; i++) {
+      r = B[i]; if (!(vmax > 0)) break;
+      var vh = Math.max(1, r[5] / vmax * (vBot - vTop));
+      g.fillStyle = r[4] >= r[1] ? C.upS : C.downS;
+      g.fillRect(X(i) - bw / 2, vBot - vh, bw, vh);
+    }
+    var cols = [];
+    for (i = a; i < b; i++) {
+      r = B[i];
+      cols.push({ xl: X(i) - Math.max(bw, 3) / 2, xr: X(i) + Math.max(bw, 3) / 2, yt: Y(r[2]), yb: Y(r[3]) });
+      if (i > lastI) continue;
+      var up = r[4] >= r[1], cl = up ? C.up : C.down, cxx = Math.round(X(i)) + 0.5;
+      g.strokeStyle = cl; g.beginPath(); g.moveTo(cxx, Y(r[2])); g.lineTo(cxx, Y(r[3])); g.stroke();
+      var yo = Y(r[1]), yc = Y(r[4]);
+      g.fillStyle = cl; g.fillRect(cxx - bw / 2, Math.min(yo, yc), bw, Math.max(1, Math.abs(yc - yo)));
+    }
+
+    /* 9. 色框框線、價位線、其他垂直線 */
+    items.forEach(function (x) {
+      if (!vis(x)) return;
+      g.globalAlpha = alp(x); g.strokeStyle = col(x);
+      if (x.type === 'zone') {
+        var z = x._g; g.lineWidth = 1.7; g.strokeRect(Math.round(z.x0) + 0.5, Math.round(z.y0) + 0.5, Math.round(z.x1 - z.x0), Math.round(z.y1 - z.y0)); g.lineWidth = 1;
+      } else if (x.type === 'hline') {
+        g.lineWidth = x.lab === 'final' ? 1 : 1.4; g.setLineDash([6, 4]); g.beginPath(); g.moveTo(x0, x._g.yl); g.lineTo(x1, x._g.yl); g.stroke(); g.setLineDash([]); g.lineWidth = 1;
+      } else if (x.type === 'vline' && x.i0 >= a && x.i0 < b) {
+        var vx = Math.round(x._g.x) + 0.5; g.setLineDash([3, 4]); g.beginPath(); g.moveTo(vx, top); g.lineTo(vx, vBot); g.stroke(); g.setLineDash([]);
+      }
+      g.globalAlpha = 1;
+    });
+
+    /* 10. 決策線(他做決定的位置) */
+    if (showD) {
+      g.globalAlpha = S === 2 || FINAL ? 1 : 0.8;
+      g.strokeStyle = C.rjudge; g.lineWidth = S === 2 ? 2 : 1.6; g.setLineDash([5, 4]); g.beginPath(); g.moveTo(xdr, top); g.lineTo(xdr, vBot); g.stroke(); g.setLineDash([]); g.lineWidth = 1;
+      font(700, narrow ? 10.5 : 11.5);
+      var tabT = narrow ? '決策' : '他做決定的位置', tw = g.measureText(tabT).width + 12, tx = clamp(xdr - tw / 2, x0, x1 - tw);
+      g.fillStyle = C.rjudge; roundRect(g, tx, top, tw, 17, 4); g.fill();
+      g.fillStyle = C.bg; g.textAlign = 'left'; g.fillText(tabT, tx + 6, top + 9);
+      g.globalAlpha = 1;
+      hard.push({ x: tx - 2, y: top - 1, w: tw + 4, h: 19 });
+    }
+
+    /* 11. 箭頭、點名的 K 棒(三角) */
+    function tri(x) {
+      var q = x._g; g.fillStyle = col(x); g.beginPath();
+      if (q.side === 'below') { g.moveTo(q.x, q.y); g.lineTo(q.x - 5.5, q.y + 9); g.lineTo(q.x + 5.5, q.y + 9); }
+      else { g.moveTo(q.x, q.y); g.lineTo(q.x - 5.5, q.y - 9); g.lineTo(q.x + 5.5, q.y - 9); }
+      g.closePath(); g.fill();
+    }
+    items.forEach(function (x) {
+      if (!vis(x)) return;
+      g.globalAlpha = alp(x);
+      if (x.type === 'arrow') {
+        var q = x._g, ac = col(x);
+        g.strokeStyle = ac; g.lineWidth = 2.2; g.beginPath(); g.moveTo(q.sx, q.sy); g.quadraticCurveTo(q.cx, q.cy, q.ex, q.ey); g.stroke(); g.lineWidth = 1;
+        var ang = Math.atan2(q.ey - q.cy, q.ex - q.cx), ah = 9;
+        g.fillStyle = ac; g.beginPath(); g.moveTo(q.ex, q.ey);
+        g.lineTo(q.ex - ah * Math.cos(ang - 0.45), q.ey - ah * Math.sin(ang - 0.45));
+        g.lineTo(q.ex - ah * Math.cos(ang + 0.45), q.ey - ah * Math.sin(ang + 0.45)); g.closePath(); g.fill();
+        g.beginPath(); g.arc(q.sx, q.sy, 2.8, 0, Math.PI * 2); g.fill();
+      } else if (x.type === 'point') tri(x);
+      g.globalAlpha = 1;
+    });
+
+    /* 12. 「後來」結果標記:決策棒收盤的水平點線 + 最後一根收盤的圓點 */
+    var endA = null;
+    if (showD && b - 1 > d) {
+      var ye = Y(B[b - 1][4]), xe = X(b - 1);
+      endA = { x: xe, y: ye };
+      hard.push({ x: xe - 6, y: ye - 6, w: 12, h: 12 });
+      if (AFTER) {
+        g.globalAlpha = S === 3 || FINAL ? 1 : 0.5;
+        var yc0 = Math.round(Y(B[d][4])) + 0.5;
+        g.strokeStyle = C.rout; g.lineWidth = 1.4; g.setLineDash([2, 3]); g.beginPath(); g.moveTo(xdr, yc0); g.lineTo(xe, yc0); g.stroke(); g.setLineDash([]); g.lineWidth = 1;
+        g.fillStyle = C.rout; g.beginPath(); g.arc(xe, ye, 4.2, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = C.bg; g.lineWidth = 1.5; g.stroke(); g.lineWidth = 1;
+        g.globalAlpha = 1;
+      }
+    }
+
+    /* 13. 文字擺放(與步驟無關;依出現的步驟先後擺,先出現的先佔位) */
+    var lh = narrow ? 20 : 22, maxW = narrow ? W * 0.6 : Math.min(320, W * 0.5);
+    var order = { 1: 0, 2: 1, 2.5: 2, 3: 3, final: 5, none: 9 };
+    var labels = items.filter(function (x) { return x.text && x.lab !== 'none'; }).map(function (x) {
+      var L = { ref: x, kind: x.type, text: x.text, ord: order[x.lab] };
+      if (x.type === 'zone') L.z = x._g;
+      else if (x.type === 'point') { L.ax = x._g.x; L.ay = x._g.side === 'below' ? x._g.y + 12 : x._g.y - 12; L.side = x._g.side; }
+      else if (x.type === 'arrow') { L.ax = x._g.mx; L.ay = x._g.my; }
+      else if (x.type === 'hline') L.yl = x._g.yl;
+      else if (x.type === 'vline') L.xv = x._g.x;
+      return L;
+    });
+    if (endA) labels.push({ kind: 'out', text: '後來', ord: 4, ax: endA.x, ay: endA.y });
+    labels.forEach(function (L) {
+      font(L.kind === 'out' ? 700 : 600, lfs);
+      L.w = Math.ceil(g.measureText(L.text).width + 14); L.h = lh;
+    });
+    function cands(L) {
+      var w = L.w, h = L.h, c = [], k;
+      if (L.kind === 'point') {
+        var s = L.side === 'below' ? 1 : -1, ys = [3, h + 8, 2 * h + 13];
+        ys.forEach(function (dy, di) {
+          var y = s > 0 ? L.ay + dy : L.ay - dy - h;
+          c.push({ x: L.ax - w / 2, y: y, pen: di * 4 }, { x: L.ax + 4, y: y, pen: 2 + di * 4 }, { x: L.ax - w - 4, y: y, pen: 2 + di * 4 });
+        });
+        c.push({ x: L.ax + 11, y: L.ay - s * 10 - h / 2, pen: 6 }, { x: L.ax - w - 11, y: L.ay - s * 10 - h / 2, pen: 6 });
+        c.push({ x: L.ax - w / 2, y: s > 0 ? L.ay - 30 - h : L.ay + 30, pen: 22 });
+      } else if (L.kind === 'zone') {
+        var z = L.z;
+        c.push({ x: z.x0, y: z.y0 - h - 3 }, { x: z.x1 - w, y: z.y0 - h - 3, pen: 2 }, { x: z.x0 + 3, y: z.y0 + 3, pen: 5 },
+          { x: z.x0, y: z.y1 + 3, pen: 6 }, { x: z.x1 - w, y: z.y1 + 3, pen: 7 }, { x: z.x0, y: z.y0 - 2 * h - 7, pen: 9 },
+          { x: z.x1 + 4, y: z.y0, pen: 10 }, { x: z.x0 - w - 4, y: z.y0, pen: 10 }, { x: z.x0, y: z.y1 + h + 7, pen: 12 });
+      } else if (L.kind === 'arrow') {
+        var mx = L.ax, my = L.ay;
+        c.push({ x: mx - w / 2, y: my - h - 6 }, { x: mx - w / 2, y: my + 6, pen: 2 }, { x: mx + 7, y: my - h - 2, pen: 3 }, { x: mx - w - 7, y: my + 2, pen: 3 },
+          { x: mx + 7, y: my + 2, pen: 4 }, { x: mx - w - 7, y: my - h - 2, pen: 4 }, { x: mx - w / 2, y: my - 2 * h - 14, pen: 8 }, { x: mx - w / 2, y: my + h + 14, pen: 8 });
+      } else if (L.kind === 'vline') {
+        for (k = 0; k < 6; k++) { c.push({ x: L.xv + 5, y: top + 22 + k * (h + 4), pen: k * 3 }, { x: L.xv - 5 - w, y: top + 22 + k * (h + 4), pen: k * 3 + 1 }); }
+      } else if (L.kind === 'hline') {
+        c.push({ x: x0 + 4, y: L.yl - h - 2 }, { x: x1 - w - 4, y: L.yl - h - 2, pen: 1 }, { x: x0 + 4, y: L.yl + 2, pen: 2 }, { x: x1 - w - 4, y: L.yl + 2, pen: 3 },
+          { x: (x0 + x1) / 2 - w / 2, y: L.yl - h - 2, pen: 4 }, { x: (xd + x1) / 2 - w / 2, y: L.yl - h - 2, pen: 5 }, { x: (xd + x1) / 2 - w / 2, y: L.yl + 2, pen: 6 });
+      } else if (L.kind === 'out') {
+        c.push({ x: L.ax - w - 9, y: L.ay - h - 4 }, { x: L.ax - w - 9, y: L.ay + 4, pen: 1 }, { x: L.ax - w / 2, y: L.ay - h - 10, pen: 2 },
+          { x: L.ax - w / 2, y: L.ay + 10, pen: 3 }, { x: L.ax - w - 9, y: L.ay - 2 * h - 8, pen: 5 }, { x: L.ax - w - 9, y: L.ay + h + 8, pen: 5 });
+      }
+      return c;
+    }
+    var placed = [];
+    function hit(p, q, m) { return p.x < q.x + q.w + m && q.x < p.x + p.w + m && p.y < q.y + q.h + m && q.y < p.y + p.h + m; }
+    function score(rc, L, c) {
+      if (rc.x < x0 + 1 || rc.x + rc.w > x1 - 1 || rc.y < top || rc.y + rc.h > pBot) return Infinity;
+      var k;
+      for (k = 0; k < placed.length; k++) if (hit(rc, placed[k], 3)) return Infinity;
+      for (k = 0; k < hard.length; k++) if (hit(rc, hard[k], 1)) return Infinity;
+      var area = rc.w * rc.h, ov = 0;
+      var j0 = clamp(Math.floor((rc.x - x0) / slot) - 1, 0, cols.length - 1), j1 = clamp(Math.ceil((rc.x + rc.w - x0) / slot) + 1, 0, cols.length - 1);
+      for (k = j0; k <= j1; k++) {
+        var cc = cols[k], ox = Math.min(rc.x + rc.w, cc.xr) - Math.max(rc.x, cc.xl);
+        if (ox <= 0) continue;
+        var oy = Math.min(rc.y + rc.h, cc.yb) - Math.max(rc.y, cc.yt);
+        if (oy > 0) ov += ox * oy;
+      }
+      var p = ov / area * 140 + (c.pen || 0);
+      soft.forEach(function (z) {
+        if (L.kind === 'zone' && L.z && z.x === L.z.x0) return;
+        var ox2 = Math.min(rc.x + rc.w, z.x + z.w) - Math.max(rc.x, z.x), oy2 = Math.min(rc.y + rc.h, z.y + z.h) - Math.max(rc.y, z.y);
+        if (ox2 > 0 && oy2 > 0) p += ox2 * oy2 / area * 18;
+      });
+      if (L.ax != null) p += Math.hypot(rc.x + rc.w / 2 - L.ax, rc.y + rc.h / 2 - L.ay) * 0.06;
+      return p;
+    }
+    labels.sort(function (p, q) { return p.ord - q.ord || (q.ref && p.ref ? q.ref.score - p.ref.score || p.ref.dist - q.ref.dist : 0); });
+    labels.forEach(function (L) {
+      if (L.w > maxW) { L.box = null; return; }
+      var best = null, bp = Infinity;
+      cands(L).forEach(function (c) {
+        var rc = { x: Math.round(c.x), y: Math.round(c.y), w: L.w, h: L.h }, sc = score(rc, L, c);
+        if (sc < bp) { bp = sc; best = rc; }
+      });
+      L.box = bp < Infinity ? best : null;
+      if (L.box) placed.push(L.box);
+    });
+
+    /* 14. 依目前步驟畫文字與編號圓點 */
+    var hits = [], numbered = [], shown = 0;
+    /* 編號圓點若與別的圓點疊在一起(同價位、同一根 K 棒的標註),固定順序往上下錯開;與步驟無關,所以切換步驟時不會移動 */
+    (function () {
+      var nr0 = narrow ? 8 : 8.5, gap = nr0 * 2 + 1, placedD = [], offs = [0, 1, -1, 2, -2, 3, -3, 4, -4];
+      labels.filter(function (L) { return L.ref && L.kind !== 'out' && (L.ref.lab === 'final' || !L.box); })
+        .sort(function (p, q) { return p.ref.n - q.ref.n; }).forEach(function (L) {
+          var x = L.ref, q = { x: x._a.x, y: x._a.y }, k, t, hitD;
+          for (k = 0; k < offs.length; k++) {
+            t = { x: x._a.x, y: clamp(x._a.y + offs[k] * gap, top + 9, pBot - 9) };
+            hitD = placedD.some(function (o) { return Math.hypot(o.x - t.x, o.y - t.y) < gap - 1; });
+            if (!hitD) { q = t; break; }
+          }
+          x._d = q; placedD.push(q);
+        });
+    })();
+    function dot(x) {
+      var q = x._d || x._a, nr = narrow ? 8 : 8.5;
+      g.globalAlpha = alp(x); g.fillStyle = col(x); g.beginPath(); g.arc(q.x, q.y, nr, 0, Math.PI * 2); g.fill();
+      g.strokeStyle = C.bg; g.lineWidth = 1.5; g.stroke(); g.lineWidth = 1;
+      font(700, x.n > 9 ? 10 : 11); g.fillStyle = C.bg; g.textAlign = 'center'; g.fillText(String(x.n), q.x, q.y + 0.5);
+      g.globalAlpha = 1;
+      hits.push({ k: x.n, x: q.x - nr, y: q.y - nr, w: nr * 2, h: nr * 2 });
+      numbered.push({ n: x.n, text: x.text, src: x.src, col: col(x) });
+    }
+    labels.forEach(function (L) {
+      if (L.kind === 'out') {
+        if (!AFTER || !L.box) return;
+        var ob = L.box;
+        g.globalAlpha = S === 3 || FINAL ? 1 : 0.5;
+        g.fillStyle = C.rout; roundRect(g, ob.x, ob.y, ob.w, ob.h, ob.h / 2); g.fill();
+        font(700, lfs); g.fillStyle = C.bg; g.textAlign = 'center'; g.fillText(L.text, ob.x + ob.w / 2, ob.y + ob.h / 2 + 0.5);
+        g.globalAlpha = 1;
+        return;
+      }
+      var x = L.ref;
+      if (!vis(x)) return;
+      var on = L.box && (FINAL || x.lab !== 'final' || x.n === HOV);
+      if (!on) { dot(x); return; }
+      var bb = L.box, lc = col(x);
+      g.globalAlpha = alp(x);
+      if (L.ax != null) {
+        var qx = clamp(L.ax, bb.x, bb.x + bb.w), qy = clamp(L.ay, bb.y, bb.y + bb.h);
+        if (Math.hypot(qx - L.ax, qy - L.ay) > 9) { g.globalAlpha = alp(x) * 0.55; g.strokeStyle = lc; g.beginPath(); g.moveTo(L.ax, L.ay); g.lineTo(qx, qy); g.stroke(); g.globalAlpha = alp(x); }
+      }
+      g.globalAlpha = 0.93 * alp(x); g.fillStyle = C.bg; roundRect(g, bb.x, bb.y, bb.w, bb.h, 6); g.fill();
+      g.globalAlpha = 0.7 * alp(x); g.strokeStyle = lc; g.lineWidth = x.lab === 'final' ? 1 : 1.4; roundRect(g, bb.x + 0.5, bb.y + 0.5, bb.w - 1, bb.h - 1, 6); g.stroke(); g.lineWidth = 1;
+      g.globalAlpha = alp(x);
+      font(x.lab === 'final' ? 500 : 600, lfs); g.fillStyle = x.lab === 'final' ? C.muted : lc; g.textAlign = 'left'; g.fillText(L.text, bb.x + 7, bb.y + bb.h / 2 + 0.5);
+      g.globalAlpha = 1;
+      hits.push({ k: x.n, x: bb.x, y: bb.y, w: bb.w, h: bb.h });
+      shown++;
+    });
+    /* 有文字標籤、價格不在文字裡的價位線:右側價格徽章(避免同一價位在圖上出現兩次) */
+    if (this.showPrice) {
+      var tags = [];
+      labels.forEach(function (L) {
+        var x = L.ref;
+        if (!x || x.type !== 'hline' || !vis(x) || /\d{2,}/.test(x.text)) return;
+        if (!(L.box && (FINAL || x.lab !== 'final' || x.n === HOV))) return;
+        tags.push({ y: x._g.yl, t: fmtP(x.p0) + (x.src === '畫面' ? '估' : ''), c: col(x), a: alp(x) });
+      });
+      font(700, narrow ? 10 : 11);
+      tags.sort(function (p, q) { return p.y - q.y; });
+      var lastB = -Infinity;
+      tags.forEach(function (t) {
+        var th = 15, ty = Math.max(t.y - th / 2, lastB + 1); lastB = ty + th;
+        g.globalAlpha = t.a; g.fillStyle = t.c; roundRect(g, x1 + 2, ty, padR - 4, th, 3); g.fill();
+        g.fillStyle = C.bg; g.textAlign = 'left'; g.fillText(t.t, x1 + 5, ty + th / 2 + 0.5); g.globalAlpha = 1;
+      });
+    }
+    /* 清單滑過的那一個:外框 */
+    if (HOV) hits.forEach(function (h) {
+      if (h.k !== HOV) return;
+      g.strokeStyle = C.accent; g.lineWidth = 2; roundRect(g, h.x - 3, h.y - 3, h.w + 6, h.h + 6, 7); g.stroke(); g.lineWidth = 1;
+    });
+    items.forEach(function (x) {
+      if (x.type === 'zone' && vis(x)) hits.push({ k: x.n, x: x._g.x0, y: x._g.y0, w: x._g.x1 - x._g.x0, h: x._g.y1 - x._g.y0, z: 1 });
+    });
+    hits.sort(function (p, q) { return (q.z ? 1 : 0) - (p.z ? 1 : 0); });   /* 色框在後:文字與圓點優先被點到 */
+
+    /* 15. 上方資訊列:等級 + 時間範圍 */
+    var gtxt = { A: 'A 級 · 口述價位已對上 K 線', B: 'B 級 · 位置為畫面估算', C: 'C 級 · 只看形狀,不印價格' }[this.grade] || 'C 級';
+    if (narrow) gtxt = { A: 'A 級', B: 'B 級 · 估', C: 'C 級 · 示意' }[this.grade] || 'C 級';
+    font(700, narrow ? 11 : 11.5); g.textAlign = 'left'; g.fillStyle = C['g' + this.grade] || C.gC; g.fillText(gtxt, x0 + 2, 12);
+    var gw = g.measureText(gtxt).width;
+    font(400, narrow ? 10.5 : 11.5); g.textAlign = 'right'; g.fillStyle = C.faint;
+    var rt = rangeText(B, a, b, this.item.timeframe, narrow);
+    if (g.measureText(rt).width > W - gw - 24) rt = rangeText(B, a, b, this.item.timeframe, true);
+    g.fillText(rt, W - 6, 12);
+
+    /* 16. 時間軸 */
+    var spanT = B[b - 1][0] - B[a][0], tf = this.item.timeframe;
+    font(400, narrow ? 10.5 : 11.5); g.fillStyle = C.faint;
+    var marks = narrow ? [a, b - 1] : [a, Math.round((a + b - 1) / 2), b - 1];
+    marks.forEach(function (ix, k) {
+      g.textAlign = k === 0 ? 'left' : (k === marks.length - 1 ? 'right' : 'center');
+      var xx = k === 0 ? x0 : (k === marks.length - 1 ? x0 + (b - a) * slot : X(ix));
+      g.fillText(fmtT(B[ix][0], tf, spanT), xx, H - 9);
+    });
+
+    cv.setAttribute('aria-label', (this.item.symbol || '') + ' ' + (TF_LABEL[tf] || tf || '') + ' 走勢圖,第 ' + (this.si + 1) + ' 步「' + STEP_NAME[step.id][0] + '」;標註文字見圖下清單');
+    this._hits = hits;
+    this.layout = { numbered: numbered, out: { cut: false, text: M.outcome }, placed: shown, total: labels.length, step: this.si };
+    this._labels = labels.map(function (L) { return { kind: L.kind, text: L.text, box: L.box, ax: L.ax, ay: L.ay, w: L.w, h: L.h }; });   /* 測試用 */
+    this._geo = { x0: x0, x1: x1, top: top, pBot: pBot, hard: hard };
+    if (this.opt.onLayout) this.opt.onLayout(this.layout);
+  };
+  function redrawAll() { CSSV = null; LIVE.forEach(function (c) { c.draw(); }); redrawThumbs(); }
+  function destroyCharts() { LIVE.slice().forEach(function (c) { c.destroy(); }); LIVE = []; }
+
+  /* ---------- 圖塊 HTML:步驟器 → 圖 → 重點(結論先行)→ 標註清單 → 他的話 → 他說 vs K 線值 ---------- */
+  var FIGS = {};
+  function figureHTML(item, opt) {
+    opt = opt || {};
+    var id = uid(), an = item.annotation || {}, ctx = opt.ctx, tf = item.timeframe || '';
+    var clip = item.clip_id || item.recon_clip || '';
+    var fr = (clip && ctx && srcOf(clip, ctx)) ? ' ' + fnRef(fnAdd(ctx, clip, { pre: '本圖出處:' }), ctx) : '';
+    var quote = opt.quote !== undefined ? opt.quote : an.quote;
+    var qo = typeof quote === 'string' ? { quote: quote } : quote;
+    var qText = qo && qo.quote && !isOther(srcOf(qo.src || qo.clip_id || clip, ctx)) ? String(qo.quote) : '';
+    var M = figModel(item, qText);
+    var cmp = arr(an.compare);
+    var kind = an.kind || item.kind;
+    var pre = (DIR_TXT[kind === 'forecast' ? 'forecast' : 'review'] || {})[item.direction] || '';
+    var chips = (pre ? '<span class="chip">' + esc(pre) + '</span>' : '') +
+      (item.outcome_kind ? '<span class="chip">結果:' + esc(item.outcome_kind) + '</span>' : '');
+    var takeHTML = (an.takeaway || chips) ? '<div class="atake">' + (an.takeaway ? '<span class="lab">重點</span>' + lt(an.takeaway, ctx) : '') +
+      (chips ? '<div class="aout">' + chips + '</div>' : '') + '</div>' : '';
+    var quoteH = quote ? quoteHTML(quote, null, ctx || newCtx(), { small: true, clip: clip }) : '';
+    var cmpH = cmp.length ? '<table class="acmp"><caption>他說 vs K 線值</caption><thead><tr><th>項目</th><th>他說</th><th>K 線值</th></tr></thead><tbody>' +
+      cmp.map(function (c) { return '<tr><td>' + esc(c.item) + '</td><td>' + esc(c.said) + '</td><td>' + esc(c.value) + '</td></tr>'; }).join('') + '</tbody></table>' : '';
+    var det = '<div class="adet-wrap" id="al_' + id + '">' + detailHTML(M) + '</div>';
+    /* opt.split:案例(清單展開/單案頁)在寬螢幕用「左圖右說明」;窄螢幕兩個包裝 div 只是一般區塊 */
+    var html = '<figure class="afig' + (opt.split ? ' split' : '') + '" id="af_' + id + '">' +
+      (opt.noHeadline || !an.headline ? '' : '<figcaption class="atop">' + kindTag(an.kind, true) + '<span class="ahl">' + esc(an.headline) + '</span></figcaption>') +
+      (opt.split ? '<div class="af-l">' : '') +
+      '<div class="ameta"><b>' + esc(item.symbol || '') + '</b><span>' + esc(TF_LABEL[tf] || tf) + '</span>' + gradeBadge(item.grade) +
+        (opt.noHeadline ? kindTag(an.kind, true) : '') +
+        '<button type="button" class="badge" data-help="annot">圖怎麼看?</button><button type="button" class="badge" data-help="utc">UTC</button>' + fr + '</div>' +
+      stepperHTML(M, id) +
+      '<div class="abox" tabindex="0" aria-label="走勢圖;左右鍵切換步驟"><div class="achart" id="ac_' + id + '"></div></div>' +
+      (opt.split ? '</div><div class="af-r">' : '') + takeHTML + det +
+      quoteH + cmpH +
+      (opt.split ? '</div>' : '') +
+      '</figure>';
+    FIGS[id] = { item: item, M: M };
+    return { html: html, id: id };
+  }
+  /* 步驟器、清單 ↔ 圖 的互相標示 */
+  function bindFigure(id, chart) {
+    var fig = document.getElementById('af_' + id), sp = document.getElementById('sp_' + id), list = document.getElementById('al_' + id), M = chart.M;
+    if (!fig) return;
+    function paint(i) {
+      var s = M.steps[i];
+      if (sp) {
+        sp.className = 'stp r-' + stepRole(s);
+        $$('.sd', sp).forEach(function (b, k) { if (k === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); b.classList.toggle('seen', k < i); });
+        var tx = $('.stp-txt', sp); if (tx) tx.innerHTML = stepCardHTML(M, i);
+        var pv = $('.stp-prev', sp), nx = $('.stp-next', sp), al = $('.stp-allbtn', sp);
+        if (pv) pv.disabled = i === 0;
+        if (nx) { nx.disabled = i === M.steps.length - 1; }
+        if (al) al.hidden = i === M.steps.length - 1;
+      }
+      if (list) $$('li[data-st]', list).forEach(function (li) { li.classList.toggle('later', s.st < 4 && Number(li.getAttribute('data-st')) > s.st); });
+    }
+    function go(i) { i = clamp(i, 0, M.steps.length - 1); chart.setStep(i); paint(i); }
+    if (sp) sp.addEventListener('click', function (e) {
+      var t = e.target.closest('button'); if (!t) return;
+      if (t.hasAttribute('data-s')) go(Number(t.getAttribute('data-s')));
+      else if (t.classList.contains('stp-prev')) go(chart.si - 1);
+      else if (t.classList.contains('stp-next')) go(chart.si + 1);
+    });
+    fig.addEventListener('keydown', function (e) {
+      if (e.altKey || e.ctrlKey || e.metaKey || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+      if (e.key === 'ArrowRight') { go(chart.si + 1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft') { go(chart.si - 1); e.preventDefault(); }
+    });
+    if (list) {
+      var cur = null;
+      function mark(k) {
+        if (cur) cur.classList.remove('hl');
+        cur = k ? list.querySelector('li[data-k="' + k + '"]') : null;
+        if (cur) cur.classList.add('hl');
+      }
+      chart.opt.onHover = mark;
+      function liK(e) { var li = e.target.closest && e.target.closest('li[data-k]'); return li ? Number(li.getAttribute('data-k')) : 0; }
+      list.addEventListener('pointerover', function (e) { if (e.pointerType === 'touch') return; var k = liK(e); if (k) { chart.hoverTo(k, true); mark(k); } });
+      list.addEventListener('pointerleave', function (e) { if (e.pointerType === 'touch') return; chart.hoverTo(0, true); mark(0); });
+      list.addEventListener('focusin', function (e) { var k = liK(e); if (k) { chart.hoverTo(k, true); mark(k); } });
+      list.addEventListener('focusout', function () { chart.hoverTo(0, true); mark(0); });
+      /* 觸控:點清單列會先觸發 focusin(已把該列標出),click 再看到「已標出」就誤取消;改在 pointerdown(焦點之前)記下點之前的狀態 */
+      var preK = -1;
+      list.addEventListener('pointerdown', function (e) { var k0 = liK(e); preK = (k0 && k0 === chart.hover) ? k0 : -1; }, true);
+      list.addEventListener('click', function (e) { var k = liK(e); if (!k) return; if (e.pointerType !== 'mouse' && preK === k) k = 0; preK = -1; chart.hoverTo(k, true); mark(k); });
+    }
+    paint(chart.si);
+  }
+  function mountFigure(id) {
+    var host = document.getElementById('ac_' + id), F = FIGS[id];
+    if (!host || !F) return null;
+    var ch = new AChart(host, F.item, { model: F.M, step: 0 });
+    bindFigure(id, ch);
+    return ch;
+  }
+
+  /* ---------- 縮圖(案例庫):索引裡的壓縮 K 棒,沒有就由完整資料算 ---------- */
+  var B64 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_';
+  function thumbDecode(t) {
+    if (!t || typeof t.b !== 'string' || t.b.length < 16) return null;
+    var s = t.b, rows = [], i;
+    function v(p) { return B64.indexOf(s.charAt(p)) * 64 + B64.indexOf(s.charAt(p + 1)); }
+    for (i = 0; i + 8 <= s.length; i += 8) rows.push([v(i), v(i + 2), v(i + 4), v(i + 6)]);
+    return { rows: rows, d: num(t.d) ? t.d : rows.length - 1, m: arr(t.m) };
+  }
+  /* 參考實作:組裝端請用同一演算法預先算好放進索引(DESIGN_NOTES_v3 §5.4) */
+  function thumbFromBars(bars, an, maxn) {
+    maxn = maxn || 48;
+    var n = bars.length, k = Math.max(1, Math.ceil(n / maxn)), g = [], s, j;
+    for (s = 0; s < n; s += k) {
+      var grp = bars.slice(s, s + k), h = -Infinity, l = Infinity;
+      for (j = 0; j < grp.length; j++) { h = Math.max(h, grp[j][2]); l = Math.min(l, grp[j][3]); }
+      g.push([grp[0][1], h, l, grp[grp.length - 1][4]]);
+    }
+    var lo = Infinity, hi = -Infinity;
+    g.forEach(function (r) { lo = Math.min(lo, r[2]); hi = Math.max(hi, r[1]); });
+    var sp = (hi - lo) || 1, out = '';
+    function enc(x) { var v = clamp(Math.round((x - lo) / sp * 4095), 0, 4095); return B64.charAt(v >> 6) + B64.charAt(v & 63); }
+    g.forEach(function (r) { out += enc(r[0]) + enc(r[1]) + enc(r[2]) + enc(r[3]); });
+    var m = [];
+    annList(an).forEach(function (a) {
+      var i0 = Math.floor(a.i0 / k), i1 = Math.floor((num(a.i1) ? a.i1 : a.i0) / k);
+      if (a.type === 'zone') m.push(['z', i0, i1]); else if (a.type === 'arrow') m.push(['a', i0, i1]);
+      else if (a.type === 'point') m.push(['p', i0]); else if (a.type === 'vline') m.push(['v', i0]);
+    });
+    return { b: out, d: Math.floor((num(an && an.decision_i) ? an.decision_i : n - 1) / k), m: m };
+  }
+  function drawThumb(cv, thumb) {
+    var T = thumbDecode(thumb);
+    var W = cv.clientWidth, H = cv.clientHeight;
+    if (!T || W < 10) return false;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    var g = cv.getContext('2d'), C = colors(); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var R = T.rows, n = R.length, x0 = 3, x1 = W - 3, y0 = 5, y1 = H - 5, slot = (x1 - x0) / n, bw = Math.max(1, slot * 0.62);
+    function X(i) { return x0 + (clamp(i, 0, n - 1) + 0.5) * slot; }
+    function Y(v) { return y1 - v / 4095 * (y1 - y0); }
+    function ext(i0, i1) { var l = 4095, h = 0; for (var i = clamp(i0, 0, n - 1); i <= clamp(i1, 0, n - 1); i++) { l = Math.min(l, R[i][2]); h = Math.max(h, R[i][1]); } return [l, h]; }
+    /* 縮圖只留兩樣:決策線(藍虛線)與「後來」結果標記(右側淡紫底 + 決策棒收盤點線 + 最後一根收盤圓點);其餘標註只在展開後的圖上 */
+    var dd = clamp(T.d, 0, n - 1), xd = Math.round(X(dd) + slot / 2) + 0.5;
+    if (dd < n - 1) { g.globalAlpha = 0.07; g.fillStyle = C.rout; g.fillRect(xd, 0, W - xd, H); g.globalAlpha = 1; }
+    for (var i = 0; i < n; i++) {
+      var r = R[i], col = r[3] >= r[0] ? C.up : C.down, cx = Math.round(X(i)) + 0.5;
+      g.strokeStyle = col; g.beginPath(); g.moveTo(cx, Y(r[1])); g.lineTo(cx, Y(r[2])); g.stroke();
+      g.fillStyle = col; g.fillRect(cx - bw / 2, Math.min(Y(r[0]), Y(r[3])), bw, Math.max(1, Math.abs(Y(r[3]) - Y(r[0]))));
+    }
+    if (dd < n - 1) {
+      var yc = Math.round(Y(R[dd][3])) + 0.5, xe = X(n - 1), ye = Y(R[n - 1][3]);
+      g.strokeStyle = C.rout; g.lineWidth = 1.2; g.setLineDash([2, 2]); g.beginPath(); g.moveTo(xd, yc); g.lineTo(xe, yc); g.stroke(); g.setLineDash([]);
+      g.fillStyle = C.rout; g.beginPath(); g.arc(xe, ye, 3, 0, Math.PI * 2); g.fill(); g.lineWidth = 1;
+    }
+    g.strokeStyle = C.rjudge; g.lineWidth = 1.3; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(xd, 1); g.lineTo(xd, H - 1); g.stroke(); g.setLineDash([]); g.lineWidth = 1;
+    return true;
+  }
+
+  /* ---------- 情境題(答案直接顯示) ---------- */
+  function practiceHTML(pr) {
+    var ans = pr.answer_index, exp = String(pr.explain || '').replace(/^揭曉[:：]\s*/, '');
+    return '<div class="practice"><p class="p-prompt"><span class="p-tag">情境題</span>' + esc(pr.prompt) + '</p>' +
+      '<div class="p-opts">' + arr(pr.options).map(function (o, i) {
+        var his = i === ans;
+        return '<div class="opt' + (his ? ' is-his' : '') + '"><span class="k">' + String.fromCharCode(65 + i) + '</span><span>' + esc(o) + '</span>' + (his ? '<span class="his-tag">他的做法</span>' : '') + '</div>';
+      }).join('') + '</div>' + (exp ? '<div class="p-fb"><b>說明:</b>' + esc(exp) + '</div>' : '') + '</div>';
+  }
+
+  /* ============================================================
+     頁面:首頁
+     ============================================================ */
+  function readMap() { return Store.bucket('read'); }
+  function chapterStats(c) {
+    var secs = arr(c.sections), rd = readMap(), done = 0, read = 0;
+    secs.forEach(function (s) { if (s.status === 'done') done++; if (rd[s.id]) read++; });
+    return { total: secs.length, done: done, read: read };
+  }
+  function caseCount(c) {
+    if (LIB.idx) return LIB.idx.cases.length;
+    return num(c.case_count) ? c.case_count : null;
+  }
+  function renderHome() {
+    document.title = '布大交易教材';
+    var last = Store.get('last', null), lastItem = last && POS[last], first = FLAT[0];
+    var startBtn = lastItem
+      ? '<a class="btn primary big" href="' + linkTo({ s: lastItem.id }) + '">繼續閱讀 ' + esc(lastItem.num) + '</a><a class="btn" href="' + itemHref(first) + '">從頭開始</a>'
+      : '<a class="btn primary big" href="' + (first ? itemHref(first) : '#') + '">從這裡開始 →</a>';
+    var lc = libChapter();
+    var html = '<div class="col home"><div class="home-top"><section class="hero"><h1>布大交易教材</h1>' +
+      '<p class="lede">把他的影片講解整理成 ' + CHS.length + ' 章。先讀觀念與心態,再看他在真實走勢上怎麼判斷。每一節 5 分鐘左右。</p>' +
+      '<div class="hero-actions">' + startBtn + (lc ? '<a class="btn" href="' + linkTo({ c: lc.n }) + '">看走勢案例庫</a>' : '') + '</div>' +
+      (lastItem ? '<p class="cap" style="margin-top:8px">上次讀到:' + esc(lastItem.num + ' ' + lastItem.outline.title) + '</p>' : '') + '</section>' +
+      '<div class="howto">' +
+        '<div><b>每節順序都一樣</b>目標 → 定義 → 他的說法 → 走勢圖 → 片段 → 誤解 → 自我檢查。沒有他本人講解的圖,就不放圖。</div>' +
+        '<div><b>走勢圖一步一步看</b>先看他當時看到什麼,再看他的判斷,最後看後來怎麼走;不用作答,也可以一次顯示全部。</div>' +
+        '<div><b>米色卡 = 他的原話</b>白底文字是教材的白話說明;米色引言卡才是他說的,出處在該節最下方。</div>' +
+      '</div></div>' +
+      '<h2 class="vh">建議閱讀順序</h2><ol class="stages">' + STAGES.map(function (st, i) { return '<li><b>' + (i + 1) + '</b>' + esc(st.name) + '</li>'; }).join('') + '</ol>';
+    html += '<div class="stage-wrap">';
+    STAGES.forEach(function (st, si) {
+      html += '<section class="stage-blk"><div class="stage-h">' + (si + 1) + '. ' + esc(st.name) + '</div><div class="ch-grid">';
+      arr(st.ch).forEach(function (n) {
+        var c = CHN[n];
+        if (!c) return;
+        if (c._lib) {
+          var cc = caseCount(c);
+          html += '<a class="ch-card core" href="' + linkTo({ c: n }) + '"><span class="cn">第 ' + c._dn + ' 章</span><h3>' + esc(c.title) + '</h3><p>' + esc(c.intro) + '</p>' +
+            '<span class="meta"><span>' + (cc != null ? cc + ' 個案例' : '案例庫') + '</span><span>可依年份、標的篩選</span></span></a>';
+          return;
+        }
+        var stt = chapterStats(c), pct = stt.total ? Math.round(stt.read / stt.total * 100) : 0;
+        html += '<a class="ch-card" href="' + linkTo({ c: n }) + '"><span class="cn">第 ' + c._dn + ' 章</span><h3>' + esc(c.title) + '</h3><p>' + esc(c.intro) + '</p>' +
+          '<span class="meta"><span>' + stt.total + ' 節' + (stt.done < stt.total ? '(撰寫中 ' + (stt.total - stt.done) + ')' : '') + '</span><span>已讀 ' + stt.read + ' / ' + stt.total + '</span></span>' +
+          '<span class="bar"><i style="width:' + pct + '%"></i></span></a>';
+      });
+      html += '</div></section>';
+    });
+    html += '</div><div class="legend"><b>標記怎麼看?</b>點任何一個標記都有白話說明。<div class="row">' + gradeBadge('A') + gradeBadge('B') + gradeBadge('C') +
+      kindTag('review', true) + kindTag('forecast', true) +
+      '<button type="button" class="badge" data-help="annot">圖上標註</button>' +
+      '<button type="button" class="badge self" data-help="self">本人</button>' +
+      '<button type="button" class="badge wipb" data-help="wip">撰寫中</button></div></div></div>';
+    main.innerHTML = html;
+  }
+
+  /* ============================================================
+     頁面:章
+     ============================================================ */
+  function renderChapter(n) {
+    var c = CHN[n];
+    if (!c) { renderNotFound(); return; }
+    document.title = '第 ' + c._dn + ' 章 ' + c.title + ' · 布大交易教材';
+    var rd = readMap(), firstSec = arr(c.sections)[0];
+    main.innerHTML = '<div class="col chap"><div class="crumb"><a href="' + linkTo({}) + '">學習地圖</a><span>›</span><span>第 ' + c._dn + ' 章</span></div>' +
+      '<h1 class="page-h1">' + esc(c.title) + '</h1><p class="intro">' + esc(c.intro) + '</p>' +
+      '<ol class="sec-list">' + arr(c.sections).map(function (s) {
+        var it = POS[s.id], st = s.status !== 'done' ? '<span class="st">撰寫中</span>' : (rd[s.id] ? '<span class="st read">✓ 已讀</span>' : '');
+        return '<li><a class="sec-item" href="' + linkTo({ s: s.id }) + '"><span class="num">' + esc(it.num) + '</span><span style="min-width:0"><b>' + esc(s.title) + '</b><span>' + esc(s.concept || '') + '</span></span>' + st + '</a></li>';
+      }).join('') + '</ol>' +
+      (firstSec ? '<div style="margin-top:22px"><a class="btn primary" href="' + linkTo({ s: firstSec.id }) + '">開始本章 →</a></div>' : '') + '</div>';
+  }
+
+  /* ============================================================
+     頁面:小節
+     ============================================================ */
+  function textLen(s) {
+    var t = 0;
+    (function walk(o, k) {
+      if (typeof o === 'string') { if (k !== 'notes' && k !== 'id' && !/clip|src|tc|kline|status|grade|timeframe|date|chart/.test(k || '')) t += o.length; return; }
+      if (isArr(o)) { o.forEach(function (x) { walk(x, k); }); return; }
+      if (o && typeof o === 'object') for (var kk in o) if (Object.prototype.hasOwnProperty.call(o, kk) && kk !== 'bars') walk(o[kk], kk);
+    })(s, '');
+    return t;
+  }
+  function crumbHTML(it) {
+    return '<div class="crumb"><a href="' + linkTo({}) + '">學習地圖</a><span>›</span><a href="' + linkTo({ c: it.ch }) + '">第 ' + it.chapter._dn + ' 章 ' + esc(it.chapter.title) + '</a><span>›</span><span>' + esc(it.num) + '</span></div>';
+  }
+  function pagerHTML(it) {
+    var p = FLAT[it.flat - 1], nx = FLAT[it.flat + 1];
+    function one(x, cls, lab) {
+      if (!x) return '<span class="pg ' + cls + ' none"></span>';
+      var t = x.lib ? '第 ' + x.num + ' 章 ' + x.outline.title : x.num + ' ' + x.outline.title;
+      return '<a class="pg ' + cls + '" href="' + itemHref(x) + '">' + lab + '<b>' + esc(t) + '</b></a>';
+    }
+    return '<nav class="pager" aria-label="上一節與下一節">' + one(p, 'prev', '← 上一節') + one(nx, 'next', '下一節 →') + '</nav><div class="sec-end" id="secEnd"></div>';
+  }
+  function sectionHTML(it, pack) {
+    var s = pack.section, ctx = newCtx(), cn = 0, cards = '', toc = [];
+    /* cls:'figcard' = 走勢圖卡;寬螢幕(≥1440)由 CSS 移到右側證據欄並黏住,DOM 順序不變 */
+    function card(title, hint, body, emptyText, hideEmpty, cls) {
+      if (!body && hideEmpty) return;
+      cn += 1;
+      if (!body) {
+        cards += '<section class="card is-empty" id="sc' + cn + '"><div class="card-h"><span class="card-n">' + cn + '</span><h2>' + esc(title) + '</h2><span class="empty">' + esc(emptyText || '本節沒有這部分') + '</span></div></section>';
+        return;
+      }
+      toc.push({ n: cn, title: title });
+      cards += '<section class="card' + (cls ? ' ' + cls : '') + '" id="sc' + cn + '"><div class="card-h"><span class="card-n">' + cn + '</span><h2>' + esc(title) + '</h2><span class="hint">' + esc(hint) + '</span></div><div class="card-b">' + body + '</div></section>';
+    }
+    var mins = Math.max(1, Math.round(textLen(s) / CFG.charsPerMin));
+    var concHTML = lt(it.outline.concept || s.definition, ctx);
+    card('學習目標', '讀完這節你要會的事', s.learning_goal ? '<p>' + lt(s.learning_goal, ctx) + '</p>' : '');
+    card('定義', '白話說明', (s.definition ? '<p class="def-lead">' + lt(s.definition, ctx) + '</p>' : '') + (s.explain ? explainHTML(s.explain, ctx) : ''));
+    var q = arr(s.his_words).slice(0, CFG.maxQuotes).map(function (h, i) { return quoteHTML(h, 'q' + i, ctx); }).join('') + timeTableHTML(s.time_table, ctx);
+    card('他的說法', '他的原話;出處在本節最下方', q, '本節沒有收錄原話');
+    /* 走勢圖:只放他本人講解、有標註的圖;一張都沒有就整張卡不出現 */
+    var figs = [];
+    chartKeys(s).forEach(function (k) {
+      var item = pack.klines[k];
+      if (figs.length < CFG.maxCharts && chartUsable(item)) {
+        var f = figureHTML(item, { ctx: ctx });
+        figs.push(f.html); CUR.mounts.push(f.id);
+      }
+    });
+    if (figs.length) {
+      var pr = (CFG.practiceChapters.indexOf(it.ch) >= 0 && s.practice && arr(s.practice.options).length) ? practiceHTML(s.practice) : '';
+      card('走勢圖', '他講的重點直接標在圖上', figs.join('') + pr, '', true, 'figcard');
+    }
+    var clips = arr(s.clips).slice(0, CFG.maxClips);
+    card('片段', '直接聽他講', clips.map(clipHTML).join(''), '本節沒有影片片段');
+    card('常見誤解', '容易想錯的地方', arr(s.misconceptions).map(function (m) {
+      var src = srcOf(m.src || m.clip_id), mq = '';
+      if (m.quote && !isOther(src)) mq = '<div class="myth-q"><q>' + esc(m.quote) + '</q>' + fnRef(fnAdd(ctx, m.src || m.clip_id, { ver: m.quote_verified === true }), ctx) + '</div>';
+      return '<div class="myth"><div class="myth-row"><div class="myth-w"><span class="mk">常見誤解</span>' + lt(m.wrong, ctx) + '</div><div class="myth-r"><span class="mk">他的意思</span>' + lt(m.right, ctx) + '</div></div>' + mq + '</div>';
+    }).join(''), '本節沒有列出常見誤解');
+    var sc = arr(s.self_check).slice(0, 3);
+    card('自我檢查', '題目與答案', sc.length ? '<ol class="checks">' + sc.map(function (c, i) {
+      var n = c.clip_id && srcOf(c.clip_id) ? fnAdd(ctx, c.clip_id, { pre: '自我檢查 Q' + (i + 1) + ' 依據:' }) : 0;
+      return '<li><div class="q"><span class="qn">Q' + (i + 1) + '</span>' + lt(c.q, ctx) + '</div><div class="a"><p>' + lt(c.a, ctx) + (n ? ' ' + fnRef(n, ctx) : '') + '</p></div></li>';
+    }).join('') + '</ol>' : '', '本節沒有自我檢查題');
+    var rel = arr(s.related_cases).filter(function (r) { return r && r.id; });
+    var relHTML = rel.length ? '<nav class="rel" aria-label="相關走勢案例"><h2>相關走勢案例</h2>' + rel.map(function (r) {
+      return '<a href="' + linkTo({ cs: r.id }) + '">' + esc(r.headline || r.id) + ' →</a>';
+    }).join('') + '</nav>' : '';
+    var meta = '<span>約 ' + mins + ' 分鐘(不含影片)</span>' + (figs.length ? '<span>走勢圖 ' + figs.length + '</span>' : '') +
+      (clips.length ? '<span>片段 ' + clips.length + '</span>' : '') + (sc.length ? '<span>自我檢查 ' + sc.length + ' 題</span>' : '');
+    /* 沒有走勢圖的節:寬螢幕右側放「本節重點卡」(結論 + 他的話摘句 + 本節目錄);窄螢幕由 CSS 隱藏 */
+    var guide = '';
+    if (!figs.length) {
+      var gq = arr(s.his_words).slice(0, CFG.maxQuotes).map(function (h, i) {
+        if (typeof h === 'string') h = { quote: h };
+        if (!h || !h.quote || isOther(srcOf(h.src || h.clip_id))) return '';
+        return '<li><a href="' + linkTo({ s: it.id, a: 'q' + i }) + '" data-goto="q' + i + '">' + esc(h.quote) + '</a></li>';
+      }).join('');
+      guide = '<aside class="sec-guide" aria-label="本節重點">' +
+        '<span class="g-lab">本節重點</span><p class="g-conc">' + esc(it.outline.concept || s.definition || '') + '</p>' +
+        (gq ? '<div class="g-h">他的話</div><ul class="g-q">' + gq + '</ul>' : '') +
+        '<div class="g-h">本節內容</div><ol class="g-toc">' + toc.map(function (x) {
+          return '<li><a href="' + linkTo({ s: it.id, a: 'sc' + x.n }) + '" data-goto="sc' + x.n + '"><span>' + x.n + '</span>' + esc(x.title) + '</a></li>';
+        }).join('') + '</ol></aside>';
+    }
+    return '<div class="col sec' + (figs.length ? ' has-fig' : ' no-fig') + '"><article>' + crumbHTML(it) +
+      '<h1 class="sec-h1">' + esc(it.num) + ' ' + esc(s.title || it.outline.title) + '</h1>' +
+      '<div class="conclusion"><span class="lab">一句話結論</span><p>' + concHTML + '</p><div class="meta">' + meta + '</div></div>' +
+      guide + cards + relHTML + (s.notes ? '<details class="notes"><summary>資料備註(整理者的疑點,不是教材內容)</summary><p>' + esc(s.notes) + '</p></details>' : '') +
+      footnotesHTML(ctx) + '</article>' + pagerHTML(it) + '</div>';
+  }
+  function skeletonHTML(it, err) {
+    return '<div class="col"><article>' + crumbHTML(it) + '<h1 class="sec-h1">' + esc(it.num) + ' ' + esc(it.outline.title) + '</h1>' +
+      '<div class="wip-box">' + (err ? '這一節暫時讀不到,請稍後再試。' : '撰寫中:這一節還在整理,目前只放要講的概念。') + '</div>' +
+      (it.outline.concept ? '<div class="conclusion"><span class="lab">本節要講的概念</span><p>' + esc(it.outline.concept) + '</p></div>' : '') +
+      '</article>' + pagerHTML(it) + '</div>';
+  }
+  function renderNotFound() {
+    main.innerHTML = '<div class="col"><h1 class="page-h1">找不到這一頁</h1><p><a class="btn" href="' + linkTo({}) + '">回學習地圖</a></p></div>';
+  }
+  function renderSection(id, anchor, token) {
+    var it = POS[id];
+    if (!it) { renderNotFound(); return Promise.resolve(); }
+    var slow = setTimeout(function () { main.classList.add('loading'); }, 150);
+    var p = it.outline.status === 'done' ? loadSection(id).catch(function (e) { return { error: e }; }) : Promise.resolve(null);
+    return p.then(function (pack) {
+      clearTimeout(slow); main.classList.remove('loading');
+      if (token !== renderToken) return;
+      document.title = it.num + ' ' + it.outline.title + ' · 布大交易教材';
+      CUR = { sources: (pack && pack.sources) || {}, mounts: [], pack: pack };
+      if (pack && pack.section) {
+        pack.klines = pack.klines || {};
+        main.innerHTML = sectionHTML(it, pack);
+        CUR.mounts.forEach(mountFigure);
+        bindClipFallback(main);
+        Store.set('last', id);
+      } else main.innerHTML = skeletonHTML(it, pack && pack.error);
+      observeEnd(id, !(pack && pack.section));
+      if (anchor) { var el = document.getElementById(anchor); if (el) setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 0); }
+    });
+  }
+  function observeEnd(id, skip) {
+    if (endObserver) { endObserver.disconnect(); endObserver = null; }
+    var el = document.getElementById('secEnd');
+    if (skip || !el || !window.IntersectionObserver) return;
+    endObserver = new IntersectionObserver(function (ents) {
+      ents.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var rd = readMap();
+        if (!rd[id]) { rd[id] = Date.now(); Store.save(); renderSide(); }
+        endObserver.disconnect(); endObserver = null;
+      });
+    });
+    endObserver.observe(el);
+  }
+
+  /* ============================================================
+     走勢案例庫:索引一次載入(輕量)、清單分批渲染、縮圖進入視窗才畫、
+     展開時才 loadCase(id) 取完整 K 線並畫標註圖
+     ============================================================ */
+  var LIB = { idx: null, loading: null, cache: {}, order: [], pending: {}, view: null };
+  function getCaseIndex() {
+    if (LIB.idx) return Promise.resolve(LIB.idx);
+    if (!LIB.loading) {
+      LIB.loading = loadCaseIndex().then(function (r) {
+        var list = arr(r && r.cases).filter(function (c) { return c && c.id && c.keep !== false; });
+        var byId = {};
+        list.forEach(function (c) {
+          c.tags = arr(c.tags);
+          c._y = String(c.date || '').slice(0, 4);
+          c._t = Date.parse(String(c.date || '').slice(0, 10)) || 0;
+          c._s = norm([c.headline, c.symbol, c.tags.join(' '), c.q || '', c.date].join(' '));
+          byId[c.id] = c;
+        });
+        LIB.idx = { cases: list, byId: byId };
+        addCaseSearch();
+        return LIB.idx;
+      }).catch(function (e) { LIB.loading = null; throw e; });
+    }
+    return LIB.loading;
+  }
+  function getCase(id) {
+    if (LIB.cache[id]) return Promise.resolve(LIB.cache[id]);
+    if (LIB.pending[id]) return LIB.pending[id];
+    LIB.pending[id] = loadCase(id).then(function (c) {
+      delete LIB.pending[id];
+      if (c) {
+        LIB.cache[id] = c; LIB.order.push(id);
+        while (LIB.order.length > CFG.caseCache) { var old = LIB.order.shift(); if (!isOpenTile(old)) delete LIB.cache[old]; }
+      }
+      return c;
+    }, function (e) { delete LIB.pending[id]; throw e; });
+    return LIB.pending[id];
+  }
+  function isOpenTile(id) { var el = document.getElementById('ct-' + cssId(id)); return !!(el && el.classList.contains('open')); }
+  function cssId(id) { return String(id).replace(/[^A-Za-z0-9_\-]/g, '_'); }
+  function caseItem(cs) { return { symbol: cs.symbol, timeframe: cs.timeframe, grade: cs.grade, range: cs.range, bars: cs.bars, annotation: cs.annotation, clip_id: cs.clip_id, kind: cs.kind, direction: cs.direction, outcome_kind: cs.outcome_kind }; }
+  function caseUsable(cs) { return chartUsable(caseItem(cs)); }
+  function tfShort(tf) { return (TF_LABEL[tf] || tf || '').replace(/ K$/, '').replace('日', '日線'); }
+
+  function facetList(cases, key) {
+    var m = {};
+    cases.forEach(function (c) {
+      var vals = key === 'tags' ? c.tags : [key === 'y' ? c._y : c[key]];
+      vals.forEach(function (v) { if (v) m[v] = (m[v] || 0) + 1; });
+    });
+    var ks = Object.keys(m);
+    if (key === 'y') ks.sort(function (p, q) { return q < p ? -1 : 1; });
+    else if (key === 'timeframe') ks.sort(function (p, q) { return TF_ORDER.indexOf(p) - TF_ORDER.indexOf(q); });
+    else ks.sort(function (p, q) { return m[q] - m[p] || (p < q ? -1 : 1); });
+    return ks.map(function (k) { return { v: k, n: m[k] }; });
+  }
+  function selHTML(id, label, all, items, cur, fmt) {
+    return '<label class="vh" for="' + id + '">' + label + '</label><select id="' + id + '"' + (cur ? ' class="on"' : '') + '><option value="">' + all + '</option>' +
+      items.map(function (x) { return '<option value="' + esc(x.v) + '"' + (x.v === cur ? ' selected' : '') + '>' + esc(fmt ? fmt(x.v) : x.v) + '(' + x.n + ')</option>'; }).join('') + '</select>';
+  }
+
+  function renderLibrary(c, p, token) {
+    document.title = c.title + ' · 布大交易教材';
+    var head = '<div class="crumb"><a href="' + linkTo({}) + '">學習地圖</a><span>›</span><span>第 ' + c._dn + ' 章</span></div>' +
+      '<h1 class="page-h1">' + esc(c.title) + '</h1><p class="intro">' + esc(c.intro || '') + '</p>';
+    main.innerHTML = '<div class="col wide lib">' + head + '<div id="libRoot"><p class="lib-wait" id="libWait">正在整理案例清單…</p></div></div>';
+    if (!caseAPI()) { $('#libRoot').innerHTML = '<div class="lib-empty">案例庫的資料還沒有放入。</div>'; return Promise.resolve(); }
+    var slow = setTimeout(function () { var w = $('#libWait'); if (w) w.classList.add('show'); }, 150);
+    return getCaseIndex().then(function (idx) {
+      clearTimeout(slow);
+      if (token !== renderToken) return;
+      buildLibrary(c, idx, p);
+    }, function () {
+      clearTimeout(slow);
+      if (token !== renderToken) return;
+      $('#libRoot').innerHTML = '<div class="lib-empty">案例清單暫時讀不到,請重新整理。</div>';
+    });
+  }
+  function buildLibrary(c, idx, p) {
+    var F = { q: p.q || '', kd: KIND[p.kd] ? p.kd : '', y: p.y || '', sym: p.sym || '', tf: p.tf || '', tag: p.tag || '', o: p.o === 'asc' ? 'asc' : 'desc' };
+    var all = idx.cases, nRev = 0, nFc = 0, ys = facetList(all, 'y');
+    all.forEach(function (x) { if (x.kind === 'review') nRev++; else if (x.kind === 'forecast') nFc++; });
+    var SVGQ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
+    var root = $('#libRoot');
+    root.innerHTML =
+      '<p class="lib-sum">共 ' + all.length + ' 案 · 覆盤 ' + nRev + ' · 預測 ' + nFc + (ys.length ? ' · ' + ys[ys.length - 1].v + '–' + ys[0].v : '') + '</p>' +
+      '<div class="lib-bar" id="libBar"><div class="lib-r1">' +
+        '<div class="lib-q">' + SVGQ + '<label class="vh" for="libQ">搜尋案例</label><input id="libQ" type="search" placeholder="搜尋標的、標題、重點" value="' + esc(F.q) + '" autocomplete="off" enterkeyhint="search"></div>' +
+        '<div class="seg" role="group" aria-label="類型">' + [['', '全部'], ['review', '覆盤'], ['forecast', '預測']].map(function (k) {
+          return '<button type="button" data-kd="' + k[0] + '" aria-pressed="' + (F.kd === k[0]) + '">' + k[1] + '</button>'; }).join('') + '</div>' +
+        '<button type="button" class="btn sm lib-tog" id="libTog" aria-expanded="false" aria-controls="libR2">篩選<span id="libCnt"></span></button>' +
+      '</div><div class="lib-r2" id="libR2">' +
+        selHTML('fY', '年份', '全部年份', ys, F.y) +
+        selHTML('fSym', '標的', '全部標的', facetList(all, 'symbol'), F.sym) +
+        selHTML('fTf', '週期', '全部週期', facetList(all, 'timeframe'), F.tf, tfShort) +
+        selHTML('fTag', '主題', '全部主題', facetList(all, 'tags'), F.tag) +
+        '<label class="vh" for="fO">排序</label><select id="fO"><option value="desc"' + (F.o === 'desc' ? ' selected' : '') + '>新 → 舊</option><option value="asc"' + (F.o === 'asc' ? ' selected' : '') + '>舊 → 新</option></select>' +
+      '</div></div>' +
+      '<div class="lib-status" id="libStatus" aria-live="polite"></div>' +
+      '<div id="libList"></div><div class="lib-next" id="libNextWrap" hidden><button type="button" class="btn" id="libNext"></button></div><div id="libSentinel" style="height:1px"></div>';
+    var V = LIB.view = { c: c, idx: idx, F: F, list: [], shown: 0, lastYear: null, x: p.x || '' };
+
+    /* 篩選事件 */
+    var qi = $('#libQ'), tmr = 0;
+    qi.addEventListener('input', function () { clearTimeout(tmr); tmr = setTimeout(function () { F.q = qi.value.trim(); applyFilters(true); }, 160); });
+    $$('.seg button', root).forEach(function (b) {
+      b.addEventListener('click', function () { F.kd = b.getAttribute('data-kd'); $$('.seg button', root).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); applyFilters(true); });
+    });
+    [['fY', 'y'], ['fSym', 'sym'], ['fTf', 'tf'], ['fTag', 'tag'], ['fO', 'o']].forEach(function (pr) {
+      var el = document.getElementById(pr[0]);
+      el.addEventListener('change', function () { F[pr[1]] = el.value; if (pr[1] !== 'o') el.classList.toggle('on', !!el.value); applyFilters(true); });
+    });
+    $('#libTog').addEventListener('click', function () { var bar = $('#libBar'), op = !bar.classList.contains('open'); bar.classList.toggle('open', op); this.setAttribute('aria-expanded', String(op)); });
+    $('#libNext').addEventListener('click', function () { appendBatch(); });
+    root.addEventListener('click', onLibClick);
+    root.addEventListener('pointerover', prefetchTile, { passive: true });
+    root.addEventListener('focusin', prefetchTile);
+    if (window.IntersectionObserver) {
+      V.sio = new IntersectionObserver(function (ents) { if (ents[0].isIntersecting && V.shown < V.list.length) appendBatch(); }, { rootMargin: '900px 0px' });
+      V.sio.observe($('#libSentinel'));
+    }
+    applyFilters(false);
+    if (V.x) openToCase(V.x);
+  }
+  function applyFilters(fromUser) {
+    var V = LIB.view, F = V.F, q = norm(F.q);
+    V.list = V.idx.cases.filter(function (c) {
+      return (!F.kd || c.kind === F.kd) && (!F.y || c._y === F.y) && (!F.sym || c.symbol === F.sym) &&
+        (!F.tf || c.timeframe === F.tf) && (!F.tag || c.tags.indexOf(F.tag) >= 0) && (!q || c._s.indexOf(q) >= 0);
+    });
+    var dir = F.o === 'asc' ? 1 : -1;
+    V.list.sort(function (p, r) { return dir * (p._t - r._t) || (p.id < r.id ? -dir : dir); });
+    /* 關掉已展開的圖、清空清單 */
+    $$('#libList .ct.open').forEach(function (el) { collapseTile(el, true); });
+    $('#libList').innerHTML = ''; V.shown = 0; V.lastYear = null;
+    var active = ['y', 'sym', 'tf', 'tag'].filter(function (k) { return F[k]; }).length;
+    var cnt = $('#libCnt'); if (cnt) cnt.textContent = active ? '(' + active + ')' : '';
+    var any = active || F.kd || F.q;
+    $('#libStatus').innerHTML = '<span>符合 <b>' + V.list.length + '</b> 案</span>' + (any ? '<button type="button" class="btn sm ghost" id="libClear">清除篩選</button>' : '');
+    if (!V.list.length) $('#libList').innerHTML = '<div class="lib-empty">沒有符合的案例。試試清除篩選,或換一個較短的關鍵字。</div>';
+    appendBatch();
+    if (fromUser) {
+      V.x = '';
+      saveLibHash();
+      var bar = $('#libBar'); if (bar && bar.getBoundingClientRect().top < 0) bar.scrollIntoView({ block: 'start' });
+    }
+  }
+  function libParams(extra) {
+    var V = LIB.view, F = V.F, o = { c: V.c.n };
+    ['q', 'kd', 'y', 'sym', 'tf', 'tag'].forEach(function (k) { if (F[k]) o[k] = F[k]; });
+    if (F.o === 'asc') o.o = 'asc';
+    if (extra) for (var k in extra) o[k] = extra[k];
+    return o;
+  }
+  function saveLibHash() { var V = LIB.view; var o = libParams(V.x ? { x: V.x } : null); LIB.back = o; setHashQuiet(o); }
+  function tileHTML(c) {
+    var cid = cssId(c.id);
+    return '<article class="ct" id="ct-' + cid + '" data-id="' + esc(c.id) + '">' +
+      '<button type="button" class="ct-head" aria-expanded="false" aria-controls="cb-' + cid + '">' +
+        '<canvas class="ct-thumb" aria-hidden="true"></canvas>' +
+        '<span class="ct-txt"><span class="ct-meta">' + kindTag(c.kind) + '<span>' + esc(c.date || '日期不明') + '</span><span>' + esc(c.symbol || '') + '</span><span>' + esc(tfShort(c.timeframe)) + '</span></span>' +
+          '<span class="ct-hl">' + esc(c.headline || '') + '</span>' + (c.tags.length ? '<span class="ct-tags">' + esc(c.tags.join(' · ')) + '</span>' : '') + '</span>' +
+        '<svg class="ct-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>' +
+      '</button><div class="ct-body" id="cb-' + cid + '" hidden></div></article>';
+  }
+  function appendBatch(minCount) {
+    var V = LIB.view; if (!V) return;
+    var end = Math.min(V.list.length, Math.max(V.shown + CFG.batch, minCount || 0));
+    if (end <= V.shown) { updNext(); return; }
+    var html = '', byYear = {};
+    V.list.forEach(function (c) { byYear[c._y] = (byYear[c._y] || 0) + 1; });
+    for (var i = V.shown; i < end; i++) {
+      var c = V.list[i];
+      if (c._y !== V.lastYear) { html += '<div class="lib-yr">' + esc(c._y || '日期不明') + '<span>' + byYear[c._y] + ' 案</span></div>'; V.lastYear = c._y; }
+      html += tileHTML(c);
+    }
+    var list = $('#libList'), tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    var frag = document.createDocumentFragment();
+    while (tmp.firstChild) frag.appendChild(tmp.firstChild);
+    list.appendChild(frag);
+    V.shown = end;
+    $$('.ct.open', list).forEach(placeBody);
+    $$('.ct-thumb', list).forEach(function (cv) { if (!cv._obs) { cv._obs = 1; thumbObserve(cv); } });
+    updNext();
+  }
+  function updNext() {
+    var V = LIB.view, rest = V.list.length - V.shown, w = $('#libNextWrap');
+    if (!w) return;
+    w.hidden = rest <= 0;
+    if (rest > 0) $('#libNext').textContent = '再顯示 ' + Math.min(CFG.batch, rest) + ' 案(還有 ' + rest + ' 案)';
+  }
+
+  /* 縮圖:靠近視窗才畫,遠離就釋放 canvas 記憶體;每個影格最多畫 6 張 */
+  var TQ = [], tRaf = 0, tIO = null, DRAWN = [], TFETCH = 0;
+  function thumbObserve(cv) {
+    if (!window.IntersectionObserver) { queueThumb(cv); return; }
+    if (!tIO) tIO = new IntersectionObserver(function (ents) {
+      ents.forEach(function (e) {
+        var cv2 = e.target;
+        if (e.isIntersecting) queueThumb(cv2);
+        else if (cv2._drawn) { cv2.width = 0; cv2.height = 0; cv2._drawn = false; var k = DRAWN.indexOf(cv2); if (k >= 0) DRAWN.splice(k, 1); }
+      });
+    }, { rootMargin: '600px 0px' });
+    tIO.observe(cv);
+  }
+  function queueThumb(cv) { if (cv._drawn || cv._queued) return; cv._queued = true; TQ.push(cv); if (!tRaf) tRaf = requestAnimationFrame(drainThumbs); }
+  function drainThumbs() {
+    tRaf = 0;
+    var t0 = performance.now(), k = 0;
+    while (TQ.length && k < 6 && performance.now() - t0 < 8) { paintThumb(TQ.shift()); k++; }
+    if (TQ.length) tRaf = requestAnimationFrame(drainThumbs);
+  }
+  function paintThumb(cv) {
+    cv._queued = false;
+    if (!cv.isConnected) return;
+    var tile = cv.closest('.ct'), id = tile && tile.getAttribute('data-id'), c = id && LIB.idx && LIB.idx.byId[id];
+    if (!c) return;
+    if (!c.thumb && LIB.cache[id] && caseUsable(LIB.cache[id])) c.thumb = thumbFromBars(LIB.cache[id].bars, LIB.cache[id].annotation);
+    if (c.thumb) { if (drawThumb(cv, c.thumb)) { cv._drawn = true; DRAWN.push(cv); } return; }
+    /* 索引沒有縮圖:背景取單案資料(同時最多 3 個) */
+    if (TFETCH >= 3) { setTimeout(function () { queueThumb(cv); }, 200); return; }
+    TFETCH++;
+    getCase(id).then(function () { TFETCH--; queueThumb(cv); }, function () { TFETCH--; });
+  }
+  function redrawThumbs() { DRAWN.slice().forEach(function (cv) { cv._drawn = false; queueThumb(cv); }); DRAWN = []; }
+
+  function prefetchTile(e) {
+    var h = e.target && e.target.closest && e.target.closest('.ct-head');
+    if (!h) return;
+    var id = h.parentNode.getAttribute('data-id');
+    if (id && !LIB.cache[id]) getCase(id).catch(function () { /* 展開時再顯示錯誤 */ });
+  }
+  function onLibClick(e) {
+    var t = e.target;
+    if (t.closest('#libClear')) {
+      var F = LIB.view.F; F.q = F.kd = F.y = F.sym = F.tf = F.tag = '';
+      $('#libQ').value = ''; ['fY', 'fSym', 'fTf', 'fTag'].forEach(function (i) { var el = document.getElementById(i); el.value = ''; el.classList.remove('on'); });
+      $$('.seg button').forEach(function (x) { x.setAttribute('aria-pressed', String(x.getAttribute('data-kd') === '')); });
+      applyFilters(true); return;
+    }
+    var h = t.closest('.ct-head');
+    if (h) { var tile = h.parentNode; if (tile.classList.contains('open')) collapseTile(tile); else expandTile(tile); return; }
+    if (t.closest('.ct-close')) {
+      var cb = t.closest('.ct-body'), tl = t.closest('.ct') || (cb && document.getElementById('ct-' + cb.id.slice(3)));
+      if (tl) { collapseTile(tl); tl.scrollIntoView({ block: 'nearest' }); }
+    }
+  }
+  /* 寬螢幕網格(≥1280):卡片留在原格,展開內容放在「該列最後一張卡之後」佔整列(不留空洞、不改變卡片順序);
+     清單模式:展開內容留在卡片裡(同 v3)。視窗改變大小時重新安放。 */
+  function bodyOf(tile) { return tile._body || (tile._body = tile.querySelector('.ct-body')); }
+  function libGrid() { var l = document.getElementById('libList'); return !!(l && getComputedStyle(l).display === 'grid'); }
+  function placeBody(tile) {
+    var body = bodyOf(tile);
+    if (!body) return;
+    if (body.parentNode !== tile) tile.appendChild(body);
+    if (!libGrid() || !tile.classList.contains('open')) return;
+    var last = tile, top = tile.offsetTop, n = tile.nextElementSibling;
+    while (n && n.classList.contains('ct') && n.offsetTop === top) { last = n; n = n.nextElementSibling; }
+    if (last.nextElementSibling !== body) last.parentNode.insertBefore(body, last.nextElementSibling);
+  }
+  function expandTile(tile, scroll) {
+    var id = tile.getAttribute('data-id'), body = bodyOf(tile), head = tile.querySelector('.ct-head');
+    tile.classList.add('open'); head.setAttribute('aria-expanded', 'true'); body.hidden = false;
+    placeBody(tile);
+    if (!scroll && body.parentNode !== tile) {
+      var br = body.getBoundingClientRect(); if (br.top > window.innerHeight - 160) tile.scrollIntoView({ block: 'start' });
+    }
+    var wait = setTimeout(function () { if (tile.classList.contains('open') && !tile._fig) body.innerHTML = '<div class="ct-wait">準備圖表…</div>'; }, 150);
+    LIB.view.x = id; saveLibHash();
+    return getCase(id).then(function (cs) {
+      clearTimeout(wait);
+      if (!tile.classList.contains('open')) return;
+      if (!cs) { body.innerHTML = '<div class="lib-empty">這個案例暫時讀不到。</div>'; return; }
+      var r = caseBodyHTML(cs, { tile: true });
+      body.innerHTML = r.html;
+      tile._fig = r.fig ? mountFigure(r.fig) : null;
+      if (scroll) tile.scrollIntoView({ block: 'start' });
+    }, function () { clearTimeout(wait); body.innerHTML = '<div class="lib-empty">這個案例暫時讀不到,請稍後再試。</div>'; });
+  }
+  function collapseTile(tile, silent) {
+    if (!tile) return;
+    if (tile._fig) { tile._fig.destroy(); tile._fig = null; }
+    tile.classList.remove('open');
+    var body = bodyOf(tile); body.innerHTML = ''; body.hidden = true; placeBody(tile);
+    tile.querySelector('.ct-head').setAttribute('aria-expanded', 'false');
+    if (!silent && LIB.view && LIB.view.x === tile.getAttribute('data-id')) { LIB.view.x = ''; saveLibHash(); }
+  }
+  function openToCase(id) {
+    var V = LIB.view, pos = -1;
+    V.list.forEach(function (c, i) { if (c.id === id) pos = i; });
+    if (pos < 0) return;
+    appendBatch(pos + 1);
+    var tile = document.getElementById('ct-' + cssId(id));
+    if (tile) expandTile(tile, true);
+  }
+  /* 單案內容(清單展開與單頁共用) */
+  function caseBodyHTML(cs, opt) {
+    var src = {}; if (cs.clip_id && cs.source) src[cs.clip_id] = cs.source;
+    var ctx = newCtx('c' + cssId(cs.id) + '_', src), out = '', fig = null;
+    if (caseUsable(cs)) {
+      var f = figureHTML(caseItem(cs), { ctx: ctx, noHeadline: true, quote: cs.quote || null, split: true });
+      out += f.html; fig = f.id;
+    } else out += '<div class="lib-empty">這個案例沒有可用的走勢圖。</div>';
+    var lc = libChapter(), libN = lc ? lc.n : 10;
+    out += '<div class="ct-foot">' + arr(cs.tags).map(function (t) { return '<a class="tagchip" href="' + linkTo({ c: libN, tag: t }) + '">' + esc(t) + '</a>'; }).join('') +
+      '<span class="grow"></span>' +
+      (opt.tile ? '<a class="btn sm ghost" href="' + linkTo({ cs: cs.id }) + '">單獨開啟</a><button type="button" class="btn sm ct-close">收合</button>' : '') + '</div>';
+    out += footnotesHTML(ctx);
+    return { html: out, fig: fig };
+  }
+
+  /* 單一案例頁 #cs=id */
+  function renderCasePage(id, token) {
+    var lc = libChapter(), libN = lc ? lc.n : 10;
+    if (!caseAPI()) { renderNotFound(); return Promise.resolve(); }
+    var slow = setTimeout(function () { main.classList.add('loading'); }, 150);
+    return Promise.all([getCaseIndex().catch(function () { return null; }), getCase(id).catch(function () { return null; })]).then(function (rs) {
+      clearTimeout(slow); main.classList.remove('loading');
+      if (token !== renderToken) return;
+      var idx = rs[0], cs = rs[1];
+      if (!cs) { renderNotFound(); return; }
+      document.title = (cs.headline || '走勢案例') + ' · 布大交易教材';
+      CUR = { sources: {}, mounts: [] };
+      var back = LIB.back ? linkTo(LIB.back) : linkTo({ c: libN });
+      var nav = '';
+      if (idx) {
+        var sorted = idx.cases.slice().sort(function (p, q) { return p._t - q._t || (p.id < q.id ? -1 : 1); }), at = -1;
+        sorted.forEach(function (c, i) { if (c.id === cs.id) at = i; });
+        var pv = sorted[at - 1], nx = sorted[at + 1];
+        function one(x, cls, lab) { return x ? '<a class="pg ' + cls + '" href="' + linkTo({ cs: x.id }) + '">' + lab + '<b>' + esc(x.date + ' ' + x.headline) + '</b></a>' : '<span class="pg ' + cls + ' none"></span>'; }
+        if (at >= 0) nav = '<nav class="pager" aria-label="較早與較新的案例">' + one(pv, 'prev', '← 較早一案') + one(nx, 'next', '較新一案 →') + '</nav>';
+      }
+      var r = caseBodyHTML(cs, { tile: false });
+      main.innerHTML = '<div class="col case"><article><div class="crumb"><a href="' + linkTo({}) + '">學習地圖</a><span>›</span><a href="' + back + '">第 ' + (lc ? lc._dn : '') + ' 章 ' + esc(lc ? lc.title : '走勢案例庫') + '</a><span>›</span><span>' + esc(cs.date || '') + '</span></div>' +
+        '<h1 class="sec-h1">' + esc(cs.headline || '') + '</h1>' +
+        '<div class="ameta"><span>' + esc(cs.date || '日期不明') + '</span>' + (cs.source && cs.source.date ? '<span>講解於 ' + esc(cs.source.date) + '</span>' : '') + '</div>' +
+        r.html + '</article>' + nav + '<p style="margin-top:18px"><a class="btn" href="' + back + '">← 回案例庫</a></p></div>';
+      if (r.fig) mountFigure(r.fig);
+    });
+  }
+
+  /* ============================================================
+     側欄
+     ============================================================ */
+  var openCh = {};
+  function renderSide() {
+    var p = parseHash(), curId = p.s || null, curCh = curId && POS[curId] ? POS[curId].ch : (p.c != null && p.c !== '' ? Number(p.c) : null);
+    if (p.cs) { var lc = libChapter(); curCh = lc ? lc.n : curCh; }
+    var rd = readMap();
+    var html = '<a class="side-home' + (!curId && curCh == null ? ' on' : '') + '" href="' + linkTo({}) + '">學習地圖</a>';
+    CHS.forEach(function (c) {
+      var isOn = c.n === curCh;
+      if (c._lib) {
+        var cc = caseCount(c);
+        html += '<div class="side-ch lib' + (isOn ? ' on' : '') + '"><a class="side-ch-btn" href="' + linkTo({ c: c.n }) + '"' + (isOn ? ' aria-current="page"' : '') + '><span class="chn">' + c._dn + '</span><span class="side-ch-t">' + esc(c.title) + '</span>' +
+          (cc != null ? '<span class="side-prog">' + cc + ' 案</span>' : '') + '</a></div>';
+        return;
+      }
+      var isOpen = isOn || openCh[c.n], st = chapterStats(c);
+      html += '<div class="side-ch' + (isOn ? ' on' : '') + (isOpen ? ' open' : '') + '"><button type="button" class="side-ch-btn" data-ch="' + c.n + '" aria-expanded="' + (isOpen ? 'true' : 'false') + '">' +
+        '<span class="chn">' + c._dn + '</span><span class="side-ch-t">' + esc(c.title) + '</span><span class="side-prog">' + st.read + '/' + st.total + '</span></button>' +
+        '<ol class="side-secs">' + arr(c.sections).map(function (s) {
+          var it = POS[s.id], dot = s.status !== 'done' ? '<span class="dot wip" title="撰寫中">撰寫中</span>' : (rd[s.id] ? '<span class="dot read" title="已讀">✓</span>' : '');
+          return '<li><a href="' + linkTo({ s: s.id }) + '"' + (s.id === curId ? ' class="on" aria-current="page"' : '') + '><span class="sn">' + esc(it.num) + '</span><span>' + esc(s.title) + '</span>' + dot + '</a></li>';
+        }).join('') + '</ol></div>';
+    });
+    side.innerHTML = html;
+    var on = $('.side-secs a.on', side);
+    if (on && !document.body.classList.contains('drawer-open')) {
+      var r = on.getBoundingClientRect(), sr = side.getBoundingClientRect();
+      if (r.top < sr.top || r.bottom > sr.bottom) on.scrollIntoView({ block: 'center' });
+    }
+  }
+
+  /* ============================================================
+     搜尋(案例索引載入後自動加入「走勢案例」)
+     ============================================================ */
+  function addCaseSearch() {
+    if (!LIB.idx || SEARCH._cases) return;
+    LIB.idx.cases.forEach(function (c) { SEARCH.push({ type: 'case', id: c.id, title: c.headline || c.id, text: [c.symbol, c.date, c.tags.join(' '), c.q || ''].join(' ') }); });
+    SEARCH._cases = true;
+    var qi = document.getElementById('q');
+    if (qi && document.activeElement === qi && qi.value.trim()) doSearch(qi.value);
+    renderSide();
+  }
+  function snippet(text, q) {
+    var t = String(text || ''), j = t.toLowerCase().indexOf(String(q).toLowerCase());
+    if (j < 0) return esc(t.slice(0, 48)) + (t.length > 48 ? '…' : '');
+    var a = Math.max(0, j - 18), b = Math.min(t.length, j + q.length + 30);
+    return (a > 0 ? '…' : '') + esc(t.slice(a, j)) + '<mark>' + esc(t.slice(j, j + q.length)) + '</mark>' + esc(t.slice(j + q.length, b)) + (b < t.length ? '…' : '');
+  }
+  function doSearch(q) {
+    var box = document.getElementById('results');
+    q = String(q || '').trim();
+    if (!q) { box.hidden = true; box.innerHTML = ''; return; }
+    var nq = norm(q), g = { sec: [], term: [], quote: [], 'case': [] };
+    SEARCH.forEach(function (d) {
+      var inT = norm(d.title).indexOf(nq) >= 0, inX = norm(d.text).indexOf(nq) >= 0;
+      if (!inT && !inX) return;
+      (g[d.type] || g.sec).push({ d: d, score: inT ? 0 : 1 });
+    });
+    Object.keys(g).forEach(function (k) { g[k].sort(function (a, b) { return a.score - b.score; }); });
+    var html = '';
+    function grp(title, items, fn) { if (items.length) html += '<div class="r-h">' + title + '(' + items.length + ')</div>' + items.slice(0, 8).map(fn).join(''); }
+    grp('小節', g.sec, function (x) { var it = POS[x.d.id]; return '<a class="r" href="' + linkTo({ s: x.d.id }) + '"><b>' + esc((it ? it.num + ' ' : '') + x.d.title) + '</b><span>' + snippet(x.d.text, q) + '</span></a>'; });
+    grp('詞彙', g.term, function (x) { return '<a class="r" href="' + linkTo({ s: 'ch00_s5' }) + '"><b>' + esc(x.d.title) + '</b><span>' + esc(x.d.text) + '</span></a>'; });
+    grp('他的原話', g.quote, function (x) { var it = POS[x.d.id]; return '<a class="r" href="' + linkTo({ s: x.d.id, a: x.d.anchor }) + '"><b>「' + snippet(x.d.text, q) + '」</b><span>' + esc((it ? it.num + ' ' : '') + x.d.title) + '</span></a>'; });
+    grp('走勢案例', g['case'], function (x) { return '<a class="r" href="' + linkTo({ cs: x.d.id }) + '"><b>' + snippet(x.d.title, q) + '</b><span>' + snippet(x.d.text, q) + '</span></a>'; });
+    box.innerHTML = html || '<div class="r-empty">找不到「' + esc(q) + '」。試試較短的詞,例如「停損」「爆量」。</div>';
+    box.hidden = false;
+  }
+  function closeSearch() { document.getElementById('results').hidden = true; document.getElementById('top').classList.remove('searching'); }
+
+  /* ============================================================
+     浮出說明、主題、事件
+     ============================================================ */
+  var popAnchor = null;
+  function openPop(anchor, html) {
+    if (popAnchor === anchor && !pop.hidden) { closePop(); return; }
+    closePop();
+    pop.innerHTML = html + '<button type="button" class="pop-x" aria-label="關閉">×</button>';
+    pop.hidden = false; popAnchor = anchor; anchor.setAttribute('aria-expanded', 'true');
+    if (window.innerWidth < 600) { pop.classList.add('sheet'); pop.style.left = ''; pop.style.top = ''; return; }
+    pop.classList.remove('sheet');
+    var r = anchor.getBoundingClientRect(), pw = pop.offsetWidth, ph = pop.offsetHeight;
+    var topY = r.bottom + 8; if (topY + ph > window.innerHeight - 12) topY = Math.max(12, r.top - ph - 8);
+    pop.style.left = clamp(r.left, 12, window.innerWidth - pw - 12) + 'px'; pop.style.top = topY + 'px';
+  }
+  function closePop() {
+    if (pop.hidden) return;
+    pop.hidden = true;
+    if (popAnchor) { popAnchor.setAttribute('aria-expanded', 'false'); popAnchor = null; }
+  }
+  function effectiveTheme() {
+    var t = document.documentElement.getAttribute('data-theme');
+    if (t) return t;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function setDrawer(open) {
+    document.body.classList.toggle('drawer-open', !!open);
+    document.getElementById('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function bindGlobal() {
+    document.getElementById('menuBtn').addEventListener('click', function () { setDrawer(!document.body.classList.contains('drawer-open')); });
+    document.getElementById('scrim').addEventListener('click', function () { setDrawer(false); });
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      var nt = effectiveTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nt); Store.set('theme', nt); redrawAll();
+    });
+    if (window.matchMedia) {
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      if (mq.addEventListener) mq.addEventListener('change', redrawAll); else if (mq.addListener) mq.addListener(redrawAll);
+    }
+    var qi = document.getElementById('q'), tmr = 0;
+    qi.addEventListener('input', function () { clearTimeout(tmr); tmr = setTimeout(function () { doSearch(qi.value); }, 120); });
+    qi.addEventListener('focus', function () { if (qi.value.trim()) doSearch(qi.value); if (caseAPI()) getCaseIndex().catch(function () {}); });
+    qi.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { var f = $('#results .r'); if (f) f.click(); }
+      if (e.key === 'ArrowDown') { var f2 = $('#results .r'); if (f2) { e.preventDefault(); f2.focus(); } }
+    });
+    document.getElementById('searchBtn').addEventListener('click', function () { document.getElementById('top').classList.add('searching'); setTimeout(function () { qi.focus(); }, 0); });
+    document.getElementById('results').addEventListener('click', function (e) { if (e.target.closest('.r')) { closeSearch(); qi.blur(); } });
+    side.addEventListener('click', function (e) {
+      var b = e.target.closest('button.side-ch-btn');
+      if (b) { var n = Number(b.getAttribute('data-ch')), w = b.parentNode, op = !w.classList.contains('open'); w.classList.toggle('open', op); openCh[n] = op; b.setAttribute('aria-expanded', String(op)); return; }
+      if (e.target.closest('a')) setDrawer(false);
+    });
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t.closest) return;
+      if (t.closest('.pop-x')) { closePop(); return; }
+      var term = t.closest('.term');
+      if (term) {
+        var gg = IDX.glossary[Number(term.getAttribute('data-g'))];
+        if (gg) openPop(term, '<div class="pop-t">' + esc(gg.term) + '</div><p>' + esc(gg.meaning) + '</p><a href="' + linkTo({ s: 'ch00_s5' }) + '">看全部詞彙 →</a>');
+        return;
+      }
+      var hb = t.closest('[data-help]');
+      if (hb) { var hp = HELP[hb.getAttribute('data-help')]; if (hp) openPop(hb, '<div class="pop-t">' + esc(hp[0]) + '</div><p>' + esc(hp[1]) + '</p>'); return; }
+      if (!pop.hidden && !t.closest('#pop')) closePop();
+      if (!t.closest('#search') && !t.closest('#searchBtn')) closeSearch();
+    });
+    main.addEventListener('click', function (e) {
+      var t = e.target, gt = t.closest('[data-goto]');
+      if (gt) {
+        /* 本節重點卡的目錄/摘句:同頁捲動,不重新渲染(href 仍是可用的 #s=…&a=… 後備連結) */
+        var tg = document.getElementById(gt.getAttribute('data-goto'));
+        if (tg) { e.preventDefault(); var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; tg.scrollIntoView({ block: 'start', behavior: rm ? 'auto' : 'smooth' }); }
+        return;
+      }
+      var fr = t.closest('.fnref');
+      if (fr) {
+        var li = document.getElementById('fn' + fr.getAttribute('data-fn'));
+        if (li) { li.scrollIntoView({ block: 'center' }); li.classList.add('flash'); setTimeout(function () { li.classList.remove('flash'); }, 1600); }
+        return;
+      }
+      var fb = t.closest('.fn-back');
+      if (fb) { var ref = main.querySelector('.fnref[data-fn="' + fb.getAttribute('data-fnback') + '"]'); if (ref) ref.scrollIntoView({ block: 'center' }); }
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closePop(); closeSearch(); setDrawer(false); } });
+    window.addEventListener('scroll', function () { if (!pop.classList.contains('sheet')) closePop(); }, { passive: true });
+    window.addEventListener('hashchange', render);
+    /* 案例庫縮圖寬度跟著欄寬變(寬螢幕網格),視窗改變大小後重畫一次 */
+    var rsz = 0;
+    window.addEventListener('resize', function () { clearTimeout(rsz); rsz = setTimeout(function () { if (LIB.view) { redrawThumbs(); $$('#libList .ct.open').forEach(placeBody); } }, 200); }, { passive: true });
+  }
+
+  function teardown() {
+    destroyCharts();
+    if (endObserver) { endObserver.disconnect(); endObserver = null; }
+    if (LIB.view && LIB.view.sio) LIB.view.sio.disconnect();
+    LIB.view = null;
+    if (tIO) { tIO.disconnect(); tIO = null; }
+    TQ = []; DRAWN = []; FIGS = {}; CLIPS = {};
+  }
+  function render() {
+    closePop(); closeSearch(); setDrawer(false); teardown();
+    var p = parseHash(), token = ++renderToken, done;
+    if (p.cs) done = renderCasePage(p.cs, token);
+    else if (p.s) done = renderSection(p.s, p.a, token);
+    else if (p.c != null && p.c !== '' && !isNaN(Number(p.c))) {
+      var c = CHN[Number(p.c)];
+      if (c && c._lib) done = renderLibrary(c, p, token);
+      else { renderChapter(Number(p.c)); done = Promise.resolve(); }
+    } else { renderHome(); done = Promise.resolve(); }
+    renderSide();
+    return done.then(function () {
+      if (token !== renderToken) return;
+      if (!p.a && !p.x) window.scrollTo(0, 0);
+      try { main.focus({ preventScroll: true }); } catch (e) { /* 舊瀏覽器 */ }
+    });
+  }
+  function fatal(msg) { main.innerHTML = '<div class="col"><h1 class="page-h1">教材暫時打不開</h1><p>' + esc(msg) + '</p></div>'; }
+  function boot() {
+    main = document.getElementById('main'); side = document.getElementById('side'); pop = document.getElementById('pop');
+    var t = Store.get('theme', null);
+    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    bindGlobal();
+    loadIndex().then(function (idx) {
+      if (!idx || !isArr(idx.chapters)) throw new Error('BAD_INDEX');
+      IDX = { generated: idx.generated, glossary: arr(idx.glossary), chapters: idx.chapters, order: idx.order, stages: idx.stages, search: arr(idx.search) };
+      prep(); render();
+      /* 背景載入案例索引:讓搜尋找得到案例、首頁與側欄顯示案數 */
+      if (caseAPI()) idle(function () { getCaseIndex().then(function () { if (!parseHash().s && !parseHash().c && !parseHash().cs) renderHome(); }, function () {}); });
+    }).catch(function (e) {
+      fatal(e && e.message === 'NO_DATA' ? '這個檔案還沒有放入教材資料(模板本身)。' : '資料載入失敗,請確認網址完整(含 # 後面的部分)後重新整理。');
+    });
+  }
+
+  /* 給組裝/測試用(不影響畫面) */
+  window.BTeach = {
+    loadIndex: loadIndex, loadSection: loadSection, loadCaseIndex: loadCaseIndex, loadCase: loadCase,
+    charts: function () { return LIVE; }, lib: function () { return LIB; }, thumbFromBars: thumbFromBars, version: 'template-3'
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+<script>(function () {
+  'use strict';
+  var enc = new TextEncoder();
+  function b64uDec(s) {
+    s = String(s).replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '=';
+    var bin = atob(s), u = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u;
+  }
+  function hex(buf) { var u = new Uint8Array(buf), o = ''; for (var i = 0; i < u.length; i++) o += (u[i] < 16 ? '0' : '') + u[i].toString(16); return o; }
+  function getHashKey() {
+    var h = location.hash.replace(/^#\/?/, ''), parts = h ? h.split('&') : [];
+    for (var i = 0; i < parts.length; i++) { if (parts[i].slice(0, 2) === 'k=') { try { return decodeURIComponent(parts[i].slice(2)); } catch (e) { return parts[i].slice(2); } } }
+    return '';
+  }
+  /* ---- 鎖定頁(蓋在整個畫面上;不含任何教材內容) ---- */
+  var ov = null;
+  function lockUI(msg, busy) {
+    if (!ov) {
+      ov = document.createElement('div');
+      ov.id = 'lockov';
+      ov.setAttribute('style', 'position:fixed;inset:0;z-index:2147483000;background:var(--bg,#f6f4ef);color:var(--fg,#1d2127);display:flex;align-items:center;justify-content:center;padding:24px;font-family:var(--font,system-ui,sans-serif)');
+      ov.innerHTML = '<div style="max-width:420px;width:100%;text-align:center">' +
+        '<h1 style="font-size:26px;margin:0 0 10px;line-height:1.4">布大交易教材</h1>' +
+        '<p id="lockmsg" style="margin:0 0 18px;color:var(--muted,#5d646d);font-size:16px;line-height:1.7"></p>' +
+        '<form id="lockform" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">' +
+        '<input id="lockkey" type="password" autocomplete="off" spellcheck="false" placeholder="貼上金鑰或完整網址" aria-label="金鑰" style="flex:1 1 220px;min-width:0;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line2,#d6d1c5);border-radius:8px;background:var(--surface,#fff);color:inherit">' +
+        '<button type="submit" style="font:inherit;font-size:16px;padding:10px 18px;border:0;border-radius:8px;background:var(--accent,#1e5f8f);color:var(--accent-ink,#fff);cursor:pointer">解鎖</button></form></div>';
+      document.body.appendChild(ov);
+      ov.querySelector('#lockform').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var v = ov.querySelector('#lockkey').value.trim(), m = v.match(/[#&]k=([A-Za-z0-9_\-]+)/);
+        if (m) v = m[1];
+        if (!/^[A-Za-z0-9_\-]{20,}$/.test(v)) { lockUI('金鑰格式不正確。'); return; }
+        location.hash = '#k=' + v; location.reload();
+      });
+    }
+    ov.querySelector('#lockmsg').textContent = msg || '';
+    ov.querySelector('#lockform').style.display = busy ? 'none' : 'flex';
+    ov.hidden = false; ov.style.display = 'flex';
+  }
+  function unlockUI() { if (ov) { ov.remove(); ov = null; } }
+
+  var KEYTXT = getHashKey(), KEYS = null, cache = {};
+  function initKeys() {
+    if (KEYS) return KEYS;
+    KEYS = Promise.resolve().then(function () {
+      var raw = b64uDec(KEYTXT);
+      if (raw.length !== 32) throw new Error('BADKEY');
+      return crypto.subtle.importKey('raw', raw, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']).then(function (hk) {
+        return crypto.subtle.sign('HMAC', hk, enc.encode('aes-gcm-v1')).then(function (ab) {
+          return crypto.subtle.importKey('raw', ab, 'AES-GCM', false, ['decrypt']);
+        }).then(function (ak) { return { hk: hk, ak: ak }; });
+      });
+    });
+    return KEYS;
+  }
+  function gunzip(u8) {
+    if (typeof DecompressionStream !== 'function') throw new Error('NOGZIP');
+    return new Response(new Blob([u8]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+  }
+  /* 回傳解密後的物件;找不到檔案回 null(throw 的是金鑰/網路/解密錯誤) */
+  function shard(id) {
+    if (cache[id]) return cache[id];
+    var p = initKeys().then(function (k) {
+      return crypto.subtle.sign('HMAC', k.hk, enc.encode('shard:' + id)).then(function (ab) {
+        var name = hex(ab).slice(0, 24) + '.bin';
+        return fetch('d/' + name, { cache: 'default' }).then(function (r) {
+          if (r.status === 404) return null;
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.arrayBuffer();
+        });
+      }).then(function (buf) {
+        if (!buf) return null;
+        var u = new Uint8Array(buf);
+        if (u.length < 30) throw new Error('BADDATA');
+        var flag = u[0], iv = u.subarray(1, 13), ct = u.subarray(13);
+        var idb = enc.encode(id), aad = new Uint8Array(idb.length + 1); aad.set(idb); aad[idb.length] = flag;
+        return crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv, additionalData: aad }, k.ak, ct).then(function (pt) {
+          return flag === 1 ? gunzip(new Uint8Array(pt)) : pt;
+        }, function () { throw new Error('BADKEY'); });
+      }).then(function (pt) { return pt ? JSON.parse(new TextDecoder().decode(pt)) : null; });
+    });
+    cache[id] = p;
+    p.catch(function () { delete cache[id]; });
+    return p;
+  }
+  function explain(e) {
+    var m = e && e.message || '';
+    if (m === 'BADKEY') return '金鑰不正確,請確認網址完整(含 # 後面的部分),或在下方重新貼上金鑰。';
+    if (m === 'NOGZIP') return '這個瀏覽器版本太舊,無法解壓縮資料,請更新瀏覽器。';
+    if (m === 'NOTFOUND') return '找不到資料。金鑰可能不正確,或網址不完整。';
+    if (/HTTP|Failed to fetch|NetworkError|Load failed/i.test(m)) return '網路連線失敗,請稍後重新整理。(' + m + ')';
+    return '資料解密失敗。(' + m + ')';
+  }
+  function loadIndex() {
+    if (!KEYTXT) { lockUI('這份教材需要金鑰。請使用完整網址(含 #k=…)開啟,或在下方貼上金鑰。'); return new Promise(function () {}); }
+    lockUI('解鎖中…', true);
+    return shard('index').then(function (idx) {
+      if (!idx) throw new Error('NOTFOUND');
+      unlockUI(); return idx;
+    }).catch(function (e) { lockUI(explain(e)); throw e; });
+  }
+  window.__B_LOADER__ = {
+    loadIndex: loadIndex,
+    loadSection: function (id) { return shard('s:' + id); },
+    loadCaseIndex: function () { return shard('caseindex').then(function (r) { if (!r) throw new Error('NO_CASES'); return r; }); },
+    loadCase: function (id) { return shard('c:' + id); }
+  };
+  /* 先蓋住畫面,避免在載入前閃出空的外框 */
+  if (document.body) lockUI(KEYTXT ? '解鎖中…' : '這份教材需要金鑰。請使用完整網址(含 #k=…)開啟,或在下方貼上金鑰。', !!KEYTXT);
+})();</script>
+</body>
+</html>
