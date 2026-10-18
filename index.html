@@ -23,6 +23,8 @@
   --an-zone:#b07413; --an-arrow:#0b7885; --an-point:#6a46b8; --an-vline:#6a46b8; --an-line:#a8661a;
   /* 逐步講解的四個角色色(紅綠只留給 K 棒):當時情境 / 他的判斷 / 後來 / 次要細節 */
   --r-ctx:#94600a; --r-judge:#1e5f8f; --r-out:#7044b5; --r-det:#7b828b;
+  /* 示意圖:R / 金額的盈虧用藍(+)與橙(−),不用紅綠(紅綠只留給真實 K 線的漲跌);ink = 文字用的較深色 */
+  --dg-pos:#2f72a8; --dg-pos-ink:#1e5f8f; --dg-neg:#d27b2c; --dg-neg-ink:#a2560f; --dg-neu:#a3a9b0; --dg-alt:#7a52c4;
   --shadow:0 1px 2px rgba(20,25,35,.05),0 4px 14px rgba(20,25,35,.05);
   --font:"PingFang TC","Noto Sans TC","Microsoft JhengHei","Heiti TC",system-ui,-apple-system,"Segoe UI",sans-serif;
   --top:56px;
@@ -40,6 +42,7 @@
     --fc:#b9a3f2; --fc-bg:#2a2340;
     --an-zone:#e3b54f; --an-arrow:#4cc7d4; --an-point:#b9a3f2; --an-vline:#b9a3f2; --an-line:#e0a95a;
     --r-ctx:#e3b54f; --r-judge:#7db4e0; --r-out:#b9a3f2; --r-det:#8f959d;
+    --dg-pos:#6aa8db; --dg-pos-ink:#8ec2ec; --dg-neg:#e0904a; --dg-neg-ink:#f2a866; --dg-neu:#6b727a; --dg-alt:#b9a3f2;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
   }
 }
@@ -55,6 +58,7 @@
   --fc:#b9a3f2; --fc-bg:#2a2340;
   --an-zone:#e3b54f; --an-arrow:#4cc7d4; --an-point:#b9a3f2; --an-vline:#b9a3f2; --an-line:#e0a95a;
   --r-ctx:#e3b54f; --r-judge:#7db4e0; --r-out:#b9a3f2; --r-det:#8f959d;
+  --dg-pos:#6aa8db; --dg-pos-ink:#8ec2ec; --dg-neg:#e0904a; --dg-neg-ink:#f2a866; --dg-neu:#6b727a; --dg-alt:#b9a3f2;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
 }
 
@@ -572,6 +576,50 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
   .stp-dots{flex:1 1 100%}
   .afig .atake{font-size:17.5px;padding:10px 14px}
 }
+/* ========== 15. 示意圖(五個基本元件)與相關案例,見 DESIGN_NOTES_v3_diagram.md ========== */
+.dchart{width:100%}
+.dsvg{display:block;width:100%;height:auto;font-family:var(--font);-webkit-user-select:none;user-select:none}
+.dsvg text{fill:var(--fg)}
+.dsvg .dt-m,.dsvg .dt-neu{fill:var(--muted)} .dsvg .dt-f{fill:var(--faint)} .dsvg .dt-strip{fill:var(--faint);letter-spacing:.04em}
+.dsvg .dt-pos{fill:var(--dg-pos-ink)} .dsvg .dt-neg{fill:var(--dg-neg-ink)} .dsvg .dt-alt{fill:var(--dg-alt)} .dsvg .dt-key{fill:var(--fg)} .dsvg .dt-on{fill:var(--chart-bg)}
+.dsvg .f-pos{fill:var(--dg-pos)} .dsvg .f-neg{fill:var(--dg-neg)} .dsvg .f-neu{fill:var(--dg-neu)} .dsvg .f-alt{fill:var(--dg-alt)} .dsvg .f-key{fill:var(--fg)}
+.dsvg .lt{fill-opacity:.24}
+.dsvg line,.dsvg path,.dsvg .nf{fill:none}
+.dsvg .s-pos{stroke:var(--dg-pos)} .dsvg .s-neg{stroke:var(--dg-neg)} .dsvg .s-neu{stroke:var(--dg-neu)} .dsvg .s-alt{stroke:var(--dg-alt)} .dsvg .s-key{stroke:var(--fg)}
+.dsvg .grd{stroke:var(--grid)} .dsvg .ax{stroke:var(--line2)} .dsvg .ax0{stroke:var(--muted)}
+.dsvg .cell{fill:var(--surface2);stroke:var(--line2)}
+.dsvg .sep{stroke:var(--chart-bg);stroke-width:1.5}
+.dsvg .pend{stroke:var(--fg);stroke-width:1.2;stroke-dasharray:3 2}
+.dsvg .pillbg{fill:var(--chart-bg);fill-opacity:.93}
+.dsvg .ring{stroke:var(--chart-bg);stroke-width:1.6}
+.dsvg g{transition:opacity .18s}
+.kd.dg{background:var(--surface2);color:var(--muted);border:1px solid var(--line2);line-height:1.55}
+.dfig .atop{align-items:center}
+.dsrc{display:inline-flex;align-items:center;gap:1px;font-size:13px;color:var(--faint)}
+.dpend{margin:10px 0 0;padding:8px 12px;border-radius:10px;background:var(--wip-bg);color:var(--wip);font-size:13.5px;line-height:1.6}
+.dpend b{margin-right:6px}
+/* 相關案例(第 4 段):第一案畫標註圖,其餘列連結 */
+.afig+.relcase{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line2)}
+.rc-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0 0 8px}
+.rc-lab{flex:none;font-size:12.5px;font-weight:700;color:var(--accent);background:var(--accent-bg);border-radius:6px;padding:2px 8px;letter-spacing:.04em}
+.rc-h b{font-size:15.5px;font-weight:600;color:var(--muted)}
+.rc-open{margin-left:auto;font-size:14px;white-space:nowrap}
+.rc-fig .ct-wait{margin-top:0}
+.rc-fig .fns{margin-top:12px}
+.rc-more{margin-top:16px}
+.rc-fig+.rc-more{padding-top:14px;border-top:1px solid var(--line)}
+.rc-more-h{font-size:12.5px;font-weight:700;color:var(--faint);letter-spacing:.06em;margin:0 0 6px}
+.rc-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.rc-a{display:flex;gap:8px;align-items:baseline;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--fg);text-decoration:none;font-size:15.5px;line-height:1.55;min-width:0}
+.rc-a:hover,.rc-a:focus-visible{border-color:var(--accent)}
+.rc-a .kd{transform:translateY(-1px)}
+.rc-t{flex:1;min-width:0;overflow-wrap:anywhere}
+.rc-m{display:block;font-size:12.5px;color:var(--faint);line-height:1.5}
+.rc-go{flex:none;color:var(--accent);font-weight:700}
+@media (max-width:640px){
+  .rc-a{font-size:15px;padding:8px 10px}
+  .rc-open{margin-left:0}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media print{.top,.side,.pager,.lib-bar{display:none}.layout{display:block}.card{box-shadow:none;break-inside:avoid}}
 </style>
@@ -647,7 +695,9 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     review: ['覆盤', '事後回頭講解一段已經走完的走勢。'],
     forecast: ['預測', '他在當下(還沒走完時)講的看法;藍色虛線右邊是後來實際的走勢。'],
     nodate: ['時期不明', '這段影片沒有可靠的錄製日期。'],
-    wip: ['撰寫中', '這一節還在整理,目前只放標題與要講的概念,內容之後補上。']
+    wip: ['撰寫中', '這一節還在整理,目前只放標題與要講的概念,內容之後補上。'],
+    diag: ['示意圖怎麼看', '這是說明「做單方式」的示意圖,不是真實行情:圖上的價位、金額、R 數都只取自他的口述(出處在本節最下方),用來看比例、間距與先後,不代表任何一段真實走勢。藍色 = 賺(+),橙色 = 賠(−),數字前一定標正負號;紅綠只用在真實 K 線的漲跌。按「下一步」一步一步看,也可以一次顯示全部。'],
+    pending: ['待核對', '標 ※ 或列在「待核對」的數字,還沒和他的逐字稿逐字對上(例如來自摘要或推算)。先當成大概的比例看,不要當成他的原話引用。']
   };
 
   /* ---------- 小工具 ---------- */
@@ -740,6 +790,8 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
       if (typeof v === 'string') {
         if (k === 'kline_key' && K[v]) kl[v] = K[v];
         if ((k === 'src' || k === 'clip_id' || k === 'case_clip') && S[v]) src[v] = S[v];
+      } else if (k === 'source_clips' && isArr(v)) {   /* 示意圖的數字出處 */
+        v.forEach(function (c) { if (typeof c === 'string' && S[c]) src[c] = S[c]; });
       } else collectRefs(v, K, S, kl, src);
     }
   }
@@ -1192,19 +1244,22 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     return { d: d, kind: kind, fc: fc, items: items, dec: dec, steps: steps, showPrice: showPrice, outcome: String(an.outcome_text || '') };
   }
   function roleOfStep(s) { return s < 2 ? 'ctx' : s < 3 ? 'judge' : 'out'; }
-  function stepRole(st) { return st.id === 'lvl' ? 'judge' : st.id; }
+  /* 步驟物件:走勢圖用 id(ctx/judge/lvl/out/all)查 STEP_NAME;示意圖直接帶 name/sub/role(DIAGRAM_SCHEMA.md) */
+  function stepRole(st) { return st.role ? st.role : (st.id === 'lvl' ? 'judge' : st.id); }
+  function stepNm(s) { return s.name ? [s.name, s.sub || ''] : (STEP_NAME[s.id] || ['', '']); }
   function stepCardHTML(M, i) {
-    var s = M.steps[i], nm = STEP_NAME[s.id];
-    return '<span class="stp-t">' + (i + 1) + ' / ' + M.steps.length + ' · ' + nm[0] + '<span>' + nm[1] + '</span></span>' +
+    var s = M.steps[i], nm = stepNm(s);
+    return '<span class="stp-t">' + (i + 1) + ' / ' + M.steps.length + ' · ' + esc(nm[0]) + '<span>' + esc(nm[1]) + '</span></span>' +
       '<p>' + (s.pre ? '<span class="stp-pre">' + esc(s.pre) + '</span>' : '') + esc(s.text) + (s.tag ? ' <span class="chip">結果:' + esc(s.tag) + '</span>' : '') + '</p>' +
-      (s.note ? '<p class="stp-note">決策線:' + esc(s.note) + '</p>' : '') +
+      (s.note ? '<p class="stp-note">' + (s.notePre != null ? esc(s.notePre) : '決策線:') + esc(s.note) + '</p>' : '') +
       (s.quote ? '<p class="stp-q"><i>他的話</i>「' + esc(s.quote) + '」</p>' : '');
   }
   function stepperHTML(M, id) {
     var L = M.steps.length;
     return '<div class="stp r-' + stepRole(M.steps[0]) + '" id="sp_' + id + '" role="group" aria-label="逐步看這張圖(左右鍵切換)">' +
       '<div class="stp-top"><div class="stp-dots">' + M.steps.map(function (s, i) {
-        return '<button type="button" class="sd r-' + stepRole(s) + '" data-s="' + i + '" aria-label="第 ' + (i + 1) + ' 步:' + STEP_NAME[s.id][0] + '"' + (i === 0 ? ' aria-current="step"' : '') + '><b>' + (i + 1) + '</b><span>' + STEP_NAME[s.id][0] + '</span></button>';
+        var nm = esc(stepNm(s)[0]);
+        return '<button type="button" class="sd r-' + stepRole(s) + '" data-s="' + i + '" aria-label="第 ' + (i + 1) + ' 步:' + nm + '"' + (i === 0 ? ' aria-current="step"' : '') + '><b>' + (i + 1) + '</b><span>' + nm + '</span></button>';
       }).join('') + '</div>' +
       (L > 1 ? '<div class="stp-ctl"><div class="stp-nav"><button type="button" class="btn sm stp-prev" disabled>‹ 上一步</button><button type="button" class="btn sm primary stp-next">下一步 ›</button></div></div>' : '') + '</div>' +
       '<div class="stp-card"><div class="stp-txt" aria-live="polite">' + stepCardHTML(M, 0) + '</div>' +
@@ -1799,9 +1854,643 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
   function mountFigure(id) {
     var host = document.getElementById('ac_' + id), F = FIGS[id];
     if (!host || !F) return null;
-    var ch = new AChart(host, F.item, { model: F.M, step: 0 });
+    var ch = F.diag ? new DChart(host, F.diag, { model: F.M, fnTxt: F.fnTxt }) : new AChart(host, F.item, { model: F.M, step: 0 });
     bindFigure(id, ch);
     return ch;
+  }
+
+  /* ============================================================
+     示意圖(SVG):五個基本元件 bars / blocks / ladder / path / sequence
+     資料格式:DIAGRAM_SCHEMA.md;設計:DESIGN_NOTES_v3_diagram.md
+     版面(座標、文字位置、圖高)只由資料與寬度決定,與「第幾步」無關;
+     每一步只決定元素顯示/淡化(與走勢圖步驟器同一套按鈕、說明區固定高度),切換時圖不會跳動。
+     顏色:藍 = 賺(+)、橙 = 賠(−)、灰 = 中性、紫 = 第二組;紅綠不用(只留給真實 K 線)。
+     ============================================================ */
+  var DG_KINDS = { bars: 1, blocks: 1, ladder: 1, path: 1, sequence: 1 };
+  var DG_TONES = { pos: 1, neg: 1, neu: 1, alt: 1, key: 1 };
+  function diagList(s) {
+    var d = s ? (s.diagram || s.diagrams) : null;
+    return (isArr(d) ? d : (d ? [d] : [])).filter(diagUsable);
+  }
+  function diagUsable(d) {
+    if (!d || typeof d !== 'object' || !DG_KINDS[d.kind] || d.keep === false) return false;
+    if (d.kind === 'ladder') return arr(d.levels).length > 0 || arr(d.columns).some(function (c) { return c && arr(c.levels).length; });
+    if (d.kind === 'path') return arr(d.series).some(function (x) { return x && arr(x.points).length > 1; });
+    if (d.kind === 'bars') return arr(d.groups).some(function (g) { return g && arr(g.bars).length; });
+    return arr(d.rows).length > 0;
+  }
+  function dgHasPending(o) {
+    if (isArr(o)) return o.some(dgHasPending);
+    if (!o || typeof o !== 'object') return false;
+    if (o.pending === true) return true;
+    for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k) && k !== 'pending_check' && typeof o[k] === 'object' && dgHasPending(o[k])) return true;
+    return false;
+  }
+  /* 步驟:show = 這一步加入哪些元素(累加);focus = 這一步亮哪些(其餘淡化);沒列進任何 show 的元素一開始就在 */
+  function diagModel(d) {
+    var steps = arr(d.steps).filter(function (s) { return s && (s.text || s.title); }).map(function (s, i) {
+      return { name: String(s.title || ('第 ' + (i + 1) + ' 步')), sub: String(s.sub || ''), text: String(s.text || ''), note: s.note ? String(s.note) : '', notePre: '',
+        role: { ctx: 1, judge: 1, out: 1, all: 1, det: 1 }[s.role] ? s.role : 'judge',
+        show: arr(s.show).map(String), focus: s.focus === 'all' ? 'all' : (isArr(s.focus) ? s.focus.map(String) : null) };
+    });
+    if (!steps.length) steps.push({ name: '全部', sub: '', text: String(d.caption || d.title || ''), role: 'all', show: [], focus: 'all' });
+    else if (steps[steps.length - 1].focus !== 'all') steps.push({ name: '全部', sub: '所有元素一次看', text: String(d.all_text || '所有元素一次看;這張圖的重點寫在圖下。'), role: 'all', show: [], focus: 'all', auto: true });
+    var listed = {}, acc = {};
+    steps.forEach(function (s) { s.show.forEach(function (k) { listed[k] = 1; }); });
+    steps.forEach(function (s) {
+      s.show.forEach(function (k) { acc[k] = 1; });
+      s.vis = {}; for (var k in acc) s.vis[k] = 1;
+      var f = s.focus === 'all' ? null : (s.focus || s.show);
+      s.foc = null; s.focP = {};
+      if (f && f.length) {
+        s.foc = {};
+        f.forEach(function (k) { s.foc[k] = 1; var p = k.split('.'); while (p.length > 1) { p.pop(); s.focP[p.join('.')] = 1; } });
+      }
+    });
+    return { steps: steps, listed: listed };
+  }
+  function dgOp(M, si) {
+    var st = M.steps[si];
+    return function (id, pid) {
+      var v = (id && M.listed[id]) ? st.vis[id] : ((pid && M.listed[pid]) ? st.vis[pid] : 1);
+      if (!v) return 0;
+      if (!st.foc) return 1;
+      return (st.foc[id] || st.focP[id] || (pid && st.foc[pid])) ? 1 : 0.26;
+    };
+  }
+  /* 量字寬(與 SVG 同字型) */
+  var MEAS = null;
+  function tw(t, sz, w) {
+    if (!MEAS) MEAS = document.createElement('canvas').getContext('2d');
+    MEAS.font = (w || 400) + ' ' + sz + 'px ' + colors().font;
+    return MEAS.measureText(String(t)).width;
+  }
+  function dgWrap(t, maxW, sz, w, maxL) {
+    t = String(t == null ? '' : t);
+    if (!t) return [];
+    var toks = t.match(/[0-9A-Za-z.,~%+\-−→()×:\/]+|[\s\S]/g) || [], lines = [], cur = '', cut = false;
+    for (var i = 0; i < toks.length; i++) {
+      var k = toks[i];
+      if (cur && tw(cur + k, sz, w) > maxW) {
+        lines.push(cur.replace(/\s+$/, ''));
+        if (lines.length === maxL) { cut = true; break; }
+        cur = k.replace(/^\s+/, '');
+      } else cur += k;
+    }
+    if (cut) {
+      var last = lines[maxL - 1];
+      while (last.length > 1 && tw(last + '…', sz, w) > maxW) last = last.slice(0, -1);
+      lines[maxL - 1] = last + '…';
+    } else if (cur) lines.push(cur);
+    return lines;
+  }
+  function dgFit(t, maxW, sz, w) { return dgWrap(t, maxW, sz, w, 1)[0] || ''; }
+  function dgId(o, fb) { if (!o._id) o._id = (o.id != null && o.id !== '') ? String(o.id) : fb; return o._id; }
+  function dgRange(o) {
+    var r = o && (isArr(o.range) ? o.range : (isArr(o.value) ? o.value : null));
+    if (r && r.length === 2 && num(r[0]) && num(r[1])) return r[0] <= r[1] ? [r[0], r[1]] : [r[1], r[0]];
+    return null;
+  }
+  function dgV(o) { if (num(o.value)) return o.value; var r = dgRange(o); return r ? (r[0] + r[1]) / 2 : 0; }
+  function dgNum(a) {
+    a = Math.round(Math.abs(a) * 1000) / 1000;
+    var s = String(a);
+    if (a >= 10000) { var p = s.split('.'); s = groupInt(p[0]) + (p[1] ? '.' + p[1] : ''); }
+    return s;
+  }
+  function dgUnit(u) { u = u == null ? '' : String(u); return !u ? '' : (/^[A-Za-z%]+$/.test(u) ? u : ' ' + u); }
+  /* 正負號:R 一律帶號(+0.3R / −1R);金額、價位只標負號 */
+  function dgFmt(v, u, sg) {
+    if (!num(v)) return '';
+    var z = Math.abs(v) < 1e-9;
+    return (z ? '' : v < 0 ? '−' : (sg ? '+' : '')) + dgNum(z ? 0 : v) + dgUnit(u);
+  }
+  function dgFmtR(r, u, sg) { return dgFmt(r[0], '', sg) + '~' + dgFmt(r[1], '', sg && ((r[0] < 0) !== (r[1] < 0))) + dgUnit(u); }
+  function dgTone(o, v) { return DG_TONES[o && o.tone] ? o.tone : (v < 0 ? 'neg' : 'pos'); }
+  function pk(o) { return o && o.pending ? ' ※' : ''; }
+  /* SVG 小工具(y 一律是文字的垂直中線) */
+  function rr(v) { return Math.round(v * 10) / 10; }
+  function sT(x, y, s, o) {
+    o = o || {}; var sz = o.sz || 13;
+    return '<text x="' + rr(x) + '" y="' + rr(y + sz * 0.36) + '" font-size="' + sz + '"' + (o.w ? ' font-weight="' + o.w + '"' : '') +
+      (o.a && o.a !== 'start' ? ' text-anchor="' + o.a + '"' : '') + (o.c ? ' class="' + o.c + '"' : '') + '>' + esc(s) + '</text>';
+  }
+  function sR(x, y, w, h, c, rx) { return '<rect x="' + rr(x) + '" y="' + rr(y) + '" width="' + rr(Math.max(0, w)) + '" height="' + rr(Math.max(0, h)) + '"' + (rx ? ' rx="' + rx + '"' : '') + ' class="' + c + '"/>'; }
+  function sL(x1, y1, x2, y2, c, da, sw) {
+    return '<line x1="' + rr(x1) + '" y1="' + rr(y1) + '" x2="' + rr(x2) + '" y2="' + rr(y2) + '" class="' + c + '"' + (da ? ' stroke-dasharray="' + da + '"' : '') + (sw ? ' stroke-width="' + sw + '"' : '') + '/>';
+  }
+  function sC(x, y, r, c) { return '<circle cx="' + rr(x) + '" cy="' + rr(y) + '" r="' + r + '" class="' + c + '"/>'; }
+  function sG(op, inner) {
+    if (!inner) return '';
+    if (op <= 0) return '<g opacity="0" visibility="hidden" aria-hidden="true">' + inner + '</g>';
+    return '<g' + (op < 1 ? ' opacity="' + op + '"' : '') + '>' + inner + '</g>';
+  }
+  function sPill(x, y, s, o) {
+    var sz = o.sz || 12, w = tw(s, sz, o.w || 600) + 10, h = sz + 7, x0 = o.a === 'end' ? x - w : (o.a === 'middle' ? x - w / 2 : x);
+    if (num(o.min)) x0 = Math.max(o.min, x0);
+    if (num(o.max)) x0 = Math.min(o.max - w, x0);
+    return { svg: sR(x0, y - h / 2, w, h, 'pillbg', h / 2) + sT(x0 + w / 2, y, s, { sz: sz, w: o.w || 600, a: 'middle', c: o.c }), box: { x: x0, y: y - h / 2, w: w, h: h } };
+  }
+  function ticksFor(lo, hi, n) { var st = niceStep((hi - lo) / n), out = []; for (var v = Math.ceil(lo / st - 1e-9) * st; v <= hi + 1e-9; v += st) out.push(Math.round(v / st) * st); return out; }
+
+  /* ---------- bars:長條/堆疊/累積 ---------- */
+  function rBars(d, W, nar, op, P) {
+    var fs = nar ? 12 : 13, sfs = nar ? 11 : 12, unit = d.unit != null ? String(d.unit) : 'R';
+    var sg = d.signed != null ? !!d.signed : unit === 'R';
+    var H = num(d.height) ? d.height : (nar ? 300 : 330);
+    var groups = arr(d.groups).filter(function (g) { return g && typeof g === 'object'; });
+    groups.forEach(function (g, gi) {
+      dgId(g, 'g' + (gi + 1));
+      g._bars = arr(g.bars).filter(function (b) { return b && (num(b.value) || dgRange(b)); });
+      g._bars.forEach(function (b, bi) { dgId(b, g._id + '.' + (bi + 1)); });
+      g._cols = g.stack ? 1 : g._bars.length;
+    });
+    groups = groups.filter(function (g) { return g._bars.length; });
+    var lo = 0, hi = 0;
+    groups.forEach(function (g) {
+      if (g.stack) { var p = 0, n = 0; g._bars.forEach(function (b) { var v = dgV(b); if (v >= 0) p += v; else n += v; }); hi = Math.max(hi, p); lo = Math.min(lo, n); return; }
+      var run = 0;
+      g._bars.forEach(function (b) {
+        var r = dgRange(b) || [b.value, b.value];
+        hi = Math.max(hi, r[1]); lo = Math.min(lo, r[0]);
+        if (g.cumulative) { run += dgV(b); hi = Math.max(hi, run); lo = Math.min(lo, run); }
+      });
+    });
+    var refs = arr(d.ref_lines).filter(function (r) { return r && (num(r.value) || dgRange(r)); });
+    refs.forEach(function (r, i) { dgId(r, 'ref' + (i + 1)); var q = dgRange(r) || [r.value, r.value]; hi = Math.max(hi, q[1]); lo = Math.min(lo, q[0]); });
+    if (num(d.y_max)) hi = d.y_max;
+    if (num(d.y_min)) lo = d.y_min;
+    if (!(hi > lo)) hi = lo + 1;
+    var span = hi - lo, hiP = hi + span * 0.17, loP = lo < 0 ? lo - span * 0.17 : lo;
+    var axis = d.axis !== false, gx = P.x0 + (axis ? (nar ? 38 : 46) : 0), gap = nar ? 14 : 24, ncol = 0;
+    groups.forEach(function (g) { ncol += g._cols; });
+    var slot = (P.x1 - gx - gap * groups.length) / Math.max(1, ncol), bw = Math.min(slot * 0.62, nar ? 46 : 62);
+    var blMax = 0, glMax = 0;
+    groups.forEach(function (g) {
+      g._gl = g.label ? dgWrap(g.label + pk(g), slot * g._cols + gap * 0.7, fs, 700, 2) : [];
+      glMax = Math.max(glMax, g._gl.length);
+      g._bars.forEach(function (b) { b._bl = (!g.stack && b.label) ? dgWrap(b.label, slot - 2, sfs, 400, 2) : []; blMax = Math.max(blMax, b._bl.length); });
+    });
+    var blH = blMax * (sfs + 3), glH = glMax * (fs + 4);
+    var py0 = P.top + 8, py1 = H - 10 - glH - (blH ? blH + 4 : 0) - 6;
+    function Y(v) { return py0 + (hiP - v) / (hiP - loP) * (py1 - py0); }
+    var back = '', out = '', front = '', obst = [];
+    if (axis) ticksFor(loP, hiP, nar ? 3.5 : 4.5).forEach(function (v) {
+      var yy = Math.round(Y(v)) + 0.5;
+      back += sL(gx, yy, P.x1, yy, 'grd') + sT(gx - 6, yy, dgFmt(v, unit, false), { sz: sfs, a: 'end', c: 'dt-f' });
+    });
+    var y0 = Math.round(Y(0)) + 0.5;
+    back += sL(gx, y0, P.x1, y0, 'ax0', '', 1.2);
+    refs.forEach(function (r) {
+      var q = dgRange(r);
+      if (q) back += sG(op(r._id), sR(gx, Y(q[1]), P.x1 - gx, Math.max(2, Y(q[0]) - Y(q[1])), 'f-' + (DG_TONES[r.tone] ? r.tone : 'neu') + ' lt'));
+    });
+    var cx = gx + gap / 2, ly0 = py1 + 8;
+    groups.forEach(function (g) {
+      var gw = slot * g._cols, gs = '';
+      if (g.stack) {
+        var c = cx + gw / 2, pb = 0, nb = 0;
+        g._bars.forEach(function (b) {
+          var v = dgV(b), a, z;
+          if (v >= 0) { a = pb; z = pb + v; pb = z; } else { a = nb + v; z = nb; nb = a; }
+          var yt = Y(z), yb = Y(a), s = sR(c - bw / 2, yt, bw, Math.max(1, yb - yt), 'f-' + dgTone(b, v) + ' sep' + (b.pending ? ' pend' : ''));
+          obst.push({ x: c - bw / 2, y: yt, w: bw, h: yb - yt });
+          var lab = (b.text || dgFmt(v, unit, sg)) + pk(b);
+          if (yb - yt >= sfs + 3 && tw(lab, sfs, 600) <= bw - 4) s += sT(c, (yt + yb) / 2, lab, { sz: sfs, w: 600, a: 'middle', c: 'dt-on' });
+          gs += sG(op(b._id, g._id), s);
+        });
+        var tot = g.total_label || ('合計 ' + dgFmt(pb + nb, unit, sg));
+        var tw2 = tw(tot, fs, 700);
+        obst.push({ x: c - tw2 / 2, y: Y(pb) - 10 - fs / 2 - 1, w: tw2, h: fs + 2 });
+        gs += sG(op(g._id + '.total', g._id), sT(c, Y(pb) - 10, tot, { sz: fs, w: 700, a: 'middle' }));
+      } else {
+        var run = 0, pts = [];
+        g._bars.forEach(function (b, bi) {
+          var c2 = cx + slot * (bi + 0.5), v = dgV(b), q = dgRange(b), tone = dgTone(b, q ? q[1] : v), s = '';
+          if (q) {
+            if (q[0] > 0) s += sR(c2 - bw / 2, Y(q[0]), bw, Math.max(1, Y(0) - Y(q[0])), 'f-' + tone);
+            var qa = q[0] > 0 ? q[0] : Math.min(0, q[0]);
+            s += sR(c2 - bw / 2, Y(q[1]), bw, Math.max(1, Y(qa) - Y(q[1])), 'f-' + tone + ' lt');
+            s += sR(c2 - bw / 2 + 0.5, Y(q[1]) + 0.5, bw - 1, Math.max(1, Y(qa) - Y(q[1]) - 1), 'nf s-' + tone + (b.pending ? ' pend' : ''));
+            obst.push({ x: c2 - bw / 2, y: Y(q[1]), w: bw, h: Y(Math.min(0, q[0])) - Y(q[1]) });
+          } else {
+            s += sR(c2 - bw / 2, Math.min(Y(0), Y(v)), bw, Math.max(1, Math.abs(Y(0) - Y(v))), 'f-' + tone + (b.pending ? ' pend' : ''));
+            obst.push({ x: c2 - bw / 2, y: Math.min(Y(0), Y(v)), w: bw, h: Math.abs(Y(0) - Y(v)) });
+          }
+          var lab = dgFit((b.text || (q ? dgFmtR(q, unit, sg) : dgFmt(v, unit, sg))) + pk(b), slot + gap * 0.6, fs, 700), top = q ? q[1] : v;
+          var ly = top >= 0 ? Y(top) - 10 : Y(q ? q[0] : v) + 11, lw2 = tw(lab, fs, 700);
+          obst.push({ x: c2 - lw2 / 2, y: ly - fs / 2 - 1, w: lw2, h: fs + 2 });
+          s += sT(c2, ly, lab, { sz: fs, w: 700, a: 'middle', c: 'dt-' + tone });
+          b._bl.forEach(function (ln, j) { s += sT(c2, ly0 + sfs / 2 + j * (sfs + 3), ln, { sz: sfs, a: 'middle', c: 'dt-m' }); });
+          gs += sG(op(b._id, g._id), s);
+          run += v; pts.push([c2, Y(run)]);
+        });
+        if (g.cumulative && pts.length > 1) {
+          var cs = '<path class="s-key" stroke-width="1.6" d="M' + pts.map(function (p) { return rr(p[0]) + ' ' + rr(p[1]); }).join(' L') + '"/>';
+          pts.forEach(function (p) { cs += sC(p[0], p[1], 3.2, 'f-key ring'); });
+          var lp = pts[pts.length - 1];
+          cs += sPill(lp[0], lp[1] - 14, (g.cumulative_label || '累積 ' + dgFmt(run, unit, sg)), { sz: sfs, a: 'middle', c: 'dt-key', min: gx, max: P.x1 }).svg;
+          front += sG(op(g._id + '.cum', g._id), cs);
+        }
+      }
+      var gy = ly0 + (blH ? blH + 4 : 0);
+      g._gl.forEach(function (ln, j) { gs += sT(cx + gw / 2, gy + fs / 2 + j * (fs + 4), ln, { sz: fs, w: 700, a: 'middle' }); });
+      out += sG(op(g._id), gs);
+      cx += gw + gap;
+    });
+    /* 參考線的文字:右上 → 左上 → 右下 → 左下 → 各欄之間,挑第一個不壓到長條與數值的位置 */
+    refs.forEach(function (r) {
+      var q = dgRange(r), tone = DG_TONES[r.tone] ? r.tone : 'key', yT = Math.round(Y(q ? q[1] : r.value)) + 0.5, yB = Math.round(Y(q ? q[0] : r.value)) + 0.5, s = '';
+      if (!q) s += sL(gx, yT, P.x1, yT, 's-' + tone, '6 4', 1.4);
+      var lab = (r.label || (q ? dgFmtR(q, unit, sg) : dgFmt(r.value, unit, sg))) + pk(r), pw = tw(lab, sfs, 600) + 10, ph = sfs + 7;
+      var C = [[P.x1 - 2 - pw, yT - ph - 2], [gx + 4, yT - ph - 2], [P.x1 - 2 - pw, yB + 2], [gx + 4, yB + 2]];
+      var cx2 = gx + gap / 2;
+      groups.forEach(function (g, gi) { cx2 += slot * g._cols; if (gi < groups.length - 1) C.push([cx2 + gap / 2 - pw / 2, yT - ph - 2], [cx2 + gap / 2 - pw / 2, yB + 2]); cx2 += gap; });
+      var best = null;
+      C.forEach(function (c) {
+        if (best) return;
+        var bx = { x: clamp(c[0], gx + 2, P.x1 - 2 - pw), y: c[1], w: pw, h: ph };
+        if (bx.y < P.top - 2 || bx.y + ph > py1 + 2) return;
+        if (obst.some(function (o) { return bx.x < o.x + o.w + 2 && o.x < bx.x + pw + 2 && bx.y < o.y + o.h + 1 && o.y < bx.y + ph + 1; })) return;
+        best = bx;
+      });
+      if (!best) best = { x: P.x1 - 2 - pw, y: yT - ph - 2, w: pw, h: ph };
+      obst.push(best);
+      s += sPill(best.x, best.y + ph / 2, lab, { sz: sfs, c: 'dt-' + (tone === 'neu' ? 'm' : tone) }).svg;
+      front += sG(op(r._id), s);
+    });
+    return { H: H, svg: back + out + front };
+  }
+
+  /* ---------- blocks:方塊格(等分 / 不等比 / 配比) ---------- */
+  function rBlocks(d, W, nar, op, P) {
+    var fs = nar ? 12.5 : 13.5, sfs = nar ? 11.5 : 12.5, bh = nar ? 30 : 34, IW = P.x1 - P.x0, y = P.top + 6, out = '';
+    arr(d.rows).forEach(function (r, ri) {
+      if (!r || typeof r !== 'object') return;
+      dgId(r, 'row' + (ri + 1));
+      var ws = isArr(r.weights) && r.weights.length ? r.weights.map(Number).filter(function (x) { return x > 0; }) : null;
+      var n = ws ? ws.length : clamp(Math.round(Number(r.parts) || 1), 1, 200), k;
+      if (!ws) { ws = []; for (k = 0; k < n; k++) ws.push(1); }
+      var tot = 0; ws.forEach(function (w) { tot += w; });
+      var lab = String(r.label || '') + pk(r), note = String(r.note || ''), lw = tw(lab, fs, 700), two = note && lw + tw(note, sfs) + 16 > IW, head = '';
+      head += sT(P.x0, y + fs / 2 + 1, dgFit(lab, IW, fs, 700), { sz: fs, w: 700 });
+      if (note) head += two ? sT(P.x0, y + fs + 6 + sfs / 2, dgFit(note, IW, sfs), { sz: sfs, c: 'dt-m' }) : sT(P.x1, y + fs / 2 + 1, note, { sz: sfs, a: 'end', c: 'dt-m' });
+      var hy = y + (two ? fs + sfs + 14 : fs + 9), bwid = IW * (num(r.scale) ? clamp(r.scale, 0.01, 1) : 1), x = P.x0;
+      var gp = bwid / n >= 8 ? 2 : (bwid / n >= 4 ? 1 : 0), marks = {}, cells = '';
+      arr(r.mark).forEach(function (m) { marks[m] = 1; });
+      ws.forEach(function (w, j) {
+        var cw = bwid * w / tot, cell = arr(r.cells)[j], co = (cell && typeof cell === 'object') ? cell : { label: cell };
+        var on = r.mark === 'all' || marks[j + 1] || co.on === true, tone = DG_TONES[co.tone] ? co.tone : (DG_TONES[r.tone] ? r.tone : 'pos');
+        var s = sR(x + gp / 2, hy, cw - gp, bh, on ? 'f-' + tone : 'cell', 3);
+        var cl = (co.label != null && co.label !== '') ? String(co.label) : (r.show_pct ? (Math.round(w / tot * 1000) / 10) + '%' : (isArr(r.weights) ? String(w) : ''));
+        if (cl && tw(cl, sfs, 600) <= cw - 6) s += sT(x + cw / 2, hy + bh / 2, cl, { sz: sfs, w: 600, a: 'middle', c: on ? 'dt-on' : 'dt-m' });
+        cells += sG(op(r._id + '.' + (j + 1), r._id), s);
+        x += cw;
+      });
+      if (bwid < IW - 1) head += sR(P.x0 + bwid, hy, IW - bwid, bh, 'cell', 3).replace('class="cell"', 'class="cell" fill-opacity="0" stroke-dasharray="3 3"');
+      var fy = hy + bh + 6 + sfs / 2, foot = '';
+      if (r.mark_label) foot += sT(P.x0, fy, dgFit(r.mark_label, r.total_label ? IW * 0.6 : IW, sfs, 600), { sz: sfs, w: 600, c: 'dt-' + (DG_TONES[r.tone] ? r.tone : 'pos') });
+      if (r.total_label) foot += sT(P.x1, fy, dgFit(r.total_label, r.mark_label ? IW * 0.38 : IW, sfs), { sz: sfs, a: 'end', c: 'dt-m' });
+      out += sG(op(r._id), head + foot) + cells;
+      y = hy + bh + (foot ? sfs + 10 : 0) + (nar ? 16 : 20);
+    });
+    return { H: y, svg: out };
+  }
+
+  /* ---------- ladder:垂直價位梯(子彈、均價、停損/強平、逃脫線、放棄門檻;可分欄比較) ---------- */
+  var LV_K = { bullet: ['pos', ''], avg: ['key', '6 4'], cost: ['key', ''], stop: ['neg', '6 4'], liq: ['neg', ''], escape: ['alt', '2 3'], target: ['pos', '6 4'], floor: ['neg', ''], start: ['neu', ''], level: ['neu', ''] };
+  function dgLevelText(l, showV, unit) {
+    var s = String(l.label || '');
+    if (showV && l.show_value !== false) {
+      var q = dgRange(l), vs = q ? dgFmtR(q, unit, false) : dgFmt(l.value, unit, false), core = q ? dgNum(q[0]) : dgNum(l.value);
+      if (vs && s.replace(/[,\s]/g, '').indexOf(core) < 0) s = s ? s + ' ' + vs : vs;
+    }
+    return s + pk(l);
+  }
+  function rLadder(d, W, nar, op, P) {
+    var fs = nar ? 12 : 13, sfs = nar ? 11.5 : 12.5, unit = d.unit != null ? String(d.unit) : '', showV = d.show_values !== false;
+    var H = num(d.height) ? d.height : (nar ? 340 : 380), solo = !arr(d.columns).length;
+    function ok(l) { return l && typeof l === 'object' && (num(l.value) || dgRange(l)); }
+    var cols = solo ? [{ id: '_col', label: '', levels: arr(d.levels) }] : arr(d.columns).filter(function (c) { return c && typeof c === 'object'; });
+    var shared = solo ? [] : arr(d.levels).filter(ok), byId = {}, vals = [];
+    cols.forEach(function (c, ci) {
+      dgId(c, 'col' + (ci + 1));
+      c._lv = arr(c.levels).filter(ok);
+      c._lv.forEach(function (l, li) { dgId(l, (solo ? 'lv' : c._id + '.') + (li + 1)); l._c = ci; l._pid = solo ? '' : c._id; byId[l._id] = l; });
+    });
+    shared.forEach(function (l, li) { dgId(l, 'L' + (li + 1)); l._c = -1; l._pid = ''; byId[l._id] = l; });
+    function pushV(l) { var q = dgRange(l); if (q) vals.push(q[0], q[1]); else vals.push(l.value); }
+    cols.forEach(function (c) { c._lv.forEach(pushV); });
+    shared.forEach(pushV);
+    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+    if (num(d.y_min)) lo = d.y_min;
+    if (num(d.y_max)) hi = d.y_max;
+    var span = hi - lo; if (!(span > 0)) span = Math.abs(hi) * 0.05 || 1;
+    var loP = lo - span * 0.12, hiP = hi + span * 0.12;
+    var hasHead = !solo && cols.some(function (c) { return c.label; }), ticks = showV && d.axis_ticks === true;
+    var gx = P.x0 + (ticks ? (nar ? 42 : 52) : 0), py0 = P.top + (hasHead ? fs + 20 : 12), py1 = H - 12;
+    function Y(v) { return py0 + (hiP - v) / (hiP - loP) * (py1 - py0); }
+    var out = '', colW = (P.x1 - gx) / cols.length, lh = sfs + 4;
+    if (ticks) ticksFor(loP, hiP, nar ? 4 : 5).forEach(function (v) {
+      var yy = Math.round(Y(v)) + 0.5;
+      out += sL(gx, yy, P.x1, yy, 'grd') + sT(gx - 6, yy, dgFmt(v, '', false), { sz: sfs - 0.5, a: 'end', c: 'dt-f' });
+    });
+    cols.forEach(function (c, ci) {
+      var cx0 = gx + ci * colW, multi = cols.length > 1;
+      var lx0 = cx0 + (ci || ticks ? 12 : 4), lx1 = cx0 + colW * (nar ? (multi ? 0.40 : 0.34) : (multi ? 0.38 : 0.30)), labX = lx1 + 8, labW = cx0 + colW - 6 - labX;
+      c._g = { lx0: lx0, lx1: lx1 };
+      if (ci) out += sL(Math.round(cx0) + 0.5, py0 - 8, Math.round(cx0) + 0.5, py1 + 4, 'ax', '2 4');
+      var hs = hasHead && c.label ? sT(cx0 + (ci ? 12 : 4), P.top + fs / 2 + 4, dgFit(c.label + pk(c), colW - 16, fs, 700), { sz: fs, w: 700 }) : '';
+      var L = c._lv.map(function (l) {
+        var q = dgRange(l), yv = q ? (Y(q[0]) + Y(q[1])) / 2 : Y(l.value), lines = dgWrap(dgLevelText(l, showV, unit), labW, sfs, 600, 2);
+        return { l: l, y: yv, lines: lines, h: Math.max(1, lines.length) * lh + 2 };
+      }).sort(function (p, q) { return p.y - q.y; });
+      var prev = py0 - 10, k;
+      L.forEach(function (o) { o.t = Math.max(o.y - o.h / 2, prev + 2); prev = o.t + o.h; });
+      var nxt = py1 + 10;
+      for (k = L.length - 1; k >= 0; k--) { L[k].t = Math.min(L[k].t, nxt - 2 - L[k].h); nxt = L[k].t; }
+      var lv = '';
+      L.forEach(function (o) {
+        var l = o.l, kd = LV_K[l.kind] || LV_K.level, tone = DG_TONES[l.tone] ? l.tone : kd[0], q = dgRange(l), s = '';
+        if (q) {
+          var ya = Y(q[1]), yb = Y(q[0]);
+          s += sR(lx0, ya, lx1 - lx0, Math.max(2, yb - ya), 'f-' + tone + ' lt') + sL(lx0, ya, lx1, ya, 's-' + tone, kd[1], 1.4) + sL(lx0, yb, lx1, yb, 's-' + tone, kd[1], 1.4);
+        } else {
+          var yy = Math.round(o.y) + 0.5;
+          s += sL(lx0, yy, lx1, yy, 's-' + tone, kd[1] || (l.pending ? '3 2' : ''), (l.kind === 'floor' || l.kind === 'avg') ? 2.4 : 1.7);
+          if (l.kind === 'bullet') s += sC(lx0 + 9, yy, nar ? 5 : 5.5, 'f-' + tone + ' ring');
+        }
+        var cy = o.t + o.h / 2;
+        if (Math.abs(cy - o.y) > 3) s += sL(lx1 + 1, o.y, labX - 2, cy, 's-' + tone, '', 1);
+        o.lines.forEach(function (ln, j) { s += sT(labX, o.t + 1 + lh / 2 + j * lh, ln, { sz: sfs, w: 600, c: 'dt-' + (tone === 'neu' ? 'm' : tone) }); });
+        lv += sG(op(l._id, l._pid), s);
+      });
+      out += sG(solo ? 1 : op(c._id), hs) + lv;
+    });
+    shared.forEach(function (l) {
+      var kd = LV_K[l.kind] || LV_K.level, tone = DG_TONES[l.tone] ? l.tone : kd[0], q = dgRange(l), s = '', yy;
+      if (q) { s += sR(gx, Y(q[1]), P.x1 - gx, Math.max(2, Y(q[0]) - Y(q[1])), 'f-' + tone + ' lt'); yy = Y(q[1]); }
+      else { yy = Math.round(Y(l.value)) + 0.5; s += sL(gx, yy, P.x1, yy, 's-' + tone, kd[1], 1.7); }
+      s += sPill(P.x1 - 2, yy - (sfs + 7) / 2 - 2, dgLevelText(l, showV, unit), { sz: sfs, a: 'end', c: 'dt-' + (tone === 'neu' ? 'm' : tone), min: gx }).svg;
+      out += sG(op(l._id), s);
+    });
+    arr(d.gaps).forEach(function (g, gi) {
+      if (!g || typeof g !== 'object') return;
+      dgId(g, 'gap' + (gi + 1));
+      var a = byId[String(g.from)], b = byId[String(g.to)];
+      if (!a || !b) return;
+      var c = cols[a._c >= 0 ? a._c : (b._c >= 0 ? b._c : 0)], ya = Y(dgV(a)), yb = Y(dgV(b)), xb = c._g.lx0 + (c._g.lx1 - c._g.lx0) * 0.64;
+      var t = Math.min(ya, yb) + 3, bt = Math.max(ya, yb) - 3, s = '';
+      if (bt - t > 4) s += sL(xb, t, xb, bt, 's-key', '', 1.2) + sL(xb - 4, t, xb + 4, t, 's-key', '', 1.2) + sL(xb - 4, bt, xb + 4, bt, 's-key', '', 1.2);
+      if (g.label) s += sPill(xb, (ya + yb) / 2, String(g.label) + pk(g), { sz: sfs - 0.5, a: 'middle', c: 'dt-key', min: P.x0 }).svg;
+      out += sG(op(g._id, a._pid || ''), s);
+    });
+    return { H: H, svg: out };
+  }
+
+  /* ---------- path:示意折線(洗刷走勢、累積 R、淨值曲線;可標點、加帶狀區) ---------- */
+  function rPath(d, W, nar, op, P) {
+    var fs = nar ? 12 : 13, sfs = nar ? 11 : 12, ab = d.abstract === true, unit = d.unit != null ? String(d.unit) : '', sg = d.signed != null ? !!d.signed : unit === 'R';
+    var TN = ['pos', 'alt', 'neu', 'neg', 'key'];
+    function okPt(p) { return isArr(p) && num(p[0]) && num(p[1]); }
+    var series = arr(d.series).filter(function (s) { return s && arr(s.points).filter(okPt).length > 1; });
+    series.forEach(function (s, i) { dgId(s, 's' + (i + 1)); s._p = arr(s.points).filter(okPt); s._t = DG_TONES[s.tone] ? s.tone : TN[i % TN.length]; });
+    var marks = arr(d.marks).filter(function (m) { return m && num(m.x) && num(m.y); });
+    var vb = arr(d.vbands).filter(function (b) { return b && isArr(b.x) && num(b.x[0]) && num(b.x[1]); });
+    var hb = arr(d.hbands).filter(function (b) { return b && isArr(b.y) && num(b.y[0]) && num(b.y[1]); });
+    var hl = arr(d.hlines).filter(function (h) { return h && num(h.y); });
+    /* 圖例(在圖上方,依寬度換行;高度只由寬度決定) */
+    var leg = '', lx = P.x0, lrow = sfs + 9, ly = P.top + lrow / 2, rows = 0;
+    series.forEach(function (s) {
+      if (!s.label) return;
+      if (!rows) rows = 1;
+      var t = dgFit(s.label + pk(s), P.x1 - P.x0 - 34, sfs, 600), w = 26 + tw(t, sfs, 600) + 14;
+      if (lx > P.x0 && lx + w > P.x1) { lx = P.x0; ly += lrow; rows++; }
+      leg += sG(op(s._id), sL(lx, ly, lx + 20, ly, 's-' + s._t, s.dash ? '5 3' : '', 2.6) + sT(lx + 26, ly, t, { sz: sfs, w: 600, c: 'dt-' + (s._t === 'neu' ? 'm' : s._t) }));
+      lx += w;
+    });
+    var legH = rows * lrow;
+    var H = num(d.height) ? d.height : (nar ? 270 : 320) + Math.max(0, rows - 1) * lrow;
+    var gx = P.x0 + (ab ? 2 : (nar ? 40 : 50)), py0 = P.top + legH + (d.y_label ? sfs + 12 : 10);
+    var py1 = H - 8 - (ab ? 4 : sfs + 8) - (d.x_label ? sfs + 6 : 0);
+    var xs = [], ys = [];
+    series.forEach(function (s) { s._p.forEach(function (p) { xs.push(p[0]); ys.push(p[1]); }); });
+    marks.forEach(function (m) { xs.push(m.x); ys.push(m.y); });
+    vb.forEach(function (b) { xs.push(b.x[0], b.x[1]); });
+    hb.forEach(function (b) { ys.push(b.y[0], b.y[1]); });
+    hl.forEach(function (h) { ys.push(h.y); });
+    var xa = num(d.x_min) ? d.x_min : Math.min.apply(null, xs), xz = num(d.x_max) ? d.x_max : Math.max.apply(null, xs);
+    var ya = num(d.y_min) ? d.y_min : Math.min.apply(null, ys), yz = num(d.y_max) ? d.y_max : Math.max.apply(null, ys);
+    if (!(xz > xa)) xz = xa + 1;
+    if (!(yz > ya)) yz = ya + 1;
+    var ysp = yz - ya, yhi = yz + (num(d.y_max) ? 0 : ysp * 0.12), ylo = ya - (num(d.y_min) ? 0 : ysp * 0.06);
+    var px0 = gx + 6, px1 = P.x1 - 6;
+    function X(v) { return px0 + (v - xa) / (xz - xa) * (px1 - px0); }
+    function Y(v) { return py0 + (yhi - v) / (yhi - ylo) * (py1 - py0); }
+    var back = '', out = '';
+    if (!ab) {
+      var yt = isArr(d.y_ticks) ? d.y_ticks.filter(num) : ticksFor(ylo, yhi, nar ? 3.5 : 4.5);
+      yt.forEach(function (v) { var yy = Math.round(Y(v)) + 0.5; if (yy < py0 - 1 || yy > py1 + 1) return; back += sL(gx, yy, P.x1, yy, 'grd') + sT(gx - 6, yy, dgFmt(v, unit, false), { sz: sfs, a: 'end', c: 'dt-f' }); });
+      var xt = isArr(d.x_ticks) ? d.x_ticks : ticksFor(xa, xz, nar ? 3.5 : 6);
+      xt.forEach(function (t) {
+        var v = (t && typeof t === 'object') ? t.x : t, lab = (t && typeof t === 'object' && t.label != null) ? String(t.label) : (num(v) ? dgNum(v) : '');
+        if (!num(v)) return;
+        var xx = X(v);
+        if (xx < px0 - 1 || xx > px1 + 1) return;
+        back += sL(Math.round(xx) + 0.5, py1, Math.round(xx) + 0.5, py1 + 4, 'ax') + sT(xx > P.x1 - 18 ? P.x1 : (xx < gx + 10 ? gx : xx), py1 + 6 + sfs / 2, lab, { sz: sfs, a: xx > P.x1 - 18 ? 'end' : (xx < gx + 10 ? 'start' : 'middle'), c: 'dt-f' });
+      });
+      back += sL(gx, py0 - 4, gx, py1, 'ax');
+    }
+    back += sL(gx, Math.round(py1) + 0.5, P.x1, Math.round(py1) + 0.5, 'ax');
+    if (!ab && ylo < 0 && yhi > 0) back += sL(gx, Math.round(Y(0)) + 0.5, P.x1, Math.round(Y(0)) + 0.5, 'ax0', '', 1);
+    if (d.y_label) back += sT(gx + (ab ? 2 : -2), py0 - sfs / 2 - 6, dgFit(d.y_label, P.x1 - gx, sfs), { sz: sfs, c: 'dt-m' });
+    if (d.x_label) back += sT(P.x1, H - 6 - sfs / 2, dgFit(d.x_label, P.x1 - P.x0, sfs), { sz: sfs, a: 'end', c: 'dt-m' });
+    vb.forEach(function (b, i) {
+      dgId(b, 'vb' + (i + 1));
+      var x0 = X(Math.min(b.x[0], b.x[1])), x1 = X(Math.max(b.x[0], b.x[1])), tone = DG_TONES[b.tone] ? b.tone : 'neu';
+      var s = sR(x0, py0, x1 - x0, py1 - py0, 'f-' + tone + ' lt');
+      if (b.label) s += sT((x0 + x1) / 2, py0 + sfs / 2 + 5, dgFit(b.label + pk(b), Math.max(20, x1 - x0 - 6), sfs, 600), { sz: sfs, w: 600, a: 'middle', c: 'dt-' + (tone === 'neu' ? 'm' : tone) });
+      back += sG(op(b._id), s);
+    });
+    hb.forEach(function (b, i) {
+      dgId(b, 'hb' + (i + 1));
+      var y0 = Y(Math.max(b.y[0], b.y[1])), y1 = Y(Math.min(b.y[0], b.y[1])), tone = DG_TONES[b.tone] ? b.tone : 'neu';
+      var s = sR(gx, y0, P.x1 - gx, Math.max(2, y1 - y0), 'f-' + tone + ' lt');
+      if (b.label) s += sT(gx + 8, y0 + sfs / 2 + 4, dgFit(b.label + pk(b), P.x1 - gx - 16, sfs, 600), { sz: sfs, w: 600, c: 'dt-' + (tone === 'neu' ? 'm' : tone) });
+      back += sG(op(b._id), s);
+    });
+    series.forEach(function (s) {
+      var pts = s._p, dd = 'M' + rr(X(pts[0][0])) + ' ' + rr(Y(pts[0][1]));
+      for (var i = 1; i < pts.length; i++) {
+        if (s.shape === 'step') dd += ' L' + rr(X(pts[i][0])) + ' ' + rr(Y(pts[i - 1][1]));
+        dd += ' L' + rr(X(pts[i][0])) + ' ' + rr(Y(pts[i][1]));
+      }
+      var g = '<path class="s-' + s._t + '" stroke-width="' + (nar ? 2.2 : 2.6) + '" stroke-linejoin="round" stroke-linecap="round"' + (s.dash ? ' stroke-dasharray="6 4"' : '') + ' d="' + dd + '"/>';
+      if (s.dots) pts.forEach(function (p) { g += sC(X(p[0]), Y(p[1]), 3.2, 'f-' + s._t + ' ring'); });
+      out += sG(op(s._id), g);
+    });
+    hl.forEach(function (h, i) {
+      dgId(h, 'hl' + (i + 1));
+      var tone = DG_TONES[h.tone] ? h.tone : 'key', yy = Math.round(Y(h.y)) + 0.5;
+      var s = sL(gx, yy, P.x1, yy, 's-' + tone, '6 4', 1.4) + sPill(P.x1 - 2, yy - (sfs + 7) / 2 - 2, (h.label || dgFmt(h.y, unit, sg)) + pk(h), { sz: sfs, a: 'end', c: 'dt-' + (tone === 'neu' ? 'm' : tone), min: gx }).svg;
+      out += sG(op(h._id), s);
+    });
+    var placed = marks.map(function (m) { return { x: X(m.x) - 6, y: Y(m.y) - 6, w: 12, h: 12 }; });   /* 所有標點本身先佔位 */
+    marks.forEach(function (m, i) {
+      dgId(m, 'm' + (i + 1));
+      var tone = DG_TONES[m.tone] ? m.tone : 'key', mx = X(m.x), my = Y(m.y), s = sC(mx, my, 4.6, 'f-' + tone + ' ring');
+      if (m.label) {
+        var t = String(m.label) + pk(m), w = tw(t, sfs, 600) + 10, h = sfs + 7, best = null;
+        var C = [[mx + 9, my - h - 5], [mx - w - 9, my - h - 5], [mx + 9, my + 5], [mx - w - 9, my + 5], [mx - w / 2, my - h - 11], [mx - w / 2, my + 11]], k;
+        for (k = 1; k <= 4; k++) C.push([mx + 9, my - h - 5 - k * (h + 4)], [mx - w - 9, my - h - 5 - k * (h + 4)], [mx + 9, my + 5 + k * (h + 4)]);
+        for (k = 0; k < C.length && !best; k++) {
+          var bx = { x: C[k][0], y: C[k][1], w: w, h: h };
+          if (bx.x < gx + 2 || bx.x + w > P.x1 - 2 || bx.y < py0 - 6 || bx.y + h > py1 - 2) continue;
+          if (placed.some(function (q) { return bx.x < q.x + q.w + 3 && q.x < bx.x + w + 3 && bx.y < q.y + q.h + 3 && q.y < bx.y + h + 3; })) continue;
+          best = bx;
+        }
+        if (!best) best = { x: clamp(C[0][0], gx + 2, P.x1 - 2 - w), y: clamp(C[0][1], py0 - 6, py1 - 2 - h), w: w, h: h };
+        placed.push(best);
+        var qx = clamp(mx, best.x, best.x + w), qy = clamp(my, best.y, best.y + h);
+        if (Math.hypot(qx - mx, qy - my) > 12) s += sL(mx, my, qx, qy, 's-' + tone, '', 1);
+        s += sPill(best.x, best.y + h / 2, t, { sz: sfs, c: 'dt-' + (tone === 'neu' ? 'm' : tone) }).svg;
+      }
+      out += sG(op(m._id, m.series ? String(m.series) : ''), s);
+    });
+    return { H: H, svg: leg + back + out };
+  }
+
+  /* ---------- sequence:一排結果序列(順序、連勝連敗、累計) ---------- */
+  function rSeq(d, W, nar, op, P) {
+    var fs = nar ? 12.5 : 13.5, sfs = nar ? 11 : 12, unit = d.unit != null ? String(d.unit) : 'R', sg = d.signed != null ? !!d.signed : unit === 'R';
+    var rows = arr(d.rows).filter(function (r) { return r && typeof r === 'object' && arr(r.items).length; }), maxN = 1;
+    rows.forEach(function (r) { maxN = Math.max(maxN, arr(r.items).length); });
+    var IW = P.x1 - P.x0, gap = nar ? 5 : 8, tokW = clamp((IW - gap * (maxN - 1)) / maxN, 16, nar ? 54 : 66), tokH = nar ? 36 : 42;
+    var run = d.running === true || (d.running !== false && rows.some(function (r) { return arr(r.items).some(function (it) { return it && num(it.value); }); }));
+    var y = P.top + 8, out = '';
+    rows.forEach(function (r, ri) {
+      dgId(r, 'row' + (ri + 1));
+      var items = arr(r.items).map(function (it) { return (it && typeof it === 'object') ? it : { label: String(it == null ? '' : it) }; });
+      var sum = 0, hasV = false;
+      items.forEach(function (it) { if (num(it.value)) { sum += it.value; hasV = true; } });
+      var tot = r.total_label || (hasV ? '合計 ' + dgFmt(sum, unit, sg) : ''), head = '';
+      var lw = IW - (tot ? tw(tot, sfs, 700) + 14 : 0);
+      head += sT(P.x0, y + fs / 2 + 1, dgFit(String(r.label || '') + pk(r), lw, fs, 700), { sz: fs, w: 700 });
+      if (tot) head += sT(P.x1, y + fs / 2 + 1, tot, { sz: sfs, w: 700, a: 'end', c: 'dt-m' });
+      var ty = y + fs + 10, acc = 0, toks = '';
+      items.forEach(function (it, k) {
+        var v = num(it.value) ? it.value : null, tone = DG_TONES[it.tone] ? it.tone : (v == null ? 'neu' : v < 0 ? 'neg' : 'pos');
+        var x = P.x0 + k * (tokW + gap), s = sR(x, ty, tokW, tokH, 'f-' + tone + (it.pending ? ' pend' : ''), nar ? 7 : 9);
+        var lab = (it.label != null && it.label !== '') ? String(it.label) : (v != null ? dgFmt(v, unit, sg) : '');
+        if (lab) s += sT(x + tokW / 2, ty + tokH / 2, dgFit(lab + pk(it), tokW - 4, sfs + 1, 700), { sz: sfs + 1, w: 700, a: 'middle', c: 'dt-on' });
+        if (run && v != null) { acc += v; s += sT(x + tokW / 2, ty + tokH + 6 + sfs / 2, dgFit(dgFmt(acc, unit, sg), tokW + gap, sfs, 600), { sz: sfs, w: 600, a: 'middle', c: acc < 0 ? 'dt-neg' : 'dt-pos' }); }
+        toks += sG(op(it.id != null ? String(it.id) : r._id + '.' + (k + 1), r._id), s);
+      });
+      out += sG(op(r._id), head) + toks;
+      y = ty + tokH + (run ? sfs + 12 : 0) + (nar ? 16 : 20);
+    });
+    return { H: y, svg: out };
+  }
+
+  var DG_R = { bars: rBars, blocks: rBlocks, ladder: rLadder, path: rPath, sequence: rSeq };
+  /* DChart:與 AChart 同介面(M / si / setStep / hoverTo / draw / destroy),所以直接共用 bindFigure 的步驟器 */
+  function DChart(host, spec, opt) {
+    this.host = host; this.spec = spec; this.opt = opt || {};
+    this.M = this.opt.model || diagModel(spec); this.si = 0; this.hover = 0; this.lastW = 0; this.raf = 0;
+    var me = this;
+    if (window.ResizeObserver) { this.ro = new ResizeObserver(function () { if (Math.floor(me.host.clientWidth) !== me.lastW) me.schedule(); }); this.ro.observe(host); }
+    LIVE.push(this);
+    this.draw();
+  }
+  DChart.prototype.schedule = AChart.prototype.schedule;
+  DChart.prototype.destroy = AChart.prototype.destroy;
+  DChart.prototype.setStep = function (i) { i = clamp(i, 0, this.M.steps.length - 1); if (i !== this.si) { this.si = i; this.draw(); } };
+  DChart.prototype.hoverTo = function () { /* 示意圖沒有標註清單 */ };
+  DChart.prototype.draw = function () {
+    var W = Math.floor(this.host.clientWidth);
+    if (W < 60) return;
+    this.lastW = W;
+    var nar = W < 520, d = this.spec, P = { x0: nar ? 12 : 12, x1: W - (nar ? 12 : 14), top: 28 };
+    var r = DG_R[d.kind](d, W, nar, dgOp(this.M, this.si), P), H = Math.ceil(r.H + 4);
+    var sz = nar ? 11 : 11.5, lab = '示意,非真實行情', src = this.opt.fnTxt || '';
+    var strip = sT(P.x0, 13, lab, { sz: sz, w: 700, c: 'dt-strip' });
+    if (src) {
+      var st = '數字出處 ' + src;
+      if (tw(lab, sz, 700) + tw(st, sz) + 24 > W) st = src;
+      strip += sT(W - P.x0, 13, st, { sz: sz, a: 'end', c: 'dt-f' });
+    }
+    var step = this.M.steps[this.si];
+    this.host.innerHTML = '<svg class="dsvg" xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' +
+      esc((d.title || '示意圖') + '(示意,非真實行情),第 ' + (this.si + 1) + ' 步「' + step.name + '」:' + step.text) + '">' + strip + r.svg + '</svg>';
+    this.H = H;
+    if (this.opt.onLayout) this.opt.onLayout({ W: W, H: H, step: this.si });
+  };
+  /* 示意圖卡:標題 → 標記列(示意圖 / 待核對 / 數字出處)→ 步驟器 → 圖 → 重點 → 待核對清單 */
+  function diagramHTML(d, opt) {
+    opt = opt || {};
+    var id = uid(), ctx = opt.ctx, M = diagModel(d), fnTxt = '', refs = '', seen = {};
+    arr(d.source_clips).forEach(function (c) {
+      if (typeof c !== 'string' || !c || !ctx || seen[c]) return;
+      seen[c] = 1;
+      var n = fnAdd(ctx, c, { pre: '示意圖數字出處:' });
+      fnTxt += circ(n); refs += fnRef(n, ctx);
+    });
+    var pend = d.pending_check === true ? [] : arr(d.pending_check).filter(Boolean).map(String), anyP = d.pending_check === true || pend.length > 0 || dgHasPending(d);
+    var html = '<figure class="afig dfig" id="af_' + id + '">' +
+      (d.title ? '<figcaption class="atop"><span class="kd dg">示意</span><span class="ahl">' + esc(d.title) + '</span></figcaption>' : '') +
+      '<div class="ameta"><button type="button" class="badge" data-help="diag">示意圖 · 非真實行情</button>' +
+        (anyP ? '<button type="button" class="badge wipb" data-help="pending">含待核對數字</button>' : '') +
+        (refs ? '<span class="dsrc">數字出處' + refs + '</span>' : '') + '</div>' +
+      stepperHTML(M, id) +
+      '<div class="abox dbox" tabindex="0" aria-label="示意圖;左右鍵切換步驟"><div class="dchart" id="ac_' + id + '"></div></div>' +
+      (d.caption ? '<div class="atake"><span class="lab">重點</span>' + lt(d.caption, ctx) + '</div>' : '') +
+      (anyP ? '<p class="dpend"><b>待核對</b>' + (pend.length ? pend.map(esc).join(';') : '圖上標 ※ 的數字還沒和逐字稿逐字對上,先當成大概的比例看。') + '</p>' : '') +
+      '</figure>';
+    FIGS[id] = { diag: d, M: M, fnTxt: fnTxt };
+    return { html: html, id: id };
+  }
+
+  /* ---------- 相關案例(第 4 段):related_cases = ["c_xxx", …](最多 3;舊格式 {id, headline} 也接受) ---------- */
+  function relCaseIds(s) {
+    var seen = {}, out = [];
+    arr(s && s.related_cases).forEach(function (r) {
+      var id = typeof r === 'string' ? r : (r && r.id);
+      if (!id || seen[id] || out.length >= 3) return;
+      seen[id] = 1;
+      out.push({ id: String(id), headline: (r && typeof r === 'object' && r.headline) || '', kind: (r && typeof r === 'object' && r.kind) || '' });
+    });
+    return out;
+  }
+  function relLinkHTML(r) {
+    return '<li><a class="rc-a" href="' + linkTo({ cs: r.id }) + '" data-rcid="' + esc(r.id) + '">' + (KIND[r.kind] ? kindTag(r.kind) : '') +
+      '<span class="rc-t">' + esc(r.headline || '走勢案例 ' + r.id) + '<span class="rc-m"></span></span><span class="rc-go" aria-hidden="true">→</span></a></li>';
+  }
+  /* 節渲染完之後:補連結的標題與「預測/覆盤」小標籤(來自案例索引),並載入第一案的標註圖 */
+  function mountRelated(token) {
+    var R = CUR.related;
+    if (!R || !caseAPI()) return;
+    getCaseIndex().then(function (idx) {
+      if (token !== renderToken) return;
+      $$('a[data-rcid]', main).forEach(function (a) {
+        var c = idx.byId[a.getAttribute('data-rcid')];
+        if (!c) return;
+        var t = $('.rc-t', a);
+        if (t) t.innerHTML = esc(c.headline || c.id) + '<span class="rc-m">' + esc([c.date, c.symbol, tfShort(c.timeframe)].filter(Boolean).join(' · ')) + '</span>';
+        if (KIND[c.kind] && !a.querySelector('.kd')) a.insertAdjacentHTML('afterbegin', kindTag(c.kind));
+      });
+    }, function () { /* 索引讀不到:連結仍可用,只是沒有標題 */ });
+    if (!R.first) return;
+    var holder = document.getElementById(R.holder);
+    getCase(R.first).then(function (cs) {
+      if (token !== renderToken || !holder || !holder.isConnected) return;
+      if (!cs || !caseUsable(cs)) { holder.innerHTML = '<div class="lib-empty">這個案例暫時沒有可用的走勢圖。<a href="' + linkTo({ cs: R.first }) + '">到案例庫看</a></div>'; return; }
+      var src = {}; if (cs.clip_id && cs.source) src[cs.clip_id] = cs.source;
+      var rctx = newCtx('r' + cssId(cs.id) + '_', src);
+      var f = figureHTML(caseItem(cs), { ctx: rctx, quote: cs.quote || null });
+      holder.innerHTML = f.html + footnotesHTML(rctx);
+      bindClipFallback(holder);
+      mountFigure(f.id);
+    }, function () { if (token === renderToken && holder && holder.isConnected) holder.innerHTML = '<div class="lib-empty">相關案例暫時讀不到。<a href="' + linkTo({ cs: R.first }) + '">到案例庫看</a></div>'; });
   }
 
   /* ---------- 縮圖(案例庫):索引裡的壓縮 K 棒,沒有就由完整資料算 ---------- */
@@ -1990,18 +2679,39 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     card('定義', '白話說明', (s.definition ? '<p class="def-lead">' + lt(s.definition, ctx) + '</p>' : '') + (s.explain ? explainHTML(s.explain, ctx) : ''));
     var q = arr(s.his_words).slice(0, CFG.maxQuotes).map(function (h, i) { return quoteHTML(h, 'q' + i, ctx); }).join('') + timeTableHTML(s.time_table, ctx);
     card('他的說法', '他的原話;出處在本節最下方', q, '本節沒有收錄原話');
-    /* 走勢圖:只放他本人講解、有標註的圖;一張都沒有就整張卡不出現 */
-    var figs = [];
+    /* 第 4 段(圖):示意圖在前 → 本節自己的標註圖 → 沒有自己的圖時放第一個相關案例的標註圖;
+       合計 ≤ CFG.maxCharts(2)張;其餘相關案例只列連結。一張圖、一個連結都沒有就整張卡不出現。
+       (DESIGN_NOTES_v3_diagram.md §4) */
+    var dgs = [], figs = [], nAll = 0;
+    diagList(s).forEach(function (d) {
+      if (nAll >= CFG.maxCharts) return;
+      var f = diagramHTML(d, { ctx: ctx });
+      dgs.push(f.html); CUR.mounts.push(f.id); nAll++;
+    });
     chartKeys(s).forEach(function (k) {
       var item = pack.klines[k];
-      if (figs.length < CFG.maxCharts && chartUsable(item)) {
+      if (nAll < CFG.maxCharts && chartUsable(item)) {
         var f = figureHTML(item, { ctx: ctx });
-        figs.push(f.html); CUR.mounts.push(f.id);
+        figs.push(f.html); CUR.mounts.push(f.id); nAll++;
       }
     });
-    if (figs.length) {
-      var pr = (CFG.practiceChapters.indexOf(it.ch) >= 0 && s.practice && arr(s.practice.options).length) ? practiceHTML(s.practice) : '';
-      card('走勢圖', '他講的重點直接標在圖上', figs.join('') + pr, '', true, 'figcard');
+    var rels = relCaseIds(s), relFirst = (!figs.length && nAll < CFG.maxCharts && rels.length && caseAPI()) ? rels[0] : null, relBody = '';
+    if (relFirst) nAll++;
+    if (rels.length) {
+      var hid = 'rcf_' + uid(), more = relFirst ? rels.slice(1) : rels;
+      CUR.related = { first: relFirst ? relFirst.id : null, holder: hid };
+      relBody = '<div class="relcase">' +
+        (relFirst ? '<div class="rc-h"><span class="rc-lab">實例</span>' + (dgs.length ? '<b>他在真實走勢上怎麼用這個概念</b>' : '') + '<a class="rc-open" href="' + linkTo({ cs: relFirst.id }) + '">在案例庫開啟 →</a></div>' +
+          '<div class="rc-fig" id="' + hid + '"><div class="ct-wait">準備圖表…</div></div>' : '') +
+        (more.length ? '<div class="rc-more"><div class="rc-more-h">' + (relFirst ? '其他相關案例' : '相關走勢案例:他在真實走勢上怎麼用這個概念') + '</div><ul class="rc-list">' + more.map(relLinkHTML).join('') + '</ul></div>' : '') +
+        '</div>';
+    }
+    var anyFig = nAll > 0;
+    if (anyFig || relBody) {
+      var pr = (figs.length && CFG.practiceChapters.indexOf(it.ch) >= 0 && s.practice && arr(s.practice.options).length) ? practiceHTML(s.practice) : '';
+      var t4 = dgs.length ? (figs.length || relFirst ? ['示意圖與走勢圖', '先看示意的數字,再看真實走勢'] : ['示意圖', '做單方式的數字示意,不是真實行情'])
+        : (figs.length ? ['走勢圖', '他講的重點直接標在圖上'] : (relFirst ? ['走勢圖:相關案例', '他在真實走勢上怎麼用這個概念'] : ['相關走勢案例', '他在真實走勢上怎麼用這個概念']));
+      card(t4[0], t4[1], dgs.join('') + figs.join('') + pr + relBody, '', true, anyFig ? 'figcard' : '');
     }
     var clips = arr(s.clips).slice(0, CFG.maxClips);
     card('片段', '直接聽他講', clips.map(function (c) { return clipHTML(c); }).join(''), '本節沒有影片片段');
@@ -2015,15 +2725,14 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
       var n = c.clip_id && srcOf(c.clip_id) ? fnAdd(ctx, c.clip_id, { pre: '自我檢查 Q' + (i + 1) + ' 依據:' }) : 0;
       return '<li><div class="q"><span class="qn">Q' + (i + 1) + '</span>' + lt(c.q, ctx) + '</div><div class="a"><p>' + lt(c.a, ctx) + (n ? ' ' + fnRef(n, ctx) : '') + '</p></div></li>';
     }).join('') + '</ol>' : '', '本節沒有自我檢查題');
-    var rel = arr(s.related_cases).filter(function (r) { return r && r.id; });
-    var relHTML = rel.length ? '<nav class="rel" aria-label="相關走勢案例"><h2>相關走勢案例</h2>' + rel.map(function (r) {
-      return '<a href="' + linkTo({ cs: r.id }) + '">' + esc(r.headline || r.id) + ' →</a>';
-    }).join('') + '</nav>' : '';
-    var meta = '<span>約 ' + mins + ' 分鐘(不含影片)</span>' + (figs.length ? '<span>走勢圖 ' + figs.length + '</span>' : '') +
+    /* 相關走勢案例已併入第 4 段(相關案例卡),節尾不再重複列 */
+    var relHTML = '';
+    var nFig = figs.length + (relFirst ? 1 : 0);
+    var meta = '<span>約 ' + mins + ' 分鐘(不含影片)</span>' + (dgs.length ? '<span>示意圖 ' + dgs.length + '</span>' : '') + (nFig ? '<span>走勢圖 ' + nFig + '</span>' : '') +
       (clips.length ? '<span>片段 ' + clips.length + '</span>' : '') + (sc.length ? '<span>自我檢查 ' + sc.length + ' 題</span>' : '');
     /* 沒有走勢圖的節:寬螢幕右側放「本節重點卡」(結論 + 他的話摘句 + 本節目錄);窄螢幕由 CSS 隱藏 */
     var guide = '';
-    if (!figs.length) {
+    if (!anyFig) {
       var gq = arr(s.his_words).slice(0, CFG.maxQuotes).map(function (h, i) {
         if (typeof h === 'string') h = { quote: h };
         if (!h || !h.quote || isOther(srcOf(h.src || h.clip_id))) return '';
@@ -2036,7 +2745,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
           return '<li><a href="' + linkTo({ s: it.id, a: 'sc' + x.n }) + '" data-goto="sc' + x.n + '"><span>' + x.n + '</span>' + esc(x.title) + '</a></li>';
         }).join('') + '</ol></aside>';
     }
-    return '<div class="col sec' + (figs.length ? ' has-fig' : ' no-fig') + '"><article>' + crumbHTML(it) +
+    return '<div class="col sec' + (anyFig ? ' has-fig' : ' no-fig') + '"><article>' + crumbHTML(it) +
       '<h1 class="sec-h1">' + esc(it.num) + ' ' + esc(s.title || it.outline.title) + '</h1>' +
       '<div class="conclusion"><span class="lab">一句話結論</span><p>' + concHTML + '</p><div class="meta">' + meta + '</div></div>' +
       guide + cards + relHTML + (s.notes ? '<details class="notes"><summary>資料備註(整理者的疑點,不是教材內容)</summary><p>' + esc(s.notes) + '</p></details>' : '') +
@@ -2065,6 +2774,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
         pack.klines = pack.klines || {};
         main.innerHTML = sectionHTML(it, pack);
         CUR.mounts.forEach(mountFigure);
+        mountRelated(token);
         bindClipFallback(main);
         Store.set('last', id);
       } else main.innerHTML = skeletonHTML(it, pack && pack.error);
@@ -2645,7 +3355,8 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
   /* 給組裝/測試用(不影響畫面) */
   window.BTeach = {
     loadIndex: loadIndex, loadSection: loadSection, loadCaseIndex: loadCaseIndex, loadCase: loadCase,
-    charts: function () { return LIVE; }, lib: function () { return LIB; }, thumbFromBars: thumbFromBars, version: 'template-3'
+    charts: function () { return LIVE; }, lib: function () { return LIB; }, thumbFromBars: thumbFromBars,
+    diagModel: diagModel, diagUsable: diagUsable, version: 'template-3d'
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
