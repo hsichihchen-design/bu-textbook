@@ -982,18 +982,18 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
   }
   var PLAY_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
   var CLIPS = {};
-  function clipPH(c, ck) {
-    var s = srcOf(c.clip_id);
+  function clipPH(c, ck, failed, ctx) {
+    var s = srcOf(c.clip_id, ctx);
     return '<div class="clip ph" data-ck="' + ck + '"><div class="clip-line">' + PLAY_SVG +
-      '<span>▶ 片段 ' + (s ? '影片 ' + esc(vidParts(s).id || c.clip_id) : esc(c.clip_id || '')) + (s && s.tc ? ' ' + esc(s.tc) : '') + '(正式版播放)</span></div>' +
+      '<span>▶ 片段 ' + (s ? '影片 ' + esc(vidParts(s).id || c.clip_id) : esc(c.clip_id || '')) + (s && s.tc ? ' ' + esc(s.tc) : '') + (failed ? '(此片段暫時無法播放)' : '(正式版播放)') + '</span></div>' +
       (c.why ? '<div class="clip-info"><div class="why">' + esc(c.why) + '</div></div>' : '') + '</div>';
   }
-  function clipHTML(c) {
-    var s = srcOf(c.clip_id), m = clipMedia(c.clip_id), ck = uid();
-    CLIPS[ck] = c;
-    if (!m) return clipPH(c, ck);
+  function clipHTML(c, ctx) {
+    var s = srcOf(c.clip_id, ctx), m = clipMedia(c.clip_id), ck = uid();
+    CLIPS[ck] = { c: c, ctx: ctx || null };
+    if (!m) return clipPH(c, ck, false, ctx);
     var frag = (m.t0 != null) ? '#t=' + Number(m.t0) + (m.t1 != null ? ',' + Number(m.t1) : '') : '';
-    return '<div class="clip" data-ck="' + ck + '"><div class="clip-media"><video controls playsinline preload="none" src="' + esc(m.src + frag) + '"' +
+    return '<div class="clip" data-ck="' + ck + '"><div class="clip-media"><video controls playsinline preload="' + (m.preload === 'metadata' ? 'metadata' : 'none') + '" src="' + esc(m.src + frag) + '"' +
       (m.poster ? ' poster="' + esc(m.poster) + '"' : '') + ' data-clip-fallback="1"></video></div>' +
       '<div class="clip-info">' + (c.why ? '<div class="why">' + esc(c.why) + '</div>' : '') +
       '<div class="cap">' + vidLabel(s) + (s && s.tc ? ' · 片段 ' + esc(s.tc) : '') + ' ' + speakerBadge(s) + '</div></div></div>';
@@ -1001,8 +1001,8 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
   function bindClipFallback(root) {
     $$('video[data-clip-fallback]', root).forEach(function (v) {
       v.addEventListener('error', function () {
-        var r = v.closest('.clip'), c = r && CLIPS[r.getAttribute('data-ck')];
-        if (r && c) r.outerHTML = clipPH(c, r.getAttribute('data-ck'));
+        var r = v.closest('.clip'), e = r && CLIPS[r.getAttribute('data-ck')], M = window.__B_MEDIA__;
+        if (r && e) r.outerHTML = clipPH(e.c, r.getAttribute('data-ck'), !!(M && M.online), e.ctx);
       }, { once: true });
     });
   }
@@ -2004,7 +2004,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
       card('走勢圖', '他講的重點直接標在圖上', figs.join('') + pr, '', true, 'figcard');
     }
     var clips = arr(s.clips).slice(0, CFG.maxClips);
-    card('片段', '直接聽他講', clips.map(clipHTML).join(''), '本節沒有影片片段');
+    card('片段', '直接聽他講', clips.map(function (c) { return clipHTML(c); }).join(''), '本節沒有影片片段');
     card('常見誤解', '容易想錯的地方', arr(s.misconceptions).map(function (m) {
       var src = srcOf(m.src || m.clip_id), mq = '';
       if (m.quote && !isOther(src)) mq = '<div class="myth-q"><q>' + esc(m.quote) + '</q>' + fnRef(fnAdd(ctx, m.src || m.clip_id, { ver: m.quote_verified === true }), ctx) + '</div>';
@@ -2363,6 +2363,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
       if (!cs) { body.innerHTML = '<div class="lib-empty">這個案例暫時讀不到。</div>'; return; }
       var r = caseBodyHTML(cs, { tile: true });
       body.innerHTML = r.html;
+      bindClipFallback(body);
       tile._fig = r.fig ? mountFigure(r.fig) : null;
       if (scroll) tile.scrollIntoView({ block: 'start' });
     }, function () { clearTimeout(wait); body.innerHTML = '<div class="lib-empty">這個案例暫時讀不到,請稍後再試。</div>'; });
@@ -2392,6 +2393,9 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
       out += f.html; fig = f.id;
     } else out += '<div class="lib-empty">這個案例沒有可用的走勢圖。</div>';
     var lc = libChapter(), libN = lc ? lc.n : 10;
+    /* 線上版:案例的來源片段(__B_MEDIA__.cases === true 時才出現;離線版不變) */
+    var MM = window.__B_MEDIA__;
+    if (MM && MM.cases === true && cs.clip_id && clipMedia(cs.clip_id)) out += '<div class="card-clips" style="margin:14px 0 4px">' + clipHTML({ clip_id: cs.clip_id, why: '這個案例的來源片段' }, ctx) + '</div>';
     out += '<div class="ct-foot">' + arr(cs.tags).map(function (t) { return '<a class="tagchip" href="' + linkTo({ c: libN, tag: t }) + '">' + esc(t) + '</a>'; }).join('') +
       '<span class="grow"></span>' +
       (opt.tile ? '<a class="btn sm ghost" href="' + linkTo({ cs: cs.id }) + '">單獨開啟</a><button type="button" class="btn sm ct-close">收合</button>' : '') + '</div>';
@@ -2425,6 +2429,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
         '<h1 class="sec-h1">' + esc(cs.headline || '') + '</h1>' +
         '<div class="ameta"><span>' + esc(cs.date || '日期不明') + '</span>' + (cs.source && cs.source.date ? '<span>講解於 ' + esc(cs.source.date) + '</span>' : '') + '</div>' +
         r.html + '</article>' + nav + '<p style="margin-top:18px"><a class="btn" href="' + back + '">← 回案例庫</a></p></div>';
+      bindClipFallback(main);
       if (r.fig) mountFigure(r.fig);
     });
   }
@@ -2688,6 +2693,21 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
   function unlockUI() { if (ov) { ov.remove(); ov = null; } }
 
   var KEYTXT = getHashKey(), KEYS = null, cache = {};
+  var MEDIA_BASE = 'https://bu-textbook-media.pages.dev'.replace(/\/+$/, '');
+  /* 影片位置:解鎖後才以金鑰在瀏覽器算出(檔名 = HMAC(mk,"media:"+clip_id) 前 24 hex);頁面內沒有 clip_id → 檔名的對照表 */
+  window.__B_MEDIA__ = { online: true, cases: true, clips: {} };
+  function addMedia(obj, k) {
+    var ids = [], seen = {};
+    function add(x) { if (x && typeof x === 'string' && !seen[x]) { seen[x] = 1; ids.push(x); } }
+    if (obj && obj.section && Array.isArray(obj.section.clips)) obj.section.clips.forEach(function (c) { add(c && c.clip_id); });
+    else if (obj && typeof obj.clip_id === 'string') add(obj.clip_id);
+    return Promise.all(ids.map(function (id) {
+      if (window.__B_MEDIA__.clips[id]) return null;
+      return crypto.subtle.sign('HMAC', k.hk, enc.encode('media:' + id)).then(function (ab) {
+        window.__B_MEDIA__.clips[id] = { src: MEDIA_BASE + '/' + hex(ab).slice(0, 24) + '.mp4', preload: 'metadata' };
+      });
+    })).then(function () { return obj; });
+  }
   function initKeys() {
     if (KEYS) return KEYS;
     KEYS = Promise.resolve().then(function () {
@@ -2725,7 +2745,8 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
         return crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv, additionalData: aad }, k.ak, ct).then(function (pt) {
           return flag === 1 ? gunzip(new Uint8Array(pt)) : pt;
         }, function () { throw new Error('BADKEY'); });
-      }).then(function (pt) { return pt ? JSON.parse(new TextDecoder().decode(pt)) : null; });
+      }).then(function (pt) { return pt ? JSON.parse(new TextDecoder().decode(pt)) : null; })
+        .then(function (obj) { return (obj && (id.slice(0, 2) === 's:' || id.slice(0, 2) === 'c:')) ? addMedia(obj, k) : obj; });
     });
     cache[id] = p;
     p.catch(function () { delete cache[id]; });
