@@ -15,7 +15,7 @@
   --accent:#1e5f8f; --accent-bg:#e8f1f8; --accent-ink:#ffffff;
   --quote-bg:#fbf4e6; --quote-bar:#c58a2a; --quote-ink:#3a2e18;
   --up:#d23a3f; --down:#139463; --up-soft:rgba(210,58,63,.35); --down-soft:rgba(19,148,99,.35);
-  --grid:#eeebe4; --chart-bg:#ffffff;
+  --grid:#eeebe4; --chart-bg:#ffffff; --ma30:#c99a06; --ma45:#c2399f; --ma60:#7a5ccf;
   --ok:#1e5f8f; --wip:#9a5b00; --wip-bg:#fdf0d9;
   --gA:#1e5f8f; --gB:#9a5b00; --gC:#6b7280;
   --fc:#6a46b8; --fc-bg:#efeafb;
@@ -36,7 +36,7 @@
     --accent:#7db4e0; --accent-bg:#1d2a36; --accent-ink:#0e1a24;
     --quote-bg:#2a2419; --quote-bar:#d7a347; --quote-ink:#efe3c9;
     --up:#f0565c; --down:#2fbf80; --up-soft:rgba(240,86,92,.38); --down-soft:rgba(47,191,128,.38);
-    --grid:#262a30; --chart-bg:#1c1f24;
+    --grid:#262a30; --chart-bg:#1c1f24; --ma30:#f0b90b; --ma45:#e45ec9; --ma60:#9d86f0;
     --ok:#7db4e0; --wip:#e8b25a; --wip-bg:#2c2416;
     --gA:#7db4e0; --gB:#e8b25a; --gC:#9aa0a8;
     --fc:#b9a3f2; --fc-bg:#2a2340;
@@ -52,7 +52,7 @@
   --accent:#7db4e0; --accent-bg:#1d2a36; --accent-ink:#0e1a24;
   --quote-bg:#2a2419; --quote-bar:#d7a347; --quote-ink:#efe3c9;
   --up:#f0565c; --down:#2fbf80; --up-soft:rgba(240,86,92,.38); --down-soft:rgba(47,191,128,.38);
-  --grid:#262a30; --chart-bg:#1c1f24;
+  --grid:#262a30; --chart-bg:#1c1f24; --ma30:#f0b90b; --ma45:#e45ec9; --ma60:#9d86f0;
   --ok:#7db4e0; --wip:#e8b25a; --wip-bg:#2c2416;
   --gA:#7db4e0; --gB:#e8b25a; --gC:#9aa0a8;
   --fc:#b9a3f2; --fc-bg:#2a2340;
@@ -692,7 +692,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     self: ['本人', '這句話是他本人在影片裡說的。'],
     other: ['非本人', '不是他本人說的(例如學員或 AI 摘要)。教材不把它當成他的說法,所以預設收起來。'],
     utc: ['時間都是 UTC', 'K 線時間用 UTC(台灣時間要再加 8 小時)。他口述的日期多半是台灣時間,前後可能差半天。'],
-    annot: ['圖怎麼看', '按「下一步」一步一步看:先看他當時看到的(決策線左邊)→ 他的判斷 → 後來實際怎麼走 → 最後一步畫出全部標註;也可以按「一次顯示全部」。顏色:琥珀色 = 他當時看到的區域與 K 棒;藍色 = 他的判斷與價位(藍色虛線是他做決定的位置);紫色 = 後來;灰色編號 = 次要細節。完整文字在圖下的「標註清單」,滑過或點一下,圖和清單會互相標出。清單裡的小方塊是來源:述 = 他口述、畫 = 他畫面上的標記、資 = 由 K 線資料對出。'],
+    annot: ['圖怎麼看', '按「下一步」一步一步看:先看他當時看到的(決策線左邊)→ 他的判斷 → 後來實際怎麼走 → 最後一步畫出全部標註;也可以按「一次顯示全部」。顏色:琥珀色 = 他當時看到的區域與 K 棒;藍色 = 他的判斷與價位(藍色虛線是他做決定的位置);紫色 = 後來;灰色編號 = 次要細節。完整文字在圖下的「標註清單」,滑過或點一下,圖和清單會互相標出。清單裡的小方塊是來源:述 = 他口述、畫 = 他畫面上的標記、資 = 由 K 線資料對出。圖上的三條細線是 MA30(黃)、MA45(粉紅)、MA60(紫)均線,顏色和幣安一樣,可以按「均線」鈕隱藏;均線只畫到目前看得到的那根,不會偷看後來。'],
     review: ['覆盤', '事後回頭講解一段已經走完的走勢。'],
     forecast: ['預測', '他在當下(還沒走完時)講的看法;藍色虛線右邊是後來實際的走勢。'],
     nodate: ['時期不明', '這段影片沒有可靠的錄製日期。'],
@@ -1065,6 +1065,8 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
      圖表共用
      ============================================================ */
   var CSSV = null;
+  var MAON = true;
+  try { if (localStorage.getItem('b_ma') === '0') MAON = false; } catch (e) { }
   function colors() {
     if (CSSV) return CSSV;
     var st = getComputedStyle(document.documentElement);
@@ -1072,6 +1074,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     CSSV = { up: v('--up'), down: v('--down'), upS: v('--up-soft'), downS: v('--down-soft'), grid: v('--grid'), muted: v('--muted'), faint: v('--faint'),
       fg: v('--fg'), accent: v('--accent'), accentInk: v('--accent-ink'), bg: v('--chart-bg'), line2: v('--line2'), surface2: v('--surface2'),
       zone: v('--an-zone'), arrow: v('--an-arrow'), point: v('--an-point'), vline: v('--an-vline'), hline: v('--an-line'),
+      ma30: v('--ma30'), ma45: v('--ma45'), ma60: v('--ma60'),
       rctx: v('--r-ctx'), rjudge: v('--r-judge'), rout: v('--r-out'), rdet: v('--r-det'),
       gA: v('--gA'), gB: v('--gB'), gC: v('--gC'), font: getComputedStyle(document.body).fontFamily };
     return CSSV;
@@ -1488,6 +1491,24 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
       g.fillStyle = cl; g.fillRect(cxx - bw / 2, Math.min(yo, yc), bw, Math.max(1, Math.abs(yc - yo)));
     }
 
+    /* 8b. 均線 MA30 / MA45 / MA60(顏色比照幣安;只畫到目前看得到的那一根,沒有偷看後來) */
+    var hasMA = !!(this.item.ma && this.item.ma['30']);
+    if (hasMA && MAON) {
+      g.save(); g.beginPath(); g.rect(x0, top, x1 - x0, pBot - top + 2); g.clip();
+      g.lineWidth = narrow ? 1.3 : 1.5; g.lineJoin = 'round'; g.globalAlpha = 0.92;
+      [['60', C.ma60], ['45', C.ma45], ['30', C.ma30]].forEach(function (m) {
+        var arr = me.item.ma[m[0]]; if (!arr) return;
+        g.strokeStyle = m[1]; g.beginPath(); var st0 = false, k;
+        for (k = a; k <= lastI; k++) {
+          var mv = arr[k];
+          if (!(mv > 0)) { st0 = false; continue; }
+          if (!st0) { g.moveTo(X(k), Y(mv)); st0 = true; } else g.lineTo(X(k), Y(mv));
+        }
+        g.stroke();
+      });
+      g.restore(); g.globalAlpha = 1; g.lineWidth = 1;
+    }
+
     /* 9. 色框框線、價位線、其他垂直線 */
     items.forEach(function (x) {
       if (!vis(x)) return;
@@ -1725,6 +1746,18 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     var rt = rangeText(B, a, b, this.item.timeframe, narrow);
     if (g.measureText(rt).width > W - gw - 24) rt = rangeText(B, a, b, this.item.timeframe, true);
     g.fillText(rt, W - 6, 12);
+    if (hasMA && MAON) {
+      var lgx = x0 + 2 + gw + 14, lgEnd = W - 6 - g.measureText(rt).width - 10;
+      font(600, narrow ? 10.5 : 11); g.textAlign = 'left'; var lgy = g.textBaseline === 'middle' ? 12 : 8;
+      var items3 = [['30', C.ma30], ['45', C.ma45], ['60', C.ma60]], need = (narrow ? 3 : 4) + 3 * 34 + 18;
+      if (lgEnd - lgx >= need) {
+        g.fillStyle = C.faint; g.fillText('MA', lgx, 12); lgx += g.measureText('MA').width + 6;
+        items3.forEach(function (m) {
+          g.strokeStyle = m[1]; g.lineWidth = 2; g.beginPath(); g.moveTo(lgx, lgy); g.lineTo(lgx + 10, lgy); g.stroke(); g.lineWidth = 1;
+          g.fillStyle = m[1]; g.fillText(m[0], lgx + 13, 12); lgx += 13 + g.measureText(m[0]).width + 8;
+        });
+      }
+    }
 
     /* 16. 時間軸 */
     var spanT = B[b - 1][0] - B[a][0], tf = this.item.timeframe;
@@ -1743,6 +1776,13 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     this._geo = { x0: x0, x1: x1, top: top, pBot: pBot, hard: hard };
     if (this.opt.onLayout) this.opt.onLayout(this.layout);
   };
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.ma-tg'); if (!b) return;
+    MAON = !MAON;
+    try { localStorage.setItem('b_ma', MAON ? '1' : '0'); } catch (er) { }
+    Array.prototype.forEach.call(document.querySelectorAll('.ma-tg'), function (x) { x.setAttribute('aria-pressed', String(MAON)); x.textContent = '均線 ' + (MAON ? '開' : '關'); });
+    LIVE.forEach(function (c) { c.draw(); }); redrawThumbs();
+  });
   function redrawAll() { CSSV = null; LIVE.forEach(function (c) { c.draw(); }); redrawThumbs(); }
   function destroyCharts() { LIVE.slice().forEach(function (c) { c.destroy(); }); LIVE = []; }
 
@@ -1774,7 +1814,8 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
       (opt.split ? '<div class="af-l">' : '') +
       '<div class="ameta"><b>' + esc(item.symbol || '') + '</b><span>' + esc(TF_LABEL[tf] || tf) + '</span>' + gradeBadge(item.grade) +
         (opt.noHeadline ? kindTag(an.kind, true) : '') +
-        '<button type="button" class="badge" data-help="annot">圖怎麼看?</button><button type="button" class="badge" data-help="utc">UTC</button>' + fr + '</div>' +
+        '<button type="button" class="badge" data-help="annot">圖怎麼看?</button><button type="button" class="badge" data-help="utc">UTC</button>' +
+        (item.ma ? '<button type="button" class="badge ma-tg" aria-pressed="' + MAON + '" title="顯示或隱藏 MA30 / MA45 / MA60 三條均線">均線 ' + (MAON ? '開' : '關') + '</button>' : '') + fr + '</div>' +
       stepperHTML(M, id) +
       '<div class="abox" tabindex="0" aria-label="走勢圖;左右鍵切換步驟"><div class="achart" id="ac_' + id + '"></div></div>' +
       (opt.split ? '</div><div class="af-r">' : '') + takeHTML + det +
@@ -2839,7 +2880,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
   }
   function isOpenTile(id) { var el = document.getElementById('ct-' + cssId(id)); return !!(el && el.classList.contains('open')); }
   function cssId(id) { return String(id).replace(/[^A-Za-z0-9_\-]/g, '_'); }
-  function caseItem(cs) { return { symbol: cs.symbol, timeframe: cs.timeframe, grade: cs.grade, range: cs.range, bars: cs.bars, annotation: cs.annotation, clip_id: cs.clip_id, kind: cs.kind, direction: cs.direction, outcome_kind: cs.outcome_kind }; }
+  function caseItem(cs) { return { symbol: cs.symbol, timeframe: cs.timeframe, grade: cs.grade, range: cs.range, bars: cs.bars, ma: cs.ma, annotation: cs.annotation, clip_id: cs.clip_id, kind: cs.kind, direction: cs.direction, outcome_kind: cs.outcome_kind }; }
   function caseUsable(cs) { return chartUsable(caseItem(cs)); }
   function tfShort(tf) { return (TF_LABEL[tf] || tf || '').replace(/ K$/, '').replace('日', '日線'); }
 
