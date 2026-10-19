@@ -3092,9 +3092,16 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
      清單模式:展開內容留在卡片裡(同 v3)。視窗改變大小時重新安放。 */
   function bodyOf(tile) { return tile._body || (tile._body = tile.querySelector('.ct-body')); }
   function libGrid() { var l = document.getElementById('libList'); return !!(l && getComputedStyle(l).display === 'grid'); }
+  function inFullscreen() {
+    if (document.fullscreenElement || document.webkitFullscreenElement) return true;
+    var vs = document.getElementsByTagName('video');
+    for (var i = 0; i < vs.length; i++) if (vs[i].webkitDisplayingFullscreen) return true;
+    return false;
+  }
   function placeBody(tile) {
     var body = bodyOf(tile);
     if (!body) return;
+    if (inFullscreen()) return;
     if (body.parentNode !== tile) tile.appendChild(body);
     if (!libGrid() || !tile.classList.contains('open')) return;
     var last = tile, top = tile.offsetTop, n = tile.nextElementSibling;
@@ -3351,7 +3358,11 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     window.addEventListener('hashchange', render);
     /* 案例庫縮圖寬度跟著欄寬變(寬螢幕網格),視窗改變大小後重畫一次 */
     var rsz = 0;
-    window.addEventListener('resize', function () { clearTimeout(rsz); rsz = setTimeout(function () { if (LIB.view) { redrawThumbs(); $$('#libList .ct.open').forEach(placeBody); } }, 200); }, { passive: true });
+    /* 影片全螢幕時視窗大小會變:此時不能搬動案例內容(搬動 DOM 會讓影片立刻退出全螢幕),等退出全螢幕後再重排 */
+    function relayout() { clearTimeout(rsz); rsz = setTimeout(function () { if (inFullscreen()) return; if (LIB.view) { redrawThumbs(); $$('#libList .ct.open').forEach(placeBody); } }, 200); }
+    window.addEventListener('resize', relayout, { passive: true });
+    document.addEventListener('fullscreenchange', relayout);
+    document.addEventListener('webkitfullscreenchange', relayout);
   }
 
   function teardown() {
