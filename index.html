@@ -4,7 +4,7 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="referrer" content="no-referrer">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>布大交易教材</title>
 <style>
@@ -623,6 +623,36 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media print{.top,.side,.pager,.lib-bar{display:none}.layout{display:block}.card{box-shadow:none;break-inside:avoid}}
+
+/* ========== 手機版精簡:步驟器同一列、標註清單可收合、禁止點擊縮放 ========== */
+html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.stp-nav .ar{font-size:1.15em;line-height:1}
+.adet-fold>summary{display:none}
+@media (max-width:640px){
+  input,select,textarea{font-size:16px!important}
+  .stp-top{flex-wrap:nowrap;align-items:center;gap:6px;padding:6px 10px 0}
+  .stp-dots{flex:1 1 auto;flex-wrap:nowrap;gap:2px;overflow-x:auto;scrollbar-width:none}
+  .stp-dots::-webkit-scrollbar{display:none}
+  .sd{min-width:34px;min-height:34px}
+  .sd b{width:28px;height:28px;font-size:13px}
+  .stp-ctl{display:flex;margin-left:auto;flex:none}
+  .stp-nav{order:0;flex:none;width:auto;gap:4px}
+  .stp-nav .btn{flex:none;min-width:42px;min-height:38px;padding:0 10px;font-size:15px}
+  .stp-nav .lb{display:none}
+  .stp-card{padding:6px 10px 8px}
+  .stp-txt{padding-left:9px}
+  .stp-txt p{font-size:15.5px;line-height:1.5}
+  .stp-t{font-size:12px}
+  .stp-q{display:none!important}   /* 手機版:黃色「他的話」不放在步驟說明裡,圖下方本來就有同一句,步驟區才能窄 */
+  .adet-fold{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}
+  .adet-fold>summary{display:flex;align-items:baseline;gap:8px;cursor:pointer;padding:11px 12px;font-size:15.5px;font-weight:700;list-style:none}
+  .adet-fold>summary::-webkit-details-marker{display:none}
+  .adet-fold>summary::after{content:"▾";margin-left:auto;color:var(--muted)}
+  .adet-fold[open]>summary::after{content:"▴"}
+  .adet-fold>summary span{font-weight:400;font-size:13px;color:var(--muted)}
+  .adet-fold .adet-wrap{padding:0 8px 8px}
+  .adet-fold .adet-h{display:none}
+}
 </style>
 </head>
 <body>
@@ -1266,7 +1296,7 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
         var nm = esc(stepNm(s)[0]);
         return '<button type="button" class="sd r-' + stepRole(s) + '" data-s="' + i + '" aria-label="第 ' + (i + 1) + ' 步:' + nm + '"' + (i === 0 ? ' aria-current="step"' : '') + '><b>' + (i + 1) + '</b><span>' + nm + '</span></button>';
       }).join('') + '</div>' +
-      (L > 1 ? '<div class="stp-ctl"><div class="stp-nav"><button type="button" class="btn sm stp-prev" disabled>‹ 上一步</button><button type="button" class="btn sm primary stp-next">下一步 ›</button></div></div>' : '') + '</div>' +
+      (L > 1 ? '<div class="stp-ctl"><div class="stp-nav"><button type="button" class="btn sm stp-prev" disabled aria-label="上一步"><span class="ar">‹</span><span class="lb"> 上一步</span></button><button type="button" class="btn sm primary stp-next" aria-label="下一步"><span class="lb">下一步 </span><span class="ar">›</span></button></div></div>' : '') + '</div>' +
       '<div class="stp-card"><div class="stp-txt" aria-live="polite">' + stepCardHTML(M, 0) + '</div>' +
       (L > 1 ? '<button type="button" class="stp-allbtn" data-s="' + (L - 1) + '">一次顯示全部</button>' : '') + '</div></div>';
   }
@@ -1776,6 +1806,17 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     this._geo = { x0: x0, x1: x1, top: top, pBot: pBot, hard: hard };
     if (this.opt.onLayout) this.opt.onLayout(this.layout);
   };
+  var NARROWMQ = window.matchMedia ? window.matchMedia('(max-width:640px)') : null;
+  function applyFolds() {
+    var narrow = !!(NARROWMQ && NARROWMQ.matches);
+    Array.prototype.forEach.call(document.querySelectorAll('details.adet-fold'), function (d) {
+      if (!narrow) d.open = true;
+      else if (!d._seen) { d.open = false; }
+      d._seen = true;
+    });
+  }
+  if (NARROWMQ && NARROWMQ.addEventListener) NARROWMQ.addEventListener('change', function () { Array.prototype.forEach.call(document.querySelectorAll('details.adet-fold'), function (d) { d._seen = false; }); applyFolds(); });
+  new MutationObserver(function () { applyFolds(); }).observe(document.documentElement, { childList: true, subtree: true });
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('.ma-tg'); if (!b) return;
     MAON = !MAON;
@@ -1807,7 +1848,8 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
     var quoteH = quote ? quoteHTML(quote, null, ctx || newCtx(), { small: true, clip: clip }) : '';
     var cmpH = cmp.length ? '<table class="acmp"><caption>他說 vs K 線值</caption><thead><tr><th>項目</th><th>他說</th><th>K 線值</th></tr></thead><tbody>' +
       cmp.map(function (c) { return '<tr><td>' + esc(c.item) + '</td><td>' + esc(c.said) + '</td><td>' + esc(c.value) + '</td></tr>'; }).join('') + '</tbody></table>' : '';
-    var det = '<div class="adet-wrap" id="al_' + id + '">' + detailHTML(M) + '</div>';
+    var detIn = detailHTML(M), nDet = (detIn.match(/<li /g) || []).length;
+    var det = detIn ? '<details class="adet-fold"><summary>標註清單<span>(' + nDet + ' 項)點開看每個標註的文字</span></summary><div class="adet-wrap" id="al_' + id + '">' + detIn + '</div></details>' : '<div class="adet-wrap" id="al_' + id + '"></div>';
     /* opt.split:案例(清單展開/單案頁)在寬螢幕用「左圖右說明」;窄螢幕兩個包裝 div 只是一般區塊 */
     var html = '<figure class="afig' + (opt.split ? ' split' : '') + '" id="af_' + id + '">' +
       (opt.noHeadline || !an.headline ? '' : '<figcaption class="atop">' + kindTag(an.kind, true) + '<span class="ahl">' + esc(an.headline) + '</span></figcaption>') +
