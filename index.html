@@ -535,10 +535,11 @@ table.acmp td:first-child{font-weight:600;white-space:nowrap}
 .stp-txt{min-width:0;border-left:4px solid var(--rc);padding:1px 0 1px 11px}
 .stp-t{display:block;padding-right:96px;font-size:12.5px;font-weight:700;color:var(--rc);letter-spacing:.05em}
 .stp-t span{font-weight:400;color:var(--muted);margin-left:6px;letter-spacing:0}
-.stp-txt p{margin:0;font-size:17px;line-height:1.6;font-weight:600}
+.stp-txt p{margin:0;font-size:16px;line-height:1.55;font-weight:600}
+.stp-q{display:none!important}   /* 黃色「他的話」改畫在圖下緣(同一步出現),步驟說明才不會太高;圖下方另有同一句的卡片 */
 .stp-txt p+p{margin-top:4px}
 .stp-pre{color:var(--rc);margin-right:6px}
-.stp-note{font-size:15px!important;font-weight:400!important;color:var(--muted)}
+.stp-note{font-size:14px!important;font-weight:400!important;color:var(--muted)}
 .stp-q{font-size:15.5px!important;font-weight:500!important;color:var(--quote-ink);background:var(--quote-bg);border-radius:6px;padding:3px 8px;display:inline-block}
 .stp-q i{font-style:normal;font-size:12px;font-weight:700;color:var(--quote-bar);margin-right:6px}
 .chip{display:inline-block;font-size:13px;font-weight:600;line-height:1.5;padding:1px 10px;border-radius:999px;border:1px solid var(--line2);background:var(--surface);color:var(--fg);vertical-align:1px;white-space:nowrap}
@@ -643,7 +644,6 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .stp-txt{padding-left:9px}
   .stp-txt p{font-size:15.5px;line-height:1.5}
   .stp-t{font-size:12px}
-  .stp-q{display:none!important}   /* 手機版:黃色「他的話」不放在步驟說明裡,圖下方本來就有同一句,步驟區才能窄 */
   .adet-fold{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}
   .adet-fold>summary{display:flex;align-items:baseline;gap:8px;cursor:pointer;padding:11px 12px;font-size:15.5px;font-weight:700;list-style:none}
   .adet-fold>summary::-webkit-details-marker{display:none}
@@ -655,6 +655,9 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 }
 .clip-media{position:relative}
 .clip-media.buf::after{content:"影片載入中…";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.66);color:#fff;padding:7px 14px;border-radius:999px;font-size:14.5px;pointer-events:none;z-index:2}
+/* 螢幕矮(或瀏覽器放大)時,案例庫的搜尋/篩選列不黏在上方,讓整張圖能在一個畫面內看完 */
+@media (max-height:820px){ .lib-bar{position:static} }
+@media (min-height:821px){ #libList .ct{scroll-margin-top:calc(var(--top) + 124px)} }   /* 篩選列黏在上方時,展開的案例不要被它蓋住 */
 </style>
 </head>
 <body>
@@ -1385,7 +1388,8 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     /* 寬螢幕:右側證據欄(≥1440)與案例「左圖右說明」(≥1280)的圖畫高一點;其餘同前 */
     var narrow = W < 520;
     var big = !narrow && !!this.host.closest && (this.host.closest('.afig.split') ? window.innerWidth >= 1280 : (!!this.host.closest('.figcard') && window.innerWidth >= 1440));
-    var H = this.opt.height || (narrow ? 300 : big ? (window.innerHeight >= 900 ? 440 : 400) : 360);
+    var vh = window.innerHeight || 800;
+    var H = this.opt.height || (narrow ? 300 : big ? Math.round(clamp(vh * 0.5, 320, 440)) : Math.round(clamp(vh * 0.44, 280, 380)));
     var dpr = Math.min(2, window.devicePixelRatio || 1), cv = this.cv;
     if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) {
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.height = H + 'px';
@@ -1773,17 +1777,18 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     });
     hits.sort(function (p, q) { return (q.z ? 1 : 0) - (p.z ? 1 : 0); });   /* 色框在後:文字與圓點優先被點到 */
 
-    /* 14b. 手機版:「他的話」放在圖下緣;半透明黃底、深色字、圓角,只在原本出現的那一步顯示;桌機維持在步驟說明裡 */
-    if (window.innerWidth <= 640 && step.quote) {
-      var oBL = g.textBaseline, oAL = g.textAlign, qfs = 12, qpad = 8, qx = x0 + 6, qwid = (x1 - x0) - 12, qlines = [], qcur = '', qtxt = '「' + step.quote + '」', qi;
+    /* 14b. 「他的話」放在圖下緣;半透明黃底、深色字、圓角,只在原本出現的那一步顯示 */
+    if (step.quote) {
+      var oBL = g.textBaseline, oAL = g.textAlign, qfs = narrow ? 12 : 13, qpad = 8, qx = x0 + 6, qwid = Math.min((x1 - x0) - 12, 620), qlines = [], qcur = '', qtxt = '「' + step.quote + '」', qi;
       g.textBaseline = 'alphabetic'; g.textAlign = 'left'; font(600, qfs);
       for (qi = 0; qi < qtxt.length; qi++) {
         if (qtxt[qi] !== '」' && g.measureText(qcur + qtxt[qi]).width > qwid - qpad * 2) { qlines.push(qcur); qcur = ''; }
         qcur += qtxt[qi];
       }
       if (qcur) qlines.push(qcur);
+      if (qlines.length === 1) qwid = Math.min(qwid, Math.ceil(g.measureText(qlines[0]).width) + qpad * 2 + 2);   /* 一行就縮到剛好的寬度,少擋圖 */
       if (qlines.length > 3) { qlines = qlines.slice(0, 3); qlines[2] = qlines[2].slice(0, -1) + '…'; }
-      var qlh = 16, qh = qpad + qlines.length * qlh + 3, qy = vBot - qh - 3, qr = 8;
+      var qlh = narrow ? 17 : 19, qvp = 6, qh = qvp * 2 + qlines.length * qlh, qy = vBot - qh - 3, qr = 8;
       g.beginPath(); g.moveTo(qx + qr, qy); g.lineTo(qx + qwid - qr, qy); g.quadraticCurveTo(qx + qwid, qy, qx + qwid, qy + qr);
       g.lineTo(qx + qwid, qy + qh - qr); g.quadraticCurveTo(qx + qwid, qy + qh, qx + qwid - qr, qy + qh); g.lineTo(qx + qr, qy + qh);
       g.quadraticCurveTo(qx, qy + qh, qx, qy + qh - qr); g.lineTo(qx, qy + qr); g.quadraticCurveTo(qx, qy, qx + qr, qy); g.closePath();
@@ -1791,7 +1796,8 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       g.fillStyle = qdark ? 'rgba(252,208,86,0.93)' : 'rgba(247,201,72,0.76)'; g.fill();
       g.strokeStyle = qdark ? 'rgba(255,232,150,0.85)' : 'rgba(160,110,10,0.55)'; g.lineWidth = 1; g.stroke();
       g.fillStyle = '#1a1405';
-      qlines.forEach(function (ln, k) { g.fillText(ln, qx + qpad, qy + qpad + 6 + qlh * k); });
+      g.textAlign = 'center'; g.textBaseline = 'middle';   /* 文字在黃底內上下左右置中 */
+      qlines.forEach(function (ln, k) { g.fillText(ln, qx + qwid / 2, qy + qvp + qlh * k + qlh / 2 + 0.5); });
       g.textBaseline = oBL; g.textAlign = oAL;
     }
 
@@ -1873,7 +1879,8 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       (item.outcome_kind ? '<span class="chip">結果:' + esc(item.outcome_kind) + '</span>' : '');
     var takeHTML = (an.takeaway || chips) ? '<div class="atake">' + (an.takeaway ? '<span class="lab">重點</span>' + lt(an.takeaway, ctx) : '') +
       (chips ? '<div class="aout">' + chips + '</div>' : '') + '</div>' : '';
-    var quoteH = quote ? quoteHTML(quote, null, ctx || newCtx(), { small: true, clip: clip }) : '';
+    /* 他的話已畫在圖中(第 2 步),圖下不再重複一張卡;只有沒畫進圖的(例如非本人)才保留卡片 */
+    var quoteH = (quote && !qText) ? quoteHTML(quote, null, ctx || newCtx(), { small: true, clip: clip }) : '';
     var cmpH = cmp.length ? '<table class="acmp"><caption>他說 vs K 線值</caption><thead><tr><th>項目</th><th>他說</th><th>K 線值</th></tr></thead><tbody>' +
       cmp.map(function (c) { return '<tr><td>' + esc(c.item) + '</td><td>' + esc(c.said) + '</td><td>' + esc(c.value) + '</td></tr>'; }).join('') + '</tbody></table>' : '';
     var detIn = detailHTML(M), nDet = (detIn.match(/<li /g) || []).length;
