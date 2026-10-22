@@ -1787,7 +1787,7 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       }
       if (qcur) qlines.push(qcur);
       if (qlines.length === 1) qwid = Math.min(qwid, Math.ceil(g.measureText(qlines[0]).width) + qpad * 2 + 2);   /* 一行就縮到剛好的寬度,少擋圖 */
-      if (qlines.length > 3) { qlines = qlines.slice(0, 3); qlines[2] = qlines[2].slice(0, -1) + '…'; }
+      if (qlines.length > 4) { qlines = qlines.slice(0, 4); qlines[3] = qlines[3].slice(0, -1) + '…'; }
       var qlh = narrow ? 17 : 19, qvp = 6, qh = qvp * 2 + qlines.length * qlh, qy = vBot - qh - 3, qr = 8;
       g.beginPath(); g.moveTo(qx + qr, qy); g.lineTo(qx + qwid - qr, qy); g.quadraticCurveTo(qx + qwid, qy, qx + qwid, qy + qr);
       g.lineTo(qx + qwid, qy + qh - qr); g.quadraticCurveTo(qx + qwid, qy + qh, qx + qwid - qr, qy + qh); g.lineTo(qx + qr, qy + qh);
