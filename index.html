@@ -653,6 +653,8 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .adet-fold .adet-wrap{padding:0 8px 8px}
   .adet-fold .adet-h{display:none}
 }
+.clip-media{position:relative}
+.clip-media.buf::after{content:"影片載入中…";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.66);color:#fff;padding:7px 14px;border-radius:999px;font-size:14.5px;pointer-events:none;z-index:2}
 </style>
 </head>
 <body>
@@ -1084,6 +1086,10 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   }
   function bindClipFallback(root) {
     $$('video[data-clip-fallback]', root).forEach(function (v) {
+      /* 按下播放後到真的開始播之前,顯示「影片載入中…」,讓人知道不是沒反應 */
+      var box = v.parentNode;
+      ['play', 'waiting', 'stalled', 'seeking'].forEach(function (ev) { v.addEventListener(ev, function () { if (!v.paused || ev !== 'seeking') box.classList.add('buf'); }); });
+      ['playing', 'canplay', 'pause', 'ended', 'error'].forEach(function (ev) { v.addEventListener(ev, function () { if (ev === 'canplay' && v.paused) return; box.classList.remove('buf'); }); });
       v.addEventListener('error', function () {
         var r = v.closest('.clip'), e = r && CLIPS[r.getAttribute('data-ck')], M = window.__B_MEDIA__;
         if (r && e) r.outerHTML = clipPH(e.c, r.getAttribute('data-ck'), !!(M && M.online), e.ctx);
@@ -1104,7 +1110,7 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     CSSV = { up: v('--up'), down: v('--down'), upS: v('--up-soft'), downS: v('--down-soft'), grid: v('--grid'), muted: v('--muted'), faint: v('--faint'),
       fg: v('--fg'), accent: v('--accent'), accentInk: v('--accent-ink'), bg: v('--chart-bg'), line2: v('--line2'), surface2: v('--surface2'),
       zone: v('--an-zone'), arrow: v('--an-arrow'), point: v('--an-point'), vline: v('--an-vline'), hline: v('--an-line'),
-      ma30: v('--ma30'), ma45: v('--ma45'), ma60: v('--ma60'),
+      ma30: v('--ma30'), ma45: v('--ma45'), ma60: v('--ma60'), qbg: v('--quote-bg'), qbar: v('--quote-bar'), qink: v('--quote-ink'),
       rctx: v('--r-ctx'), rjudge: v('--r-judge'), rout: v('--r-out'), rdet: v('--r-det'),
       gA: v('--gA'), gB: v('--gB'), gC: v('--gC'), font: getComputedStyle(document.body).fontFamily };
     return CSSV;
@@ -1766,6 +1772,27 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       if (x.type === 'zone' && vis(x)) hits.push({ k: x.n, x: x._g.x0, y: x._g.y0, w: x._g.x1 - x._g.x0, h: x._g.y1 - x._g.y0, z: 1 });
     });
     hits.sort(function (p, q) { return (q.z ? 1 : 0) - (p.z ? 1 : 0); });   /* 色框在後:文字與圓點優先被點到 */
+
+    /* 14b. 手機版:「他的話」放在圖下緣;半透明黃底、深色字、圓角,只在原本出現的那一步顯示;桌機維持在步驟說明裡 */
+    if (window.innerWidth <= 640 && step.quote) {
+      var oBL = g.textBaseline, oAL = g.textAlign, qfs = 12, qpad = 8, qx = x0 + 6, qwid = (x1 - x0) - 12, qlines = [], qcur = '', qtxt = '「' + step.quote + '」', qi;
+      g.textBaseline = 'alphabetic'; g.textAlign = 'left'; font(600, qfs);
+      for (qi = 0; qi < qtxt.length; qi++) {
+        if (qtxt[qi] !== '」' && g.measureText(qcur + qtxt[qi]).width > qwid - qpad * 2) { qlines.push(qcur); qcur = ''; }
+        qcur += qtxt[qi];
+      }
+      if (qcur) qlines.push(qcur);
+      if (qlines.length > 3) { qlines = qlines.slice(0, 3); qlines[2] = qlines[2].slice(0, -1) + '…'; }
+      var qlh = 16, qh = qpad + qlines.length * qlh + 3, qy = vBot - qh - 3, qr = 8;
+      g.beginPath(); g.moveTo(qx + qr, qy); g.lineTo(qx + qwid - qr, qy); g.quadraticCurveTo(qx + qwid, qy, qx + qwid, qy + qr);
+      g.lineTo(qx + qwid, qy + qh - qr); g.quadraticCurveTo(qx + qwid, qy + qh, qx + qwid - qr, qy + qh); g.lineTo(qx + qr, qy + qh);
+      g.quadraticCurveTo(qx, qy + qh, qx, qy + qh - qr); g.lineTo(qx, qy + qr); g.quadraticCurveTo(qx, qy, qx + qr, qy); g.closePath();
+      g.fillStyle = 'rgba(247,201,72,0.74)'; g.fill();
+      g.strokeStyle = 'rgba(160,110,10,0.55)'; g.lineWidth = 1; g.stroke();
+      g.fillStyle = '#1c1606';
+      qlines.forEach(function (ln, k) { g.fillText(ln, qx + qpad, qy + qpad + 6 + qlh * k); });
+      g.textBaseline = oBL; g.textAlign = oAL;
+    }
 
     /* 15. 上方資訊列:等級 + 時間範圍 */
     var gtxt = { A: 'A 級 · 口述價位已對上 K 線', B: 'B 級 · 位置為畫面估算', C: 'C 級 · 只看形狀,不印價格' }[this.grade] || 'C 級';
