@@ -1787,9 +1787,10 @@ html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       g.beginPath(); g.moveTo(qx + qr, qy); g.lineTo(qx + qwid - qr, qy); g.quadraticCurveTo(qx + qwid, qy, qx + qwid, qy + qr);
       g.lineTo(qx + qwid, qy + qh - qr); g.quadraticCurveTo(qx + qwid, qy + qh, qx + qwid - qr, qy + qh); g.lineTo(qx + qr, qy + qh);
       g.quadraticCurveTo(qx, qy + qh, qx, qy + qh - qr); g.lineTo(qx, qy + qr); g.quadraticCurveTo(qx, qy, qx + qr, qy); g.closePath();
-      g.fillStyle = 'rgba(247,201,72,0.74)'; g.fill();
-      g.strokeStyle = 'rgba(160,110,10,0.55)'; g.lineWidth = 1; g.stroke();
-      g.fillStyle = '#1c1606';
+      var qdark = (function () { var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(String(C.bg).trim()); return m ? (parseInt(m[1], 16) * 299 + parseInt(m[2], 16) * 587 + parseInt(m[3], 16) * 114) / 1000 < 128 : false; })();
+      g.fillStyle = qdark ? 'rgba(252,208,86,0.93)' : 'rgba(247,201,72,0.76)'; g.fill();
+      g.strokeStyle = qdark ? 'rgba(255,232,150,0.85)' : 'rgba(160,110,10,0.55)'; g.lineWidth = 1; g.stroke();
+      g.fillStyle = '#1a1405';
       qlines.forEach(function (ln, k) { g.fillText(ln, qx + qpad, qy + qpad + 6 + qlh * k); });
       g.textBaseline = oBL; g.textAlign = oAL;
     }
